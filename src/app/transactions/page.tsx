@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -24,6 +24,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -48,12 +50,44 @@ export default function TransactionsPage() {
   const [transactions, setTransactions] = useState(initialTransactions);
   const [isAddTransactionOpen, setAddTransactionOpen] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState("newest");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+
+
   const handleAddTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
     setTransactions(prev => [
         { ...newTransaction, id: crypto.randomUUID() },
         ...prev
     ]);
   };
+  
+  const filteredTransactions = useMemo(() => {
+    let filtered = [...transactions];
+
+    if (searchTerm) {
+        filtered = filtered.filter(t => t.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+
+    if (categoryFilter !== 'all') {
+        filtered = filtered.filter(t => t.category === categoryFilter);
+    }
+
+    if (typeFilter !== 'all') {
+        filtered = filtered.filter(t => t.type === typeFilter);
+    }
+    
+    filtered.sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+
+    return filtered;
+
+  }, [transactions, searchTerm, categoryFilter, typeFilter, sortOrder]);
+
 
   return (
     <div className="flex flex-col flex-1 bg-muted/40">
@@ -86,6 +120,8 @@ export default function TransactionsPage() {
                 <Input
                   placeholder="Search transactions..."
                   className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -96,8 +132,10 @@ export default function TransactionsPage() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem>Newest</DropdownMenuItem>
-                    <DropdownMenuItem>Oldest</DropdownMenuItem>
+                    <DropdownMenuRadioGroup value={sortOrder} onValueChange={setSortOrder}>
+                        <DropdownMenuRadioItem value="newest">Newest</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="oldest">Oldest</DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
@@ -107,11 +145,14 @@ export default function TransactionsPage() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuLabel>Categories</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    {transactionCategories.map(cat => (
-                         <DropdownMenuItem key={cat}>{cat}</DropdownMenuItem>
-                    ))}
+                    <DropdownMenuRadioGroup value={categoryFilter} onValueChange={setCategoryFilter}>
+                        <DropdownMenuLabel>Categories</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
+                        {transactionCategories.map(cat => (
+                            <DropdownMenuRadioItem key={cat} value={cat}>{cat}</DropdownMenuRadioItem>
+                        ))}
+                    </DropdownMenuRadioGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
                  <DropdownMenu>
@@ -121,8 +162,11 @@ export default function TransactionsPage() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                     <DropdownMenuItem>Income</DropdownMenuItem>
-                     <DropdownMenuItem>Expense</DropdownMenuItem>
+                     <DropdownMenuRadioGroup value={typeFilter} onValueChange={setTypeFilter}>
+                        <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="income">Income</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="expense">Expense</DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -138,7 +182,7 @@ export default function TransactionsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {transactions.map((transaction) => (
+                {filteredTransactions.map((transaction) => (
                   <TableRow key={transaction.id}>
                     <TableCell className="font-medium">
                       {transaction.date}

@@ -9,6 +9,7 @@ import {
   Wallet,
   BarChart3,
   Settings,
+  CreditCard,
 } from 'lucide-react';
 import { PennywiseLogo } from '@/components/icons/pennywise-logo';
 import { cn } from '@/lib/utils';
@@ -19,6 +20,7 @@ const navItems = [
   { href: '/transactions', icon: ScrollText, label: 'Transactions' },
   { href: '/budgets', icon: Wallet, label: 'Budgets' },
   { href: '/reports', icon: BarChart3, label: 'Reports' },
+  { href: '/subscriptions', icon: CreditCard, label: 'Subscriptions' },
 ];
 
 export function AppSidebar() {

@@ -103,3 +103,22 @@ export const budgets: Budget[] = [
   { id: "3", category: "Transportation", amount: 150 },
   { id: "4", category: "Entertainment", amount: 250 },
 ];
+
+export type Subscription = {
+    id: string;
+    name: string;
+    amount: number;
+    billingCycle: 'Monthly' | 'Annually';
+    nextDueDate: string;
+    status: 'Active' | 'Canceled';
+};
+
+export const activeSubscriptions: Subscription[] = [
+    { id: '1', name: 'Premium Streaming', amount: 15.99, billingCycle: 'Monthly', nextDueDate: 'July 15, 2024', status: 'Active' },
+    { id: '2', name: 'Fitness Club', amount: 45.00, billingCycle: 'Monthly', nextDueDate: 'July 20, 2024', status: 'Active' },
+    { id: '3', name: 'Home Insurance', amount: 120.00, billingCycle: 'Annually', nextDueDate: 'August 1, 2024', status: 'Active' },
+];
+
+export const inactiveSubscriptions: Subscription[] = [
+    { id: '1', name: 'Music Streaming', amount: 9.99, billingCycle: 'Monthly', nextDueDate: 'N/A', status: 'Canceled' },
+];

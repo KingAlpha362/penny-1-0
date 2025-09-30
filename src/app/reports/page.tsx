@@ -6,7 +6,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { transactions, budgets } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { subDays, format, parseISO } from 'date-fns';
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -17,46 +18,62 @@ const formatCurrency = (value: number) => {
 
 const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
 
+type TimeRange = '30' | '90' | '180' | '365';
 
 export default function ReportsPage() {
+    const [timeRange, setTimeRange] = useState<TimeRange>('30');
     
+    const timeRangeInDays = parseInt(timeRange, 10);
+    const startDate = subDays(new Date(), timeRangeInDays);
+
+    const filteredTransactions = useMemo(() => {
+      return transactions.filter(t => parseISO(t.date) >= startDate);
+    }, [startDate]);
+
+
     const spendingByCategoryData = useMemo(() => budgets.map(budget => {
-        const spent = transactions
+        const spent = filteredTransactions
             .filter(t => t.category === budget.category && t.type === 'expense')
             .reduce((acc, t) => acc + t.amount, 0);
         return {
             name: budget.category,
             value: spent,
         }
-    }), []);
+    }), [filteredTransactions]);
 
     const totalSpent = useMemo(() => spendingByCategoryData.reduce((acc, item) => acc + item.value, 0), [spendingByCategoryData]);
 
     const incomeTrendsData = useMemo(() => {
         const data: {[key: string]: number} = {};
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-
-        transactions.forEach(t => {
-            const transactionDate = new Date(t.date);
-            if (t.type === 'income' && transactionDate > sixMonthsAgo) {
-                const month = format(transactionDate, 'MMM');
-                if (!data[month]) data[month] = 0;
-                data[month] += t.amount;
+        
+        filteredTransactions.forEach(t => {
+            const transactionDate = parseISO(t.date);
+            if (t.type === 'income') {
+                let key = '';
+                if(timeRangeInDays <= 90) { // group by day for 30/90 days
+                    key = format(transactionDate, 'MMM d');
+                } else { // group by month for 6+ months
+                    key = format(transactionDate, 'MMM yyyy');
+                }
+                
+                if (!data[key]) data[key] = 0;
+                data[key] += t.amount;
             }
         });
         
-        const monthOrder = Array.from({length: 6}, (_, i) => {
-            const d = new Date();
-            d.setMonth(d.getMonth() - i);
-            return format(d, 'MMM');
-        }).reverse();
+        const sortedKeys = Object.keys(data).sort((a,b) => {
+            if (timeRangeInDays <= 90) {
+                return new Date(a).getTime() - new Date(b).getTime();
+            }
+            return new Date(a).getTime() - new Date(b).getTime();
+        });
         
-        return monthOrder.map(month => ({
-            name: month,
-            income: data[month] || 0
+        return sortedKeys.map(key => ({
+            name: key,
+            income: data[key] || 0
         }));
-    }, []);
+
+    }, [filteredTransactions, timeRangeInDays]);
 
     const netWorthData = useMemo(() => {
         const data: {[key: string]: {income: number, expense: number}} = {};
@@ -99,9 +116,9 @@ export default function ReportsPage() {
           </p>
         </div>
          <div className="flex items-center gap-4">
-            <Select>
+            <Select value={timeRange} onValueChange={(value) => setTimeRange(value as TimeRange)}>
                 <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Last 30 Days" />
+                    <SelectValue placeholder="Select time range" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="30">Last 30 Days</SelectItem>
@@ -117,6 +134,9 @@ export default function ReportsPage() {
         <Card className="lg:col-span-3">
             <CardHeader>
                 <CardTitle>Spending by Category</CardTitle>
+                 <CardDescription>
+                    {`For the last ${timeRange} days`}
+                </CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="h-72 w-full">
@@ -177,7 +197,9 @@ export default function ReportsPage() {
             <Card className="lg:col-span-2">
                 <CardHeader>
                     <CardTitle>Income Trends</CardTitle>
-                    <CardDescription>Last 6 months</CardDescription>
+                    <CardDescription>
+                        {`For the last ${timeRange} days`}
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="h-64">
@@ -217,15 +239,3 @@ export default function ReportsPage() {
     </div>
   );
 }
-
-function format(date: Date, fmt: string): string {
-    if (fmt === 'MMM') {
-        return date.toLocaleString('default', { month: 'short' });
-    }
-    if (fmt === 'yyyy-MMM') {
-        return `${date.getFullYear()}-${date.toLocaleString('default', { month: 'short' })}`;
-    }
-    return date.toISOString();
-}
-
-    

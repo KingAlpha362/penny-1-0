@@ -1,9 +1,11 @@
+
 "use client";
 
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { debts, debtGoals } from "@/lib/data";
+import { debts as initialDebts, debtGoals } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 
@@ -21,10 +23,24 @@ const debtReductionData = [
   { name: 'Year 3', debt: 4000 },
 ];
 
+type RepaymentStrategy = "snowball" | "avalanche" | "custom";
+
 export default function DebtTrackerPage() {
 
-    const totalDebt = debts.reduce((acc, debt) => acc + debt.balance, 0);
-    const minMonthlyPayment = debts.reduce((acc, debt) => acc + debt.minPayment, 0);
+    const [repaymentStrategy, setRepaymentStrategy] = useState<RepaymentStrategy>("snowball");
+
+    const sortedDebts = useMemo(() => {
+        const debtsCopy = [...initialDebts];
+        if (repaymentStrategy === 'snowball') {
+            return debtsCopy.sort((a, b) => a.balance - b.balance);
+        } else if (repaymentStrategy === 'avalanche') {
+            return debtsCopy.sort((a, b) => b.interestRate - a.interestRate);
+        }
+        return debtsCopy;
+    }, [repaymentStrategy]);
+
+    const totalDebt = initialDebts.reduce((acc, debt) => acc + debt.balance, 0);
+    const minMonthlyPayment = initialDebts.reduce((acc, debt) => acc + debt.minPayment, 0);
 
   return (
     <div className="flex flex-col flex-1 bg-muted/40">
@@ -78,7 +94,7 @@ export default function DebtTrackerPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {debts.map((debt) => (
+                {sortedDebts.map((debt) => (
                   <TableRow key={debt.id}>
                     <TableCell className="font-medium">{debt.type}</TableCell>
                     <TableCell className="text-right">{formatCurrency(debt.balance)}</TableCell>
@@ -100,19 +116,40 @@ export default function DebtTrackerPage() {
                 <CardContent>
                     <div className="flex flex-wrap gap-3">
                         <label className="flex-1 cursor-pointer">
-                            <input defaultChecked className="sr-only peer" name="repayment_strategy" type="radio"/>
+                            <input 
+                                checked={repaymentStrategy === 'snowball'} 
+                                className="sr-only peer" 
+                                name="repayment_strategy" 
+                                type="radio"
+                                value="snowball"
+                                onChange={(e) => setRepaymentStrategy(e.target.value as RepaymentStrategy)}
+                            />
                             <div className="text-center py-3 px-4 rounded-lg border border-border peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-primary peer-checked:bg-primary/10 transition-all">
                                 Snowball
                             </div>
                         </label>
                         <label className="flex-1 cursor-pointer">
-                            <input className="sr-only peer" name="repayment_strategy" type="radio"/>
+                             <input 
+                                checked={repaymentStrategy === 'avalanche'} 
+                                className="sr-only peer" 
+                                name="repayment_strategy" 
+                                type="radio"
+                                value="avalanche"
+                                onChange={(e) => setRepaymentStrategy(e.target.value as RepaymentStrategy)}
+                            />
                             <div className="text-center py-3 px-4 rounded-lg border border-border peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-primary peer-checked:bg-primary/10 transition-all">
                                 Avalanche
                             </div>
                         </label>
                         <label className="flex-1 cursor-pointer">
-                            <input className="sr-only peer" name="repayment_strategy" type="radio"/>
+                            <input 
+                                checked={repaymentStrategy === 'custom'} 
+                                className="sr-only peer" 
+                                name="repayment_strategy" 
+                                type="radio"
+                                value="custom"
+                                onChange={(e) => setRepaymentStrategy(e.target.value as RepaymentStrategy)}
+                            />
                             <div className="text-center py-3 px-4 rounded-lg border border-border peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-primary peer-checked:bg-primary/10 transition-all">
                                 Custom
                             </div>

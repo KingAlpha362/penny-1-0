@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -10,6 +9,7 @@ import {
   BarChart3,
   Settings,
   CreditCard,
+  TrendingUp,
 } from 'lucide-react';
 import { PennywiseLogo } from '@/components/icons/pennywise-logo';
 import { cn } from '@/lib/utils';
@@ -21,6 +21,7 @@ const navItems = [
   { href: '/budgets', icon: Wallet, label: 'Budgets' },
   { href: '/reports', icon: BarChart3, label: 'Reports' },
   { href: '/subscriptions', icon: CreditCard, label: 'Subscriptions' },
+  { href: '/cash-flow', icon: TrendingUp, label: 'Cash Flow' },
 ];
 
 export function AppSidebar() {

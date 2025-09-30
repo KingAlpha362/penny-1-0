@@ -7,7 +7,7 @@ import { Header } from "@/components/pennywise/header";
 import { OverviewCards } from "@/components/pennywise/overview-cards";
 import { SpendingChart } from "@/components/pennywise/spending-chart";
 import { RecentTransactions } from "@/components/pennywise/recent-transactions";
-import FinancialTip from "@/components/pennywise/financial-tip";
+import FinancialTipClient from "@/components/pennywise/financial-tip-client";
 import { transactions as initialTransactions, Transaction } from "@/lib/data";
 import { AddTransactionDialog } from "@/components/pennywise/add-transaction-dialog";
 
@@ -43,7 +43,7 @@ const DashboardPage: FC = () => {
             <SpendingChart transactions={transactions} />
           </div>
           <div className="xl:col-span-2">
-            <FinancialTip transactions={transactions} income={income} expenses={expenses} />
+            <FinancialTipClient transactions={transactions} income={income} expenses={expenses} />
           </div>
         </div>
         <RecentTransactions transactions={transactions} />

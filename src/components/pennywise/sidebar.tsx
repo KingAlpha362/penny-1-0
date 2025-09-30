@@ -10,6 +10,7 @@ import {
   Settings,
   CreditCard,
   TrendingUp,
+  CircleDollarSign,
 } from 'lucide-react';
 import { PennywiseLogo } from '@/components/icons/pennywise-logo';
 import { cn } from '@/lib/utils';
@@ -22,6 +23,7 @@ const navItems = [
   { href: '/reports', icon: BarChart3, label: 'Reports' },
   { href: '/subscriptions', icon: CreditCard, label: 'Subscriptions' },
   { href: '/cash-flow', icon: TrendingUp, label: 'Cash Flow' },
+  { href: '/debt', icon: CircleDollarSign, label: 'Debt' },
 ];
 
 export function AppSidebar() {

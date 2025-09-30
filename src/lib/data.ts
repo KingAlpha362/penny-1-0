@@ -122,3 +122,34 @@ export const activeSubscriptions: Subscription[] = [
 export const inactiveSubscriptions: Subscription[] = [
     { id: '1', name: 'Music Streaming', amount: 9.99, billingCycle: 'Monthly', nextDueDate: 'N/A', status: 'Canceled' },
 ];
+
+export type Debt = {
+  id: string;
+  type: string;
+  balance: number;
+  interestRate: number;
+  minPayment: number;
+  payoffDate: string;
+};
+
+export const debts: Debt[] = [
+    { id: '1', type: 'Personal Loan', balance: 5000, interestRate: 8.5, minPayment: 150, payoffDate: '1y 8m' },
+    { id: '2', type: 'Credit Card A', balance: 4500, interestRate: 18.0, minPayment: 100, payoffDate: '3y 2m' },
+    { id: '3', type: 'Credit Card B', balance: 3000, interestRate: 22.0, minPayment: 100, payoffDate: '2y 10m' },
+];
+
+
+export type DebtGoal = {
+  id: string;
+  title: string;
+  targetDate: string;
+  currentAmount: number;
+  totalAmount: number;
+  type: 'payoff' | 'reduce';
+};
+
+export const debtGoals: DebtGoal[] = [
+    { id: '1', title: 'Pay off Credit Card A', targetDate: 'Dec 2025', currentAmount: 3375, totalAmount: 4500, type: 'payoff' },
+    { id: '2', title: 'Reduce Personal Loan Balance', targetDate: 'Jun 2025', currentAmount: 2500, totalAmount: 5000, type: 'reduce' },
+    { id: '3', title: 'First Debt Free Year', targetDate: 'Jan 2026', currentAmount: 3125, totalAmount: 12500, type: 'payoff' },
+];

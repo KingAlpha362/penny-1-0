@@ -38,16 +38,24 @@ export default function ReportsPage() {
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
         transactions.forEach(t => {
-            if (t.type === 'income' && new Date(t.date) > sixMonthsAgo) {
-                const month = new Date(t.date).toLocaleString('default', { month: 'short' });
+            const transactionDate = new Date(t.date);
+            if (t.type === 'income' && transactionDate > sixMonthsAgo) {
+                const month = format(transactionDate, 'MMM');
                 if (!data[month]) data[month] = 0;
                 data[month] += t.amount;
             }
         });
-        const monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        return Object.entries(data)
-            .map(([name, income]) => ({ name, income }))
-            .sort((a,b) => monthOrder.indexOf(a.name) - monthOrder.indexOf(b.name));
+        
+        const monthOrder = Array.from({length: 6}, (_, i) => {
+            const d = new Date();
+            d.setMonth(d.getMonth() - i);
+            return format(d, 'MMM');
+        }).reverse();
+        
+        return monthOrder.map(month => ({
+            name: month,
+            income: data[month] || 0
+        }));
     }, []);
 
     const netWorthData = useMemo(() => {
@@ -56,22 +64,28 @@ export default function ReportsPage() {
         twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
         
         transactions.forEach(t => {
-            if (new Date(t.date) > twelveMonthsAgo) {
-                const month = new Date(t.date).getFullYear() + '-' + new Date(t.date).toLocaleString('default', { month: 'short' });
+            const transactionDate = new Date(t.date);
+            if (transactionDate > twelveMonthsAgo) {
+                const month = format(transactionDate, 'yyyy-MMM');
                  if (!data[month]) data[month] = { income: 0, expense: 0 };
                  data[month][t.type] += t.amount;
             }
         });
 
         let netWorth = 10000; // Starting arbitrary net worth
-        const monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         
-        return Object.entries(data)
-            .map(([month, {income, expense}]) => {
-                netWorth += income - expense;
-                return { name: month.split('-')[1], netWorth };
-            })
-            .sort((a,b) => monthOrder.indexOf(a.name) - monthOrder.indexOf(b.name));
+        const monthOrder = Array.from({length: 12}, (_, i) => {
+            const d = new Date();
+            d.setMonth(d.getMonth() - i);
+            return format(d, 'yyyy-MMM');
+        }).reverse();
+
+        return monthOrder.map(monthKey => {
+            if (data[monthKey]) {
+                netWorth += data[monthKey].income - data[monthKey].expense;
+            }
+            return { name: monthKey.split('-')[1], netWorth };
+        });
 
     }, []);
 
@@ -203,3 +217,15 @@ export default function ReportsPage() {
     </div>
   );
 }
+
+function format(date: Date, fmt: string): string {
+    if (fmt === 'MMM') {
+        return date.toLocaleString('default', { month: 'short' });
+    }
+    if (fmt === 'yyyy-MMM') {
+        return `${date.getFullYear()}-${date.toLocaleString('default', { month: 'short' })}`;
+    }
+    return date.toISOString();
+}
+
+    

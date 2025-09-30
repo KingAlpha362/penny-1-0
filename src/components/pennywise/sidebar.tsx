@@ -1,5 +1,8 @@
 
+"use client";
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   ScrollText,
@@ -12,13 +15,15 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
-  { href: '#', icon: LayoutDashboard, label: 'Dashboard', active: true },
-  { href: '#', icon: ScrollText, label: 'Transactions' },
+  { href: '/', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/transactions', icon: ScrollText, label: 'Transactions' },
   { href: '#', icon: Wallet, label: 'Budgets' },
   { href: '#', icon: BarChart3, label: 'Reports' },
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="w-64 flex-shrink-0 bg-card border-r flex flex-col">
       <div className="p-6 flex items-center gap-3">
@@ -27,23 +32,26 @@ export function AppSidebar() {
       </div>
       <nav className="flex-grow px-4">
         <ul className="space-y-1">
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <Button
-                asChild
-                variant={item.active ? 'secondary' : 'ghost'}
-                className={cn(
-                  'w-full justify-start',
-                  item.active && 'font-bold text-primary'
-                )}
-              >
-                <Link href={item.href} className="flex items-center gap-3">
-                  <item.icon className="w-5 h-5" />
-                  {item.label}
-                </Link>
-              </Button>
-            </li>
-          ))}
+          {navItems.map((item) => {
+            const active = pathname === item.href;
+            return (
+              <li key={item.label}>
+                <Button
+                  asChild
+                  variant={active ? 'secondary' : 'ghost'}
+                  className={cn(
+                    'w-full justify-start',
+                    active && 'font-bold text-primary'
+                  )}
+                >
+                  <Link href={item.href} className="flex items-center gap-3">
+                    <item.icon className="w-5 h-5" />
+                    {item.label}
+                  </Link>
+                </Button>
+              </li>
+            );
+          })}
         </ul>
       </nav>
       <div className="px-4 py-6">

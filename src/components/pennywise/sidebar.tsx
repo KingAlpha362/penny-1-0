@@ -18,7 +18,7 @@ const navItems = [
   { href: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/transactions', icon: ScrollText, label: 'Transactions' },
   { href: '/budgets', icon: Wallet, label: 'Budgets' },
-  { href: '#', icon: BarChart3, label: 'Reports' },
+  { href: '/reports', icon: BarChart3, label: 'Reports' },
 ];
 
 export function AppSidebar() {
@@ -55,8 +55,8 @@ export function AppSidebar() {
         </ul>
       </nav>
       <div className="px-4 py-6">
-        <Button asChild variant="ghost" className="w-full justify-start">
-            <Link href="#" className="flex items-center gap-3">
+        <Button asChild variant={pathname === '/settings' ? 'secondary' : 'ghost'} className={cn('w-full justify-start', pathname === '/settings' && 'font-bold text-primary')}>
+            <Link href="/settings" className="flex items-center gap-3">
                 <Settings className="w-5 h-5" />
                 Settings
             </Link>

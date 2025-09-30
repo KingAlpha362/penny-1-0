@@ -2,10 +2,11 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { transactions, budgets } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useMemo } from "react";
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -19,7 +20,7 @@ const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3
 
 export default function ReportsPage() {
     
-    const spendingByCategoryData = budgets.map(budget => {
+    const spendingByCategoryData = useMemo(() => budgets.map(budget => {
         const spent = transactions
             .filter(t => t.category === budget.category && t.type === 'expense')
             .reduce((acc, t) => acc + t.amount, 0);
@@ -27,9 +28,52 @@ export default function ReportsPage() {
             name: budget.category,
             value: spent,
         }
-    });
+    }), []);
 
-    const totalSpent = spendingByCategoryData.reduce((acc, item) => acc + item.value, 0);
+    const totalSpent = useMemo(() => spendingByCategoryData.reduce((acc, item) => acc + item.value, 0), [spendingByCategoryData]);
+
+    const incomeTrendsData = useMemo(() => {
+        const data: {[key: string]: number} = {};
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+        transactions.forEach(t => {
+            if (t.type === 'income' && new Date(t.date) > sixMonthsAgo) {
+                const month = new Date(t.date).toLocaleString('default', { month: 'short' });
+                if (!data[month]) data[month] = 0;
+                data[month] += t.amount;
+            }
+        });
+        const monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        return Object.entries(data)
+            .map(([name, income]) => ({ name, income }))
+            .sort((a,b) => monthOrder.indexOf(a.name) - monthOrder.indexOf(b.name));
+    }, []);
+
+    const netWorthData = useMemo(() => {
+        const data: {[key: string]: {income: number, expense: number}} = {};
+        const twelveMonthsAgo = new Date();
+        twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+        
+        transactions.forEach(t => {
+            if (new Date(t.date) > twelveMonthsAgo) {
+                const month = new Date(t.date).getFullYear() + '-' + new Date(t.date).toLocaleString('default', { month: 'short' });
+                 if (!data[month]) data[month] = { income: 0, expense: 0 };
+                 data[month][t.type] += t.amount;
+            }
+        });
+
+        let netWorth = 10000; // Starting arbitrary net worth
+        const monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        
+        return Object.entries(data)
+            .map(([month, {income, expense}]) => {
+                netWorth += income - expense;
+                return { name: month.split('-')[1], netWorth };
+            })
+            .sort((a,b) => monthOrder.indexOf(a.name) - monthOrder.indexOf(b.name));
+
+    }, []);
 
   return (
     <div className="flex flex-col flex-1 bg-muted/40">
@@ -123,7 +167,15 @@ export default function ReportsPage() {
                 </CardHeader>
                 <CardContent>
                     <div className="h-64">
-                       <p className="text-muted-foreground text-center flex items-center justify-center h-full">Chart coming soon!</p>
+                       <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={incomeTrendsData}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => formatCurrency(Number(value))} />
+                                <Tooltip formatter={(value) => formatCurrency(Number(value))} cursor={{ fill: 'hsl(var(--accent))', opacity: 0.5 }} />
+                                <Bar dataKey="income" fill="hsl(var(--chart-1))" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                       </ResponsiveContainer>
                     </div>
                 </CardContent>
             </Card>
@@ -134,7 +186,15 @@ export default function ReportsPage() {
                 </CardHeader>
                  <CardContent>
                     <div className="h-64">
-                        <p className="text-muted-foreground text-center flex items-center justify-center h-full">Chart coming soon!</p>
+                         <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={netWorthData}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => formatCurrency(Number(value))} />
+                                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                                <Line type="monotone" dataKey="netWorth" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} />
+                            </LineChart>
+                        </ResponsiveContainer>
                     </div>
                 </CardContent>
             </Card>
@@ -143,4 +203,3 @@ export default function ReportsPage() {
     </div>
   );
 }
-

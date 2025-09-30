@@ -43,8 +43,8 @@ export default function DebtTrackerPage() {
     const minMonthlyPayment = initialDebts.reduce((acc, debt) => acc + debt.minPayment, 0);
 
   return (
-    <div className="flex flex-col flex-1 bg-muted/40">
-      <header className="flex items-center justify-between p-6 border-b bg-card">
+    <div className="flex flex-col flex-1">
+      <header className="flex items-center justify-between p-6">
         <div>
           <h2 className="text-3xl font-bold tracking-tight font-headline">Debt Tracker</h2>
           <p className="text-muted-foreground mt-1">Manage and visualize your debt repayment progress.</p>

@@ -18,7 +18,7 @@ export const Header: FC<HeaderProps> = ({ onAddTransaction, balance }) => {
   }).format(balance);
 
   return (
-    <header className="flex items-center justify-between p-6 border-b bg-card">
+    <header className="flex items-center justify-between p-6">
       <div>
         <h2 className="text-2xl font-bold font-headline">Dashboard</h2>
         <p className="text-muted-foreground">

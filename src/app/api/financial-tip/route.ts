@@ -31,18 +31,23 @@ export async function POST(req: NextRequest) {
     }
     const {transactions, income, expenses} = validation.data;
 
-    const spendingHabits =
-      transactions
-        .filter(t => t.type === 'expense')
-        .slice(0, 5)
-        .map(t => `${t.category}: $${t.amount}`)
-        .join(', ') || 'No recent spending data.';
+    // More detailed spending habits
+    const categoryTotals: {[key: string]: number} = {};
+    transactions.filter(t => t.type === 'expense').forEach(t => {
+      categoryTotals[t.category] = (categoryTotals[t.category] || 0) + t.amount;
+    });
+
+    const spendingHabits = Object.entries(categoryTotals)
+      .sort(([, a], [, b]) => b - a) // Sort by amount descending
+      .map(([category, total]) => `${category}: $${total.toFixed(2)}`)
+      .join(', ') || 'No recent spending data.';
+
 
     const budgetGoals = `Monthly income is $${income.toFixed(
       2
-    )}, and expenses are $${expenses.toFixed(
+    )}, and total monthly expenses are $${expenses.toFixed(
       2
-    )}. Goal is to increase savings.`;
+    )}. The user's goal is to increase their savings and reduce unnecessary spending.`;
 
     const result = await generateFinancialTip({
       spendingHabits,

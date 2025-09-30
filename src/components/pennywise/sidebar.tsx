@@ -11,6 +11,7 @@ import {
   CreditCard,
   TrendingUp,
   CircleDollarSign,
+  Target,
 } from 'lucide-react';
 import { PennywiseLogo } from '@/components/icons/pennywise-logo';
 import { cn } from '@/lib/utils';
@@ -24,13 +25,14 @@ const navItems = [
   { href: '/subscriptions', icon: CreditCard, label: 'Subscriptions' },
   { href: '/cash-flow', icon: TrendingUp, label: 'Cash Flow' },
   { href: '/debt', icon: CircleDollarSign, label: 'Debt' },
+  { href: '/goals', icon: Target, label: 'Goals' },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-card border-r flex flex-col">
+    <aside className="w-64 flex-shrink-0 bg-card/30 backdrop-blur-xl border-r flex flex-col">
       <div className="p-6 flex items-center gap-3">
         <PennywiseLogo className="w-8 h-8 text-primary" />
         <h1 className="text-xl font-bold font-headline">PennyWise</h1>

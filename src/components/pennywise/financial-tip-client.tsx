@@ -5,7 +5,7 @@ import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
 import type {Transaction} from '@/lib/data';
 import {Lightbulb} from 'lucide-react';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useTransition} from 'react';
 
 interface FinancialTipClientProps {
   transactions: Transaction[];
@@ -19,12 +19,11 @@ export default function FinancialTipClient({
   expenses,
 }: FinancialTipClientProps) {
   const [tip, setTip] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    async function fetchTip() {
+    startTransition(async () => {
       try {
-        setLoading(true);
         const response = await fetch('/api/financial-tip', {
           method: 'POST',
           headers: {
@@ -43,12 +42,8 @@ export default function FinancialTipClient({
       } catch (error) {
         console.error('Error fetching financial tip:', error);
         setTip('Start tracking your expenses to find savings opportunities!');
-      } finally {
-        setLoading(false);
       }
-    }
-
-    fetchTip();
+    });
   }, [transactions, income, expenses]);
 
   return (
@@ -58,7 +53,7 @@ export default function FinancialTipClient({
         <CardTitle className="font-headline">Personalized Tip</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow">
-        {loading ? (
+        {isPending ? (
           <div className="space-y-2">
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-full" />

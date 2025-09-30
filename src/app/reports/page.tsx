@@ -1,9 +1,11 @@
 
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { transactions, budgets } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -11,6 +13,9 @@ const formatCurrency = (value: number) => {
       currency: 'USD',
     }).format(value);
 };
+
+const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
+
 
 export default function ReportsPage() {
     
@@ -20,10 +25,11 @@ export default function ReportsPage() {
             .reduce((acc, t) => acc + t.amount, 0);
         return {
             name: budget.category,
-            spent,
-            budget: budget.amount,
+            value: spent,
         }
     });
+
+    const totalSpent = spendingByCategoryData.reduce((acc, item) => acc + item.value, 0);
 
   return (
     <div className="flex flex-col flex-1 bg-muted/40">
@@ -34,35 +40,107 @@ export default function ReportsPage() {
             Analyze your spending and financial trends.
           </p>
         </div>
+         <div className="flex items-center gap-4">
+            <Select>
+                <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Last 30 Days" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="30">Last 30 Days</SelectItem>
+                    <SelectItem value="90">Last 3 Months</SelectItem>
+                    <SelectItem value="180">Last 6 Months</SelectItem>
+                    <SelectItem value="365">Last Year</SelectItem>
+                </SelectContent>
+            </Select>
+            <Button>Export Report</Button>
+        </div>
       </header>
       <main className="flex-1 space-y-8 p-6">
-        <Card>
+        <Card className="lg:col-span-3">
             <CardHeader>
-                <CardTitle>Spending vs Budget by Category</CardTitle>
+                <CardTitle>Spending by Category</CardTitle>
             </CardHeader>
-            <CardContent className="h-96">
-                <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={spendingByCategoryData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis tickFormatter={(value) => formatCurrency(Number(value))}/>
-                        <Tooltip formatter={(value) => formatCurrency(Number(value))}/>
-                        <Legend />
-                        <Bar dataKey="spent" fill="hsl(var(--destructive))" name="Spent" />
-                        <Bar dataKey="budget" fill="hsl(var(--primary))" name="Budget" />
-                    </BarChart>
-                </ResponsiveContainer>
+            <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div className="h-72 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                                data={spendingByCategoryData}
+                                cx="50%"
+                                cy="50%"
+                                labelLine={false}
+                                outerRadius={120}
+                                innerRadius={90}
+                                fill="#8884d8"
+                                dataKey="value"
+                                stroke="hsl(var(--background))"
+                                strokeWidth={4}
+                            >
+                                {spendingByCategoryData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                             <Tooltip formatter={(value) => formatCurrency(Number(value))}/>
+                             <text
+                                x="50%"
+                                y="45%"
+                                textAnchor="middle"
+                                dominantBaseline="middle"
+                                className="text-3xl font-bold fill-foreground"
+                            >
+                                {formatCurrency(totalSpent)}
+                            </text>
+                            <text
+                                x="50%"
+                                y="58%"
+                                textAnchor="middle"
+                                dominantBaseline="middle"
+                                className="text-sm fill-muted-foreground"
+                            >
+                                Total Spent
+                            </text>
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+                 <div className="grid grid-cols-2 gap-6">
+                    {spendingByCategoryData.map((item, index) => (
+                        <div key={item.name} className="flex items-center gap-3">
+                            <div className="h-3 w-3 rounded-full" style={{backgroundColor: COLORS[index % COLORS.length]}}></div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">{item.name}</p>
+                                <p className="text-lg font-bold">{formatCurrency(item.value)}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </CardContent>
         </Card>
-         <Card>
-            <CardHeader>
-                <CardTitle>Coming Soon</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">More detailed reports and visualizations are coming soon to help you gain deeper insights into your finances!</p>
-            </CardContent>
-        </Card>
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <Card className="lg:col-span-2">
+                <CardHeader>
+                    <CardTitle>Income Trends</CardTitle>
+                    <CardDescription>Last 6 months</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="h-64">
+                       <p className="text-muted-foreground text-center flex items-center justify-center h-full">Chart coming soon!</p>
+                    </div>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Net Worth</CardTitle>
+                    <CardDescription>Last 12 months</CardDescription>
+                </CardHeader>
+                 <CardContent>
+                    <div className="h-64">
+                        <p className="text-muted-foreground text-center flex items-center justify-center h-full">Chart coming soon!</p>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
       </main>
     </div>
   );
 }
+

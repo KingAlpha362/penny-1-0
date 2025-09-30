@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button';
 const navItems = [
   { href: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/transactions', icon: ScrollText, label: 'Transactions' },
-  { href: '#', icon: Wallet, label: 'Budgets' },
+  { href: '/budgets', icon: Wallet, label: 'Budgets' },
   { href: '#', icon: BarChart3, label: 'Reports' },
 ];
 

@@ -2,7 +2,7 @@
 export type Transaction = {
   id: string;
   date: string;
-  category: "Groceries" | "Salary" | "Online Shopping" | "Dining" | "Rent" | "Utilities" | "Freelance";
+  category: "Groceries" | "Salary" | "Online Shopping" | "Dining" | "Rent" | "Utilities" | "Freelance" | "Transportation" | "Entertainment";
   description: string;
   amount: number;
   type: 'income' | 'expense';
@@ -73,6 +73,10 @@ export const transactions: Transaction[] = [
     amount: 500.00,
     type: "income",
   },
+  { id: "9", date: "2024-07-22", category: "Transportation", description: "Gasoline", amount: 40.00, type: "expense" },
+  { id: "10", date: "2024-07-21", category: "Entertainment", description: "Movie night", amount: 35.00, type: "expense" },
+  { id: "11", date: "2024-07-18", category: "Groceries", description: "Supermarket", amount: 120.50, type: "expense" },
+  { id: "12", date: "2024-07-17", category: "Utilities", description: "Internet Bill", amount: 50.00, type: "expense" },
 ];
 
 export const transactionCategories = [
@@ -83,4 +87,19 @@ export const transactionCategories = [
     "Rent",
     "Utilities",
     "Freelance",
+    "Transportation",
+    "Entertainment",
+];
+
+export type Budget = {
+  id: string;
+  category: "Groceries" | "Utilities" | "Transportation" | "Entertainment";
+  amount: number;
+};
+
+export const budgets: Budget[] = [
+  { id: "1", category: "Groceries", amount: 500 },
+  { id: "2", category: "Utilities", amount: 200 },
+  { id: "3", category: "Transportation", amount: 150 },
+  { id: "4", category: "Entertainment", amount: 250 },
 ];

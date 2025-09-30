@@ -4,13 +4,17 @@ import type { SVGProps } from 'react';
 export const PennywiseLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 48 48"
+    viewBox="0 0 24 24"
     fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     {...props}
   >
-    <path
-      d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"
-      fill="currentColor"
-    />
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 12H8a2 2 0 1 0 0 4h4" />
+    <path d="M12 8v8" />
+    <path d="M16 8a4 4 0 0 0-4 4" />
   </svg>
 );

@@ -7,7 +7,7 @@ import { PlusCircle } from "lucide-react";
 import { budgets as initialBudgets, transactions } from "@/lib/data";
 import { BudgetCard } from "@/components/pennywise/budget-card";
 import { AddBudgetCard } from "@/components/pennywise/add-budget-card";
-import { CreateBudgetForm } from "@/components/pennywise/create-budget-form";
+import { CreateBudgetDialog } from "@/components/pennywise/create-budget-dialog";
 import { BudgetForecast } from "@/components/pennywise/budget-forecast";
 
 export type Budget = {
@@ -18,6 +18,7 @@ export type Budget = {
 
 export default function BudgetsPage() {
   const [budgets, setBudgets] = useState(initialBudgets);
+  const [isCreateBudgetOpen, setCreateBudgetOpen] = useState(false);
 
   const handleCreateBudget = (newBudget: Omit<Budget, 'id'>) => {
     setBudgets(prev => [...prev, { ...newBudget, id: crypto.randomUUID() }]);
@@ -39,7 +40,7 @@ export default function BudgetsPage() {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <Button>
+          <Button onClick={() => setCreateBudgetOpen(true)}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Create Budget
           </Button>
@@ -55,15 +56,17 @@ export default function BudgetsPage() {
                   spent={getSpentAmount(budget.category)}
                 />
               ))}
-               <AddBudgetCard />
+               <AddBudgetCard onClick={() => setCreateBudgetOpen(true)} />
             </div>
             <div className="lg:col-span-1">
               <BudgetForecast budgets={budgets} transactions={transactions} />
             </div>
         </div>
-        <div>
-          <CreateBudgetForm onCreateBudget={handleCreateBudget} />
-        </div>
+        <CreateBudgetDialog
+            isOpen={isCreateBudgetOpen}
+            onOpenChange={setCreateBudgetOpen}
+            onCreateBudget={handleCreateBudget}
+        />
       </main>
     </div>
   );

@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, MoreHorizontal, TrendingUp, TrendingDown, ArrowUp, ArrowDown } from "lucide-react";
+import { PlusCircle, MoreHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -35,7 +35,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts"
+} from "recharts";
+import { InvestmentLogo } from "@/components/pennywise/investment-logo";
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("en-US", {
@@ -52,7 +53,7 @@ const portfolioData = [
   { name: 'May', value: 6800 },
   { name: 'Jun', value: 7200 },
   { name: 'Jul', value: 8000 },
-]
+];
 
 export default function InvestmentsPage() {
   const totalValue = investments.reduce((acc, investment) => acc + investment.value, 0);
@@ -147,8 +148,11 @@ export default function InvestmentsPage() {
               <TableBody>
                 {investments.map((investment) => (
                   <TableRow key={investment.id}>
-                    <TableCell className="font-medium">
-                        {investment.name} <span className="text-muted-foreground">{investment.symbol}</span>
+                    <TableCell className="font-medium flex items-center gap-3">
+                        <InvestmentLogo symbol={investment.symbol} />
+                        <div>
+                            {investment.name} <span className="text-muted-foreground">{investment.symbol}</span>
+                        </div>
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary">{investment.type}</Badge>

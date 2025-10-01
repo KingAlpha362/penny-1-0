@@ -8,6 +8,8 @@ import { OverviewCards } from "@/components/pennywise/overview-cards";
 import { SpendingChart } from "@/components/pennywise/spending-chart";
 import { transactions as initialTransactions, Transaction } from "@/lib/data";
 import { AddTransactionDialog } from "@/components/pennywise/add-transaction-dialog";
+import { RecentTransactions } from "@/components/pennywise/recent-transactions";
+
 
 const DashboardPage: FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
@@ -35,9 +37,14 @@ const DashboardPage: FC = () => {
     <div className="flex flex-col flex-1 bg-background">
       <Header onAddTransaction={() => setAddTransactionOpen(true)} />
       <main className="flex-1 space-y-6 p-6">
-        <OverviewCards balance={balance} />
-        <div className="grid grid-cols-1">
-          <SpendingChart transactions={transactions} />
+        <OverviewCards income={income} expenses={expenses} balance={balance} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <SpendingChart transactions={transactions} />
+          </div>
+          <div className="lg:col-span-1">
+            <RecentTransactions transactions={transactions} />
+          </div>
         </div>
       </main>
       <AddTransactionDialog 

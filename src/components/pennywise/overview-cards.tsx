@@ -2,10 +2,11 @@
 import type { FC } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowDownLeft, ArrowUpRight, DollarSign } from 'lucide-react';
-import { transactions } from '@/lib/data';
 
 interface OverviewCardsProps {
   balance: number;
+  income: number;
+  expenses: number;
 }
 
 const formatCurrency = (value: number) => {
@@ -16,10 +17,7 @@ const formatCurrency = (value: number) => {
 };
 
 
-export const OverviewCards: FC<OverviewCardsProps> = ({ balance }) => {
-  const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
-  const expenses = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
-  
+export const OverviewCards: FC<OverviewCardsProps> = ({ balance, income, expenses }) => {
   return (
     <section>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -50,9 +50,6 @@ const processChartData = (transactions: Transaction[]) => {
     if (monthlyData[month]) {
       chartData.push({ name: month, balance: monthlyData[month].balance });
       lastKnownBalance = monthlyData[month].balance;
-    } else {
-      // If no data for a month, you could either carry over the last balance or show a gap
-      // chartData.push({ name: month, balance: lastKnownBalance });
     }
   });
 

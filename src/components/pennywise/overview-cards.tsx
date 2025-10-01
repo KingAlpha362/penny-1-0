@@ -2,6 +2,7 @@
 import type { FC } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowDownLeft, ArrowUpRight, DollarSign } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface OverviewCardsProps {
   balance: number;
@@ -27,7 +28,7 @@ export const OverviewCards: FC<OverviewCardsProps> = ({ balance, income, expense
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{formatCurrency(balance)}</div>
+            <div className={cn("text-3xl font-bold", balance >= 0 ? "text-success" : "text-destructive")}>{formatCurrency(balance)}</div>
           </CardContent>
         </Card>
         <Card>

@@ -51,7 +51,7 @@ const renderLogo = (provider: string) => {
 
 export function BankLogo({ provider, className }: BankLogoProps) {
   return (
-    <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg bg-background", className)}>
+    <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg bg-muted", className)}>
       {renderLogo(provider)}
     </div>
   );

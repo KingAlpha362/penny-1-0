@@ -3,7 +3,7 @@ import Image from 'next/image';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { LayoutDashboard, Wallet, TrendingUp, Search, ShieldCheck, HelpCircle, Lock, ClockCounterClockwise } from 'lucide-react';
+import { LayoutDashboard, Wallet, TrendingUp, Search, ShieldCheck, HelpCircle, Lock, History } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Carousel,
@@ -48,7 +48,7 @@ const supportFeatures = [
     description: 'Your data is protected with the same level of security as a bank.',
   },
   {
-    icon: <ClockCounterClockwise className="h-8 w-8 text-primary" />,
+    icon: <History className="h-8 w-8 text-primary" />,
     title: '99.9% Uptime',
     description: 'You can count on us to be there when you need us. We have a 99.9% uptime guarantee.',
   },

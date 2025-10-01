@@ -17,8 +17,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Transaction } from "@/lib/data";
+import type { Transaction } from "@/app/(app)/dashboard/page";
 import { useMemo } from "react";
+import { format } from "date-fns";
 
 interface SpendingChartProps {
   transactions: Transaction[];
@@ -28,11 +29,20 @@ const processChartData = (transactions: Transaction[]) => {
   const monthlyData: { [key: string]: { balance: number } } = {};
 
   let runningBalance = 0;
-  // Assuming transactions are sorted by date
-  const sortedTransactions = [...transactions].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  
+  const sortedTransactions = [...transactions].sort((a,b) => {
+    const dateA = a.date?.toDate() || 0;
+    const dateB = b.date?.toDate() || 0;
+    if (dateA > dateB) return 1;
+    if (dateA < dateB) return -1;
+    return 0;
+  });
 
   sortedTransactions.forEach((transaction) => {
-    const month = new Date(transaction.date).toLocaleString('default', { month: 'short' });
+    const transactionDate = transaction.date?.toDate();
+    if (!transactionDate) return;
+    
+    const month = format(transactionDate, 'MMM');
     if (transaction.type === "income") {
       runningBalance += transaction.amount;
     } else {
@@ -44,12 +54,10 @@ const processChartData = (transactions: Transaction[]) => {
   const monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
   const chartData: { name: string, balance: number }[] = [];
-  let lastKnownBalance = 0;
-
+  
   monthOrder.forEach(month => {
     if (monthlyData[month]) {
       chartData.push({ name: month, balance: monthlyData[month].balance });
-      lastKnownBalance = monthlyData[month].balance;
     }
   });
 

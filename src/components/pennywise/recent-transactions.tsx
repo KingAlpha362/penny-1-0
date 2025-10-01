@@ -15,8 +15,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Transaction } from '@/lib/data';
+import type { Transaction } from '@/app/(app)/dashboard/page';
 import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
 
 interface RecentTransactionsProps {
   transactions: Transaction[];
@@ -28,6 +29,13 @@ const formatCurrency = (value: number) => {
       currency: 'USD',
     }).format(value);
 };
+
+const formatDate = (timestamp: any) => {
+  if (timestamp && typeof timestamp.toDate === 'function') {
+    return format(timestamp.toDate(), 'MMM dd, yyyy');
+  }
+  return "Invalid date";
+}
 
 export const RecentTransactions: FC<RecentTransactionsProps> = ({ transactions }) => {
   return (
@@ -48,7 +56,7 @@ export const RecentTransactions: FC<RecentTransactionsProps> = ({ transactions }
           <TableBody>
             {transactions.slice(0, 5).map((transaction) => (
               <TableRow key={transaction.id}>
-                <TableCell className="font-medium">{transaction.date}</TableCell>
+                <TableCell className="font-medium">{formatDate(transaction.date)}</TableCell>
                 <TableCell>{transaction.description}</TableCell>
                 <TableCell>
                   <Badge variant="outline">{transaction.category}</Badge>

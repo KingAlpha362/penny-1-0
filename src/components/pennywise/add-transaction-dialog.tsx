@@ -29,7 +29,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { transactionCategories, Transaction } from "@/lib/data";
+import { transactionCategories } from "@/lib/data";
+import type { Transaction } from "@/app/(app)/dashboard/page";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
@@ -40,13 +41,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 interface AddTransactionDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onTransactionAdded: (transaction: Omit<Transaction, 'id'>) => void;
+  onTransactionAdded: (transaction: Omit<Transaction, 'id' | 'userId' | 'date'>) => void;
 }
 
 const formSchema = z.object({
   type: z.enum(["income", "expense"]),
   amount: z.coerce.number().positive({ message: "Amount must be positive." }),
-  date: z.date(),
   description: z.string().min(1, { message: "Description is required." }),
   category: z.string().min(1, { message: "Category is required." }),
 });
@@ -61,18 +61,13 @@ export function AddTransactionDialog({
     defaultValues: {
       type: "expense",
       amount: 0,
-      date: new Date(),
       description: "",
       category: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    onTransactionAdded({
-      ...values,
-      date: format(values.date, "yyyy-MM-dd"),
-      category: values.category as Transaction['category'],
-    });
+    onTransactionAdded(values);
     form.reset();
     onOpenChange(false);
   }
@@ -147,72 +142,28 @@ export function AddTransactionDialog({
               )}
             />
             
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {transactionCategories.map((cat) => (
-                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {transactionCategories.map((cat) => (
+                        <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <DialogFooter>
               <Button type="submit">Add Transaction</Button>

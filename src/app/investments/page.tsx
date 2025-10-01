@@ -64,8 +64,8 @@ export default function InvestmentsPage() {
     <div className="flex flex-col flex-1">
       <header className="flex items-center justify-between p-6">
         <div>
-          <h2 className="text-2xl font-bold font-headline">Investments</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-3xl font-bold tracking-tight font-headline">Investments</h2>
+          <p className="text-muted-foreground mt-1">
             Track your investment portfolio performance.
           </p>
         </div>

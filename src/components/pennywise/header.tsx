@@ -16,6 +16,7 @@ export const Header: FC<HeaderProps> = ({ onAddTransaction }) => {
     <header className="flex items-center justify-between p-6 bg-background border-b">
       <div>
         <h2 className="text-2xl font-bold">Welcome, Jane</h2>
+        <p className="text-muted-foreground text-sm">Here is your financial overview.</p>
       </div>
       <div className="flex items-center gap-4">
         <Button onClick={onAddTransaction}>

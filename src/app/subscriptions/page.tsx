@@ -29,8 +29,8 @@ export default function SubscriptionsPage() {
     <div className="flex flex-col flex-1">
       <header className="flex items-center justify-between p-6">
         <div>
-          <h2 className="text-2xl font-bold font-headline">Subscriptions</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-3xl font-bold tracking-tight font-headline">Subscriptions</h2>
+          <p className="text-muted-foreground mt-1">
             Manage your recurring subscriptions and services.
           </p>
         </div>

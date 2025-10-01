@@ -113,7 +113,7 @@ export default function CashFlowPage() {
       dueDate: "July 25th",
       amount: -150.0,
       iconColor: "text-blue-500",
-      bgColor: "bg-blue-500/20",
+      bgColor: "bg-blue-500/10",
       date: new Date(2024, 6, 25)
     },
     {
@@ -122,7 +122,7 @@ export default function CashFlowPage() {
       dueDate: "July 28th",
       amount: -200.0,
       iconColor: "text-purple-500",
-      bgColor: "bg-purple-500/20",
+      bgColor: "bg-purple-500/10",
       date: new Date(2024, 6, 28)
     },
     {
@@ -131,7 +131,7 @@ export default function CashFlowPage() {
       dueDate: "August 1st",
       amount: -800.0,
       iconColor: "text-green-500",
-      bgColor: "bg-green-500/20",
+      bgColor: "bg-green-500/10",
       date: new Date(2024, 7, 1)
     },
     {
@@ -140,7 +140,7 @@ export default function CashFlowPage() {
       dueDate: "August 1st",
       amount: 2500.0,
       iconColor: "text-success",
-      bgColor: "bg-success/20",
+      bgColor: "bg-success/10",
       date: new Date(2024, 7, 1)
     }
   ]
@@ -149,8 +149,8 @@ export default function CashFlowPage() {
     <div className="flex flex-col flex-1">
       <header className="flex items-center justify-between p-6">
         <div>
-          <h2 className="text-2xl font-bold font-headline">Cash Flow</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-3xl font-bold tracking-tight font-headline">Cash Flow</h2>
+          <p className="text-muted-foreground mt-1">
             An overview of your financial health.
           </p>
         </div>
@@ -254,7 +254,7 @@ export default function CashFlowPage() {
                   <div className="flex items-center gap-3">
                     <div
                       className={cn(
-                        "p-2 rounded-full",
+                        "p-2 rounded-lg",
                         bill.bgColor
                       )}
                     >

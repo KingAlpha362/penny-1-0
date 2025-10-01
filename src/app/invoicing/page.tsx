@@ -48,8 +48,8 @@ export default function InvoicingPage() {
     <div className="flex flex-col flex-1">
       <header className="flex items-center justify-between p-6">
         <div>
-          <h2 className="text-2xl font-bold font-headline">Invoicing</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-3xl font-bold tracking-tight font-headline">Invoicing</h2>
+          <p className="text-muted-foreground mt-1">
             Create and manage your invoices.
           </p>
         </div>
@@ -62,7 +62,7 @@ export default function InvoicingPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
             <CardHeader>
               <CardTitle>Total Revenue (Paid)</CardTitle>

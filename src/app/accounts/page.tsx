@@ -43,8 +43,8 @@ export default function AccountsPage() {
     <div className="flex flex-col flex-1">
       <header className="flex items-center justify-between p-6">
         <div>
-          <h2 className="text-2xl font-bold font-headline">Accounts</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-3xl font-bold tracking-tight font-headline">Accounts</h2>
+          <p className="text-muted-foreground mt-1">
             Manage your connected bank accounts, wallets, and cards.
           </p>
         </div>

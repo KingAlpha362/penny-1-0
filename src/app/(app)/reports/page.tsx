@@ -35,7 +35,6 @@ function AISummary({ transactions }: { transactions: SerializableTransaction[] }
         if (transactions.length > 0) {
             setIsLoading(true);
 
-            // The AI flow expects serializable data, so we ensure dates are strings.
             getSpendingSummary(transactions)
                 .then(setSummary)
                 .catch(err => {
@@ -90,14 +89,15 @@ export default function ReportsPage() {
     const filteredTransactions: SerializableTransaction[] = useMemo(() => {
       if (!allTransactions) return [];
       const filtered = allTransactions.filter(t => {
-        const transactionDate = t.date?.toDate();
+        // @ts-ignore
+        const transactionDate = t.date?.toDate ? t.date.toDate() : new Date(t.date);
         return transactionDate && transactionDate >= startDate;
       });
 
-      // Convert Firestore Timestamps to ISO strings
       return filtered.map(t => ({
           ...t,
-          date: t.date?.toDate ? t.date.toDate().toISOString() : new Date().toISOString(),
+          // @ts-ignore
+          date: t.date?.toDate ? t.date.toDate().toISOString() : new Date(t.date).toISOString(),
       }));
     }, [allTransactions, startDate]);
 
@@ -156,7 +156,8 @@ export default function ReportsPage() {
         const twelveMonthsAgo = subDays(new Date(), 365);
         
         allTransactions.forEach(t => {
-            const transactionDate = t.date?.toDate();
+            // @ts-ignore
+            const transactionDate = t.date?.toDate ? t.date.toDate() : new Date(t.date);
             if (transactionDate && transactionDate > twelveMonthsAgo) {
                 const month = format(transactionDate, 'yyyy-MMM');
                  if (!data[month]) data[month] = { income: 0, expense: 0 };

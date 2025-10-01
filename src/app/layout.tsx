@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={cn("font-body antialiased", "bg-background")}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="theme-green system"
+          defaultTheme="theme-green"
           enableSystem
         >
           <div className="flex min-h-screen relative">

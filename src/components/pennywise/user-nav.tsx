@@ -20,7 +20,7 @@ import { ThemeToggle } from './theme-toggle';
 
 export function UserNav() {
   return (
-    <div className="flex items-center gap-2">
+    <>
       <ThemeToggle />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -50,6 +50,6 @@ export function UserNav() {
           <DropdownMenuItem>Log out</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
+    </>
   );
 }

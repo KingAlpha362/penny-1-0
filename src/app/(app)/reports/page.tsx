@@ -1,14 +1,18 @@
 
-
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
-import { transactions, budgets } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { subDays, format, parseISO } from 'date-fns';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection, query } from 'firebase/firestore';
+import type { Transaction } from '@/lib/types';
+import { getSpendingSummary } from '@/ai/flows/spending-summary-flow';
+import { Sparkles } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -21,26 +25,85 @@ const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3
 
 type TimeRange = '30' | '90' | '180' | '365';
 
+function AISummary({ transactions }: { transactions: Transaction[] }) {
+    const [summary, setSummary] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (transactions.length > 0) {
+            setIsLoading(true);
+            getSpendingSummary(transactions)
+                .then(setSummary)
+                .catch(err => {
+                    console.error("Error getting AI summary:", err);
+                    setSummary("Sorry, I couldn't generate a summary right now.");
+                })
+                .finally(() => setIsLoading(false));
+        } else {
+            setSummary("Not enough data to generate a summary. Add some transactions first!");
+        }
+    }, [transactions]);
+
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex items-center gap-2">
+                    <Sparkles className="text-primary w-5 h-5" />
+                    <CardTitle>AI Summary</CardTitle>
+                </div>
+            </CardHeader>
+            <CardContent>
+                {isLoading ? (
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-3/4" />
+                    </div>
+                ) : (
+                    <p className="text-sm text-muted-foreground">{summary}</p>
+                )}
+            </CardContent>
+        </Card>
+    );
+}
+
+
 export default function ReportsPage() {
     const [timeRange, setTimeRange] = useState<TimeRange>('30');
+    const { user } = useUser();
+    const firestore = useFirestore();
+
+    const transactionsQuery = useMemoFirebase(() => {
+      if (!firestore || !user?.uid) return null;
+      return query(collection(firestore, `users/${user.uid}/transactions`));
+    }, [firestore, user?.uid]);
+
+    const { data: allTransactions, isLoading: isLoadingTransactions } = useCollection<Transaction>(transactionsQuery);
     
     const timeRangeInDays = parseInt(timeRange, 10);
     const startDate = subDays(new Date(), timeRangeInDays);
 
     const filteredTransactions = useMemo(() => {
-      return transactions.filter(t => parseISO(t.date) >= startDate);
-    }, [startDate]);
+      if (!allTransactions) return [];
+      return allTransactions.filter(t => {
+        const transactionDate = t.date?.toDate();
+        return transactionDate && transactionDate >= startDate;
+      });
+    }, [allTransactions, startDate]);
 
 
-    const spendingByCategoryData = useMemo(() => budgets.map(budget => {
-        const spent = filteredTransactions
-            .filter(t => t.category === budget.category && t.type === 'expense')
-            .reduce((acc, t) => acc + t.amount, 0);
-        return {
-            name: budget.category,
-            value: spent,
-        }
-    }), [filteredTransactions]);
+    const spendingByCategoryData = useMemo(() => {
+        const categories: { [key: string]: number } = {};
+        filteredTransactions
+            .filter(t => t.type === 'expense')
+            .forEach(t => {
+                if (!categories[t.category]) {
+                    categories[t.category] = 0;
+                }
+                categories[t.category] += t.amount;
+            });
+        return Object.entries(categories).map(([name, value]) => ({ name, value }));
+    }, [filteredTransactions]);
 
     const totalSpent = useMemo(() => spendingByCategoryData.reduce((acc, item) => acc + item.value, 0), [spendingByCategoryData]);
 
@@ -48,7 +111,9 @@ export default function ReportsPage() {
         const data: {[key: string]: number} = {};
         
         filteredTransactions.forEach(t => {
-            const transactionDate = parseISO(t.date);
+            const transactionDate = t.date?.toDate();
+            if (!transactionDate) return;
+
             if (t.type === 'income') {
                 let key = '';
                 if(timeRangeInDays <= 90) { // group by day for 30/90 days
@@ -63,10 +128,9 @@ export default function ReportsPage() {
         });
         
         const sortedKeys = Object.keys(data).sort((a,b) => {
-            if (timeRangeInDays <= 90) {
-                return new Date(a).getTime() - new Date(b).getTime();
-            }
-            return new Date(a).getTime() - new Date(b).getTime();
+             const dateA = timeRangeInDays <= 90 ? new Date(a + ", " + new Date().getFullYear()) : new Date(a);
+             const dateB = timeRangeInDays <= 90 ? new Date(b + ", " + new Date().getFullYear()) : new Date(b);
+             return dateA.getTime() - dateB.getTime();
         });
         
         return sortedKeys.map(key => ({
@@ -77,13 +141,13 @@ export default function ReportsPage() {
     }, [filteredTransactions, timeRangeInDays]);
 
     const netWorthData = useMemo(() => {
+        if (!allTransactions) return [];
         const data: {[key: string]: {income: number, expense: number}} = {};
-        const twelveMonthsAgo = new Date();
-        twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+        const twelveMonthsAgo = subDays(new Date(), 365);
         
-        transactions.forEach(t => {
-            const transactionDate = new Date(t.date);
-            if (transactionDate > twelveMonthsAgo) {
+        allTransactions.forEach(t => {
+            const transactionDate = t.date?.toDate();
+            if (transactionDate && transactionDate > twelveMonthsAgo) {
                 const month = format(transactionDate, 'yyyy-MMM');
                  if (!data[month]) data[month] = { income: 0, expense: 0 };
                  data[month][t.type] += t.amount;
@@ -105,7 +169,7 @@ export default function ReportsPage() {
             return { name: monthKey.split('-')[1], netWorth };
         });
 
-    }, []);
+    }, [allTransactions]);
 
   return (
     <div className="flex flex-col flex-1">
@@ -132,6 +196,9 @@ export default function ReportsPage() {
         </div>
       </header>
       <main className="flex-1 space-y-8 p-6">
+        
+        <AISummary transactions={filteredTransactions} />
+
         <Card className="lg:col-span-3">
             <CardHeader>
                 <CardTitle>Spending by Category</CardTitle>

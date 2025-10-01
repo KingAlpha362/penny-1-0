@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 240 10% 98.5%; /* A very light, slightly cool gray */
+    --background: 0 0% 98%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 217 91% 60%; /* A strong, trustworthy blue */
+    --primary: 220 85% 55%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4.8% 95.9%;
@@ -23,21 +23,21 @@
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 240 4.8% 95.9%; /* A subtle accent for hover states */
+    --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
 
-    --destructive: 0 72% 51%; /* A clear, but not overly aggressive red */
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-
-    --success: 142 71% 45%; /* A vibrant, positive green */
+    
+    --success: 142.1 76.2% 36.3%;
     
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 217 91% 60%;
+    --ring: 220 85% 55%;
 
     --radius: 0.75rem;
 
-    --chart-1: 217 91% 60%;
+    --chart-1: 220 85% 55%;
     --chart-2: 142 76% 36%;
     --chart-3: 43 74% 66%;
     --chart-4: 27 87% 67%;
@@ -51,27 +51,6 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-family: 'Manrope', sans-serif;
   }
-}
-
-/* Custom font styles, if not in a layout file */
-body {
-  font-family: 'Manrope', sans-serif;
-}
-
-.welcome-page-body {
-  font-family: 'Poppins', sans-serif;
-  background-image: radial-gradient(circle at top left, #a5b4fc, #F8FAFC 50%);
-}
-
-.glass {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.hero-illustration-bg {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23f9fafb;stop-opacity:1" /><stop offset="100%" style="stop-color:%23dbeafe;stop-opacity:1" /></linearGradient></defs><path d="M0 0h1000v800H0z" fill="url(%23grad1)"/><circle cx="150" cy="150" r="100" fill="%23fecaca"/><circle cx="700" cy="200" r="80" fill="%23a78bfa"/><circle cx="500" cy="500" r="120" fill="%236ee7b7"/><circle cx="200" cy="600" r="90" fill="%23fde047"/><ellipse cx="850" cy="550" rx="150" ry="70" fill="%2360a5fa" transform="rotate(20 850 550)"/></svg>');
-    background-size: cover;
-    background-position: center;
 }

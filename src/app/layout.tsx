@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: 'PennyWise - Personal Finance App',
@@ -17,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
         <link
@@ -25,8 +26,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="welcome-page-body">
+      <body>
         {children}
+        <Toaster />
       </body>
     </html>
   );

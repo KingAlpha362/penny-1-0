@@ -3,123 +3,142 @@ import Image from 'next/image';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { LayoutDashboard, Wallet, TrendingUp, ScrollText } from 'lucide-react';
+
+const features = [
+  {
+    icon: <LayoutDashboard className="h-8 w-8 text-primary" />,
+    title: 'All-in-One Dashboard',
+    description: 'Get a complete overview of your financial health at a glance. Track your balance, income, and expenses effortlessly.',
+  },
+  {
+    icon: <ScrollText className="h-8 w-8 text-primary" />,
+    title: 'Smart Transactions',
+    description: 'Log, categorize, and search your transactions with ease. Understand where your money is going.',
+  },
+  {
+    icon: <TrendingUp className="h-8 w-8 text-primary" />,
+    title: 'Investment Tracking',
+    description: 'Monitor your portfolio performance. Keep track of your stocks, crypto, and funds in one place.',
+  },
+  {
+    icon: <Wallet className="h-8 w-8 text-primary" />,
+    title: 'Effortless Budgeting',
+    description: 'Create and manage budgets that work for you. Set limits and get forecasts on your spending habits.',
+  }
+];
 
 export default function WelcomePage() {
-  const { heroIllustration } = placeholderImages;
+  const { dashboardScreenshot } = placeholderImages;
   return (
-    <>
-      <div className="min-h-screen flex flex-col">
-        <header className="absolute top-0 left-0 right-0 z-10">
-          <nav className="container mx-auto px-6 py-6 flex justify-between items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <span className="material-icons text-yellow-500 text-3xl">
-                savings
-              </span>
-              <h1 className="text-2xl font-bold text-gray-800">
-                PennyWise
-              </h1>
-            </Link>
-            <div className="hidden md:flex items-center space-x-8">
-              <a
-                className="text-gray-600 hover:text-yellow-500 transition-colors"
-                href="#"
-              >
-                Features
-              </a>
-              <a
-                className="text-gray-600 hover:text-yellow-500 transition-colors"
-                href="#"
-              >
-                Pricing
-              </a>
-              <a
-                className="text-gray-600 hover:text-yellow-500 transition-colors"
-                href="#"
-              >
-                About
-              </a>
-            </div>
-            <div className="flex items-center space-x-4">
-               <Button variant="ghost" asChild>
-                <Link href="/dashboard">Login</Link>
-              </Button>
-              <Button className="bg-yellow-500 text-white hover:bg-yellow-600" asChild>
-                 <Link href="/dashboard">Sign Up</Link>
-              </Button>
-            </div>
-          </nav>
-        </header>
-        <main className="container mx-auto px-6 pt-32 md:pt-48 pb-24 flex-grow">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="text-center md:text-left">
-              <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 leading-tight">
-                Make Your Money
-                <span className="text-yellow-500">Shine!</span>
-              </h2>
-              <p className="mt-8 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto md:mx-0">
-                Jump into PennyWise, your new best friend for managing money!
-                It’s super easy, fun, and packed with cool features to help you
-                budget, track spending, and watch your savings grow. Let&apos;s make
-                finance feel friendly!
-              </p>
-              <div className="mt-12 flex justify-center md:justify-start items-center gap-4">
-                 <Button size="lg" className="bg-yellow-500 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-yellow-600 transition-all transform hover:scale-105 shadow-lg shadow-yellow-300/50 h-auto">
-                    <Link href="/dashboard">Start Today!</Link>
-                </Button>
-                 <Button size="lg" variant="outline" className="bg-white/50 border-white/40 px-10 py-4 rounded-xl font-bold text-lg h-auto glass hover:bg-gray-100 transition-all shadow-md">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-yellow-500 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M14.752 11.167L14.07 10.472A6.554 6.554 0 006.25 8.757c-1.383-.457-2.85.222-3.785 1.263L1.167 13.752A2.75 2.75 0 004.03 17.753l.642-.252a5.206 5.206 0 001.542-1.022A5.164 5.164 0 009.75 14.5a5.164 5.164 0 001.198-1.704c.072-.22.173-.438.297-.654L14.752 11.167z"
-                        />
-                        <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M20.5 14.5c0-1.376-.508-2.695-1.414-3.602a4.934 4.934 0 00-4.916-1.395c-.042.007-.084.013-.126.022L8.75 13.52A6.554 6.554 0 006.25 15.5c-1.383.457-2.85-.222-3.785-1.263L1.167 10.247c.296-1.58.86-3.048 1.58-4.296L5.25 4.842c.359-1.022.943-1.898 1.771-2.588a4.934 4.934 0 014.916-1.395c.042.007.084.013.126.022l5.496 1.485c.498.133.974.327 1.423.56a4.934 4.934 0 011.414 3.602v1.532c.006.13.021.259.045.387L20.5 14.5z"
-                        />
-                    </svg>
-                    See How It Works
-                </Button>
-              </div>
-            </div>
-            <div className="relative hero-illustration-bg rounded-3xl p-8 md:p-16 flex items-center justify-center shadow-xl">
-              <Image
-                alt={heroIllustration.alt}
-                className="w-full h-auto max-w-lg transform transition-transform duration-500 hover:scale-105"
-                src={heroIllustration.src}
-                width={heroIllustration.width}
-                height={heroIllustration.height}
-                data-ai-hint={heroIllustration['data-ai-hint']}
-              />
-            </div>
+    <div className="min-h-screen flex flex-col bg-background">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
+        <nav className="container mx-auto px-6 h-20 flex justify-between items-center">
+          <Link href="/" className="flex items-center space-x-2">
+            <span className="material-icons text-primary text-3xl">
+              savings
+            </span>
+            <h1 className="text-2xl font-bold text-foreground">
+              PennyWise
+            </h1>
+          </Link>
+          <div className="hidden md:flex items-center space-x-8">
+            <a
+              className="text-muted-foreground hover:text-primary transition-colors font-medium"
+              href="#"
+            >
+              Features
+            </a>
+            <a
+              className="text-muted-foreground hover:text-primary transition-colors font-medium"
+              href="#"
+            >
+              Pricing
+            </a>
+            <a
+              className="text-muted-foreground hover:text-primary transition-colors font-medium"
+              href="#"
+            >
+              About
+            </a>
           </div>
-        </main>
-        <footer className="bg-transparent py-12 mt-auto">
-          <div className="container mx-auto px-6 text-center text-gray-500">
+          <div className="flex items-center space-x-4">
+             <Button variant="ghost" asChild>
+              <Link href="/dashboard">Login</Link>
+            </Button>
+            <Button className="shadow-sm" asChild>
+               <Link href="/dashboard">Sign Up</Link>
+            </Button>
+          </div>
+        </nav>
+      </header>
+      
+      <main className="flex-grow">
+        <section className="container mx-auto px-6 py-24 md:py-32 text-center">
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-foreground leading-tight">
+              Master Your Money,
+              <br/>
+              <span className="text-primary">Simply and Beautifully.</span>
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+              PennyWise is the last personal finance app you'll ever need. Track spending, manage budgets, and grow your investments—all from one stunningly simple platform.
+            </p>
+            <div className="mt-10 flex justify-center items-center gap-4">
+               <Button size="lg" className="h-12 px-8 text-base font-semibold shadow-md" asChild>
+                  <Link href="/dashboard">Get Started for Free</Link>
+              </Button>
+            </div>
+        </section>
+
+        <section className="container mx-auto px-6 pb-24 md:pb-32">
+            <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
+                 <Image
+                    alt={dashboardScreenshot.alt}
+                    className="w-full h-auto rounded-lg"
+                    src={dashboardScreenshot.src}
+                    width={dashboardScreenshot.width}
+                    height={dashboardScreenshot.height}
+                    data-ai-hint={dashboardScreenshot['data-ai-hint']}
+                    priority
+                />
+            </div>
+        </section>
+
+         <section className="container mx-auto px-6 pb-24 md:pb-32">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Everything you need, nothing you don't.</h2>
+            <p className="mt-4 text-lg text-muted-foreground">PennyWise is packed with powerful features to help you take control.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature) => (
+              <div key={feature.title} className="p-8 rounded-xl border bg-card/80 backdrop-blur-sm">
+                <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-primary/10 mb-6">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <footer className="border-t">
+          <div className="container mx-auto px-6 py-12 text-center text-muted-foreground">
             <div className="flex justify-center space-x-6 mb-4">
               <a
-                className="hover:text-yellow-500 transition-colors"
+                className="hover:text-primary transition-colors"
                 href="#"
               >
                 Twitter
               </a>
               <a
-                className="hover:text-yellow-500 transition-colors"
+                className="hover:text-primary transition-colors"
                 href="#"
               >
                 GitHub
               </a>
               <a
-                className="hover:text-yellow-500 transition-colors"
+                className="hover:text-primary transition-colors"
                 href="#"
               >
                 LinkedIn
@@ -128,7 +147,7 @@ export default function WelcomePage() {
             <p>© 2024 PennyWise. All rights reserved.</p>
           </div>
         </footer>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

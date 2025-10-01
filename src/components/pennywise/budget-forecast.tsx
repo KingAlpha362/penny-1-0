@@ -4,8 +4,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TrendingUp } from "lucide-react";
-import type { Budget } from "@/app/budgets/page";
-import type { Transaction } from "@/lib/data";
+import type { Budget } from "@/app/(app)/budgets/page";
+import type { Transaction } from "@/app/(app)/transactions/page";
 
 interface BudgetForecastProps {
     budgets: Budget[];
@@ -47,7 +47,7 @@ export function BudgetForecast({ budgets, transactions }: BudgetForecastProps) {
         </div>
         <div className="mt-4 flex flex-col gap-3 w-full text-sm">
             {budgets.map(budget => {
-                 const projected = transactions
+                 const projected = (transactions || [])
                     .filter(t => t.category === budget.category && t.type === 'expense')
                     .reduce((sum, t) => sum + t.amount, 0) * 1.1; // Simplified forecast
                 return (

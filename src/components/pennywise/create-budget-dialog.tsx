@@ -9,12 +9,12 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { CreateBudgetForm } from "./create-budget-form";
-import type { Budget } from "@/app/budgets/page";
+import type { Budget } from "@/app/(app)/budgets/page";
 
 interface CreateBudgetDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onCreateBudget: (budget: Omit<Budget, 'id'>) => void;
+  onCreateBudget: (budget: Omit<Budget, 'id' | 'userId'>) => void;
 }
 
 export function CreateBudgetDialog({
@@ -23,7 +23,7 @@ export function CreateBudgetDialog({
   onCreateBudget,
 }: CreateBudgetDialogProps) {
   
-  const handleSubmit = (budget: Omit<Budget, 'id'>) => {
+  const handleSubmit = (budget: Omit<Budget, 'id' | 'userId'>) => {
     onCreateBudget(budget);
     onOpenChange(false);
   };

@@ -22,15 +22,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { transactionCategories } from "@/lib/data";
-import type { Budget } from "@/app/budgets/page";
+import type { Budget } from "@/app/(app)/budgets/page";
 
 const formSchema = z.object({
   category: z.string().min(1, { message: "Category is required." }),
-  amount: z.coerce.number().positive({ message: "Amount must be a positive number." }),
+  limit: z.coerce.number().positive({ message: "Amount must be a positive number." }),
 });
 
 interface CreateBudgetFormProps {
-  onSubmit: (budget: Omit<Budget, 'id'>) => void;
+  onSubmit: (budget: Omit<Budget, 'id' | 'userId'>) => void;
 }
 
 export function CreateBudgetForm({ onSubmit }: CreateBudgetFormProps) {
@@ -38,7 +38,7 @@ export function CreateBudgetForm({ onSubmit }: CreateBudgetFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       category: "",
-      amount: 0,
+      limit: 0,
     },
   });
 
@@ -74,10 +74,10 @@ export function CreateBudgetForm({ onSubmit }: CreateBudgetFormProps) {
           />
         <FormField
           control={form.control}
-          name="amount"
+          name="limit"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Monthly Amount</FormLabel>
+              <FormLabel>Monthly Limit</FormLabel>
                <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
                 <Input type="number" placeholder="500.00" {...field} className="pl-7"/>

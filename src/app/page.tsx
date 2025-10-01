@@ -49,12 +49,12 @@ export default function WelcomePage() {
             >
               Features
             </a>
-            <a
+            <Link
               className="text-muted-foreground hover:text-primary transition-colors font-medium"
-              href="#"
+              href="/pricing"
             >
               Pricing
-            </a>
+            </Link>
             <a
               className="text-muted-foreground hover:text-primary transition-colors font-medium"
               href="#"

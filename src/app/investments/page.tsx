@@ -47,7 +47,7 @@ const formatCurrency = (value: number) => {
 const portfolioData = [
   { name: 'Jan', value: 5000 },
   { name: 'Feb', value: 5500 },
-  { name 'Mar', value: 6200 },
+  { name: 'Mar', value: 6200 },
   { name: 'Apr', value: 6000 },
   { name: 'May', value: 6800 },
   { name: 'Jun', value: 7200 },

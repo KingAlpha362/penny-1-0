@@ -11,19 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuPortal
 } from "@/components/ui/dropdown-menu"
-
-const themes = [
-    { name: 'Green', class: 'theme-green' },
-    { name: 'Zinc', class: 'theme-zinc' },
-    { name: 'Rose', class: 'theme-rose' },
-    { name: 'Blue', class: 'theme-blue' },
-    { name: 'Orange', class: 'theme-orange' },
-];
 
 export function ThemeToggle() {
   const { setTheme } = useTheme()
@@ -47,27 +35,6 @@ export function ThemeToggle() {
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System
         </DropdownMenuItem>
-         <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-                <Palette className="mr-2 h-4 w-4" />
-                <span>Theme</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                    {themes.map((themeItem) => (
-                        <DropdownMenuItem
-                            key={themeItem.name}
-                            onClick={() => {
-                                document.body.classList.remove(...themes.map(t => t.class));
-                                document.body.classList.add(themeItem.class);
-                            }}
-                        >
-                            {themeItem.name}
-                        </DropdownMenuItem>
-                    ))}
-                </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-        </DropdownMenuSub>
       </DropdownMenuContent>
     </DropdownMenu>
   )

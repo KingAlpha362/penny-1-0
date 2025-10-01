@@ -89,15 +89,13 @@ export default function ReportsPage() {
     const filteredTransactions: SerializableTransaction[] = useMemo(() => {
       if (!allTransactions) return [];
       const filtered = allTransactions.filter(t => {
-        // @ts-ignore
-        const transactionDate = t.date?.toDate ? t.date.toDate() : new Date(t.date);
+        const transactionDate = t.date?.toDate ? t.date.toDate() : new Date(t.date as string);
         return transactionDate && transactionDate >= startDate;
       });
 
       return filtered.map(t => ({
           ...t,
-          // @ts-ignore
-          date: t.date?.toDate ? t.date.toDate().toISOString() : new Date(t.date).toISOString(),
+          date: (t.date?.toDate ? t.date.toDate().toISOString() : new Date(t.date as string).toISOString()),
       }));
     }, [allTransactions, startDate]);
 
@@ -156,8 +154,7 @@ export default function ReportsPage() {
         const twelveMonthsAgo = subDays(new Date(), 365);
         
         allTransactions.forEach(t => {
-            // @ts-ignore
-            const transactionDate = t.date?.toDate ? t.date.toDate() : new Date(t.date);
+            const transactionDate = t.date?.toDate ? t.date.toDate() : new Date(t.date as string);
             if (transactionDate && transactionDate > twelveMonthsAgo) {
                 const month = format(transactionDate, 'yyyy-MMM');
                  if (!data[month]) data[month] = { income: 0, expense: 0 };

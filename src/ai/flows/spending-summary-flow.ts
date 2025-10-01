@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A flow that generates a natural language summary of spending transactions.
@@ -12,7 +13,7 @@ import type { Transaction } from '@/lib/types';
 // Define the input schema for the flow, expecting an array of transactions.
 const SpendingSummaryInputSchema = z.array(z.object({
     id: z.string(),
-    date: z.any().describe("The date of the transaction. Can be a string or a Firebase Timestamp."),
+    date: z.string().describe("The date of the transaction as an ISO string."),
     category: z.string(),
     description: z.string(),
     amount: z.number(),
@@ -58,12 +59,16 @@ const spendingSummaryFlow = ai.defineFlow(
     }
 );
 
+// This is a type that matches the expected input of the flow, but with `date` as a string.
+type SerializableTransaction = Omit<Transaction, 'date'> & { date: string };
+
+
 /**
  * Takes an array of user transactions and returns an AI-generated summary.
- * @param transactions An array of Transaction objects.
+ * @param transactions An array of serializable Transaction objects, where `date` is a string.
  * @returns A promise that resolves to a string containing the spending summary.
  */
-export async function getSpendingSummary(transactions: Transaction[]): Promise<string> {
+export async function getSpendingSummary(transactions: SerializableTransaction[]): Promise<string> {
     // The flow expects a plain array, so we can pass it directly.
     return spendingSummaryFlow(transactions);
 }

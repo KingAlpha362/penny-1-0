@@ -25,13 +25,17 @@ const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3
 
 type TimeRange = '30' | '90' | '180' | '365';
 
-function AISummary({ transactions }: { transactions: Transaction[] }) {
+type SerializableTransaction = Omit<Transaction, 'date'> & { date: string };
+
+function AISummary({ transactions }: { transactions: SerializableTransaction[] }) {
     const [summary, setSummary] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (transactions.length > 0) {
             setIsLoading(true);
+
+            // The AI flow expects serializable data, so we ensure dates are strings.
             getSpendingSummary(transactions)
                 .then(setSummary)
                 .catch(err => {
@@ -83,12 +87,18 @@ export default function ReportsPage() {
     const timeRangeInDays = parseInt(timeRange, 10);
     const startDate = subDays(new Date(), timeRangeInDays);
 
-    const filteredTransactions = useMemo(() => {
+    const filteredTransactions: SerializableTransaction[] = useMemo(() => {
       if (!allTransactions) return [];
-      return allTransactions.filter(t => {
+      const filtered = allTransactions.filter(t => {
         const transactionDate = t.date?.toDate();
         return transactionDate && transactionDate >= startDate;
       });
+
+      // Convert Firestore Timestamps to ISO strings
+      return filtered.map(t => ({
+          ...t,
+          date: t.date?.toDate ? t.date.toDate().toISOString() : new Date().toISOString(),
+      }));
     }, [allTransactions, startDate]);
 
 
@@ -111,8 +121,8 @@ export default function ReportsPage() {
         const data: {[key: string]: number} = {};
         
         filteredTransactions.forEach(t => {
-            const transactionDate = t.date?.toDate();
-            if (!transactionDate) return;
+            if (!t.date) return;
+            const transactionDate = parseISO(t.date);
 
             if (t.type === 'income') {
                 let key = '';
@@ -168,7 +178,6 @@ export default function ReportsPage() {
             }
             return { name: monthKey.split('-')[1], netWorth };
         });
-
     }, [allTransactions]);
 
   return (
@@ -287,7 +296,7 @@ export default function ReportsPage() {
                 <CardHeader>
                     <CardTitle>Net Worth</CardTitle>
                     <CardDescription>Last 12 months</CardDescription>
-                </CardHeader>
+                </Header>
                  <CardContent>
                     <div className="h-64">
                          <ResponsiveContainer width="100%" height="100%">

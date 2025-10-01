@@ -126,6 +126,51 @@
         "month",
         "limit"
       ]
+    },
+    "Account": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Account",
+      "type": "object",
+      "description": "Represents a financial account held by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the account."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Account)"
+        },
+        "name": {
+          "type": "string",
+          "description": "A user-friendly name for the account (e.g., 'Primary Checking')."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of account.",
+          "enum": ["Checking", "Savings", "Credit Card", "Wallet"]
+        },
+        "provider": {
+          "type": "string",
+          "description": "The financial institution or provider (e.g., 'Bank of America', 'Chase')."
+        },
+        "balance": {
+          "type": "number",
+          "description": "The current balance of the account."
+        },
+        "lastFour": {
+          "type": "string",
+          "description": "The last four digits of the account or card number, if applicable."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name",
+        "type",
+        "provider",
+        "balance"
+      ]
     }
   },
   "auth": {
@@ -211,8 +256,28 @@
             }
           ]
         }
+      },
+      {
+        "path": "/users/{userId}/accounts/{accountId}",
+        "definition": {
+          "entityName": "Account",
+          "schema": {
+            "$ref": "#/backend/entities/Account"
+          },
+          "description": "Stores financial accounts linked by a user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "accountId",
+              "description": "The unique identifier for the account."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "The Firestore structure is designed to ensure authorization independence, clarity, and scalability for the PennyWise application.  User-owned data (Transactions, Categories, and Budgets) are stored under the `/users/{userId}` path, ensuring clear ownership and simplified security rules. This structure avoids the need for `get()` calls in security rules, enabling atomic operations and improving debuggability.\n\n*   **Authorization Independence:** Achieved by storing all user-related data under the user's document. This allows security rules to be based solely on `request.auth.uid` and the path, without needing to fetch parent document data.\n*   **QAPs Support:**  The path-based ownership model (`/users/{userId}/...`) inherently supports secure `list` operations, as rules can easily restrict access to only the data owned by the authenticated user.\n*   **Radical Consistency**: Enforces semantic naming conventions.  All user-specific data adheres to `/users/{userId}/{collectionName}/{documentId}`.  Ownership is always represented by `userId` in both the path and document data."
+    "reasoning": "The Firestore structure is designed to ensure authorization independence, clarity, and scalability for the PennyWise application.  User-owned data (Transactions, Categories, Budgets, and Accounts) are stored under the `/users/{userId}` path, ensuring clear ownership and simplified security rules. This structure avoids the need for `get()` calls in security rules, enabling atomic operations and improving debuggability.\n\n*   **Authorization Independence:** Achieved by storing all user-related data under the user's document. This allows security rules to be based solely on `request.auth.uid` and the path, without needing to fetch parent document data.\n*   **QAPs Support:**  The path-based ownership model (`/users/{userId}/...`) inherently supports secure `list` operations, as rules can easily restrict access to only the data owned by the authenticated user.\n*   **Radical Consistency**: Enforces semantic naming conventions.  All user-specific data adheres to `/users/{userId}/{collectionName}/{documentId}`.  Ownership is always represented by `userId` in both the path and document data."
   }
 }

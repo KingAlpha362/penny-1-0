@@ -2,7 +2,6 @@
 'use client';
 
 import AuthenticatedPage from '@/components/AuthenticatedPage';
-import { accounts } from "@/lib/data";
 import {
   Card,
   CardContent,
@@ -29,6 +28,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { BankLogo } from "@/components/pennywise/bank-logo";
+import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
+import { collection, query } from 'firebase/firestore';
+import { useState, useMemo } from 'react';
+import { AddAccountDialog } from '@/components/pennywise/add-account-dialog';
+
+export type Account = {
+  id: string;
+  userId: string;
+  name: string;
+  type: 'Checking' | 'Savings' | 'Credit Card' | 'Wallet';
+  provider: string;
+  balance: number;
+  lastFour?: string;
+};
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("en-US", {
@@ -38,7 +51,30 @@ const formatCurrency = (value: number) => {
 };
 
 export default function AccountsPage() {
-  const totalBalance = accounts.reduce((acc, account) => acc + account.balance, 0);
+  const { user } = useUser();
+  const firestore = useFirestore();
+  const [isAddAccountOpen, setAddAccountOpen] = useState(false);
+
+  const accountsQuery = useMemoFirebase(() => {
+    if (!firestore || !user?.uid) return null;
+    return query(collection(firestore, `users/${user.uid}/accounts`));
+  }, [firestore, user?.uid]);
+
+  const { data: accounts, isLoading } = useCollection<Account>(accountsQuery);
+
+  const totalBalance = useMemo(() => {
+    if (!accounts) return 0;
+    return accounts.reduce((acc, account) => acc + account.balance, 0);
+  }, [accounts]);
+
+  const handleAddAccount = (newAccount: Omit<Account, 'id' | 'userId'>) => {
+    if (!firestore || !user?.uid) return;
+    const accountRef = collection(firestore, `users/${user.uid}/accounts`);
+    addDocumentNonBlocking(accountRef, {
+      ...newAccount,
+      userId: user.uid,
+    });
+  };
 
   return (
     <AuthenticatedPage>
@@ -51,7 +87,7 @@ export default function AccountsPage() {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <Button>
+            <Button onClick={() => setAddAccountOpen(true)}>
               <PlusCircle className="mr-2 h-4 w-4" />
               Add Account
             </Button>
@@ -90,7 +126,12 @@ export default function AccountsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {accounts.map((account) => (
+                  {isLoading && (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center">Loading accounts...</TableCell>
+                    </TableRow>
+                  )}
+                  {accounts && accounts.map((account) => (
                     <TableRow key={account.id}>
                       <TableCell className="font-medium flex items-center gap-3">
                           <BankLogo provider={account.provider} />
@@ -122,11 +163,21 @@ export default function AccountsPage() {
                       </TableCell>
                     </TableRow>
                   ))}
+                  {!isLoading && accounts?.length === 0 && (
+                     <TableRow>
+                      <TableCell colSpan={5} className="text-center">No accounts found. Add one to get started.</TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </CardContent>
           </Card>
         </main>
+        <AddAccountDialog
+          isOpen={isAddAccountOpen}
+          onOpenChange={setAddAccountOpen}
+          onAccountAdded={handleAddAccount}
+        />
       </div>
     </AuthenticatedPage>
   );

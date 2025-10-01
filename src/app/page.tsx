@@ -2,18 +2,28 @@
 "use client";
 
 import type { FC } from "react";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Header } from "@/components/pennywise/header";
 import { OverviewCards } from "@/components/pennywise/overview-cards";
 import { SpendingChart } from "@/components/pennywise/spending-chart";
 import { transactions as initialTransactions, Transaction } from "@/lib/data";
 import { AddTransactionDialog } from "@/components/pennywise/add-transaction-dialog";
 import { RecentTransactions } from "@/components/pennywise/recent-transactions";
+import { DashboardSkeleton } from "@/components/pennywise/dashboard-skeleton";
 
 
 const DashboardPage: FC = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isAddTransactionOpen, setAddTransactionOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTransactions(initialTransactions);
+      setLoading(false);
+    }, 1500); // Simulate a 1.5 second loading time
+    return () => clearTimeout(timer);
+  }, []);
 
   const { income, expenses, balance } = useMemo(() => {
     const income = transactions
@@ -32,6 +42,10 @@ const DashboardPage: FC = () => {
         ...prev
     ]);
   };
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
 
   return (
     <div className="flex flex-col flex-1 bg-background">

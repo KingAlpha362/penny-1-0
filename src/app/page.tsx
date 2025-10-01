@@ -3,7 +3,15 @@ import Image from 'next/image';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { LayoutDashboard, Wallet, TrendingUp, ScrollText } from 'lucide-react';
+import { LayoutDashboard, Wallet, TrendingUp, Search, ShieldCheck, HelpCircle, Lock, ClockCounterClockwise } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 const features = [
   {
@@ -12,7 +20,7 @@ const features = [
     description: 'Get a complete overview of your financial health at a glance. Track your balance, income, and expenses effortlessly.',
   },
   {
-    icon: <ScrollText className="h-8 w-8 text-primary" />,
+    icon: <Search className="h-8 w-8 text-primary" />,
     title: 'Smart Transactions',
     description: 'Log, categorize, and search your transactions with ease. Understand where your money is going.',
   },
@@ -25,8 +33,32 @@ const features = [
     icon: <Wallet className="h-8 w-8 text-primary" />,
     title: 'Effortless Budgeting',
     description: 'Create and manage budgets that work for you. Set limits and get forecasts on your spending habits.',
-  }
+  },
 ];
+
+const supportFeatures = [
+  {
+    icon: <HelpCircle className="h-8 w-8 text-primary" />,
+    title: '24/7 Support',
+    description: 'Our team is available around the clock to help with any questions or issues you may have.',
+  },
+  {
+    icon: <Lock className="h-8 w-8 text-primary" />,
+    title: 'Bank-Level Security',
+    description: 'Your data is protected with the same level of security as a bank.',
+  },
+  {
+    icon: <ClockCounterClockwise className="h-8 w-8 text-primary" />,
+    title: '99.9% Uptime',
+    description: 'You can count on us to be there when you need us. We have a 99.9% uptime guarantee.',
+  },
+  {
+    icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+    title: 'Data Privacy',
+    description: 'We do not sell your data. Your privacy is our top priority.',
+  },
+];
+
 
 export default function WelcomePage() {
   const { dashboardScreenshot } = placeholderImages;
@@ -91,17 +123,49 @@ export default function WelcomePage() {
         </section>
 
         <section className="container mx-auto px-6 pb-24 md:pb-32">
-            <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
-                 <Image
-                    alt={dashboardScreenshot.alt}
-                    className="w-full h-auto rounded-lg"
-                    src={dashboardScreenshot.src}
-                    width={dashboardScreenshot.width}
-                    height={dashboardScreenshot.height}
-                    data-ai-hint={dashboardScreenshot['data-ai-hint']}
-                    priority
-                />
-            </div>
+          <Carousel>
+            <CarouselContent>
+              <CarouselItem>
+                <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
+                    <Image
+                        alt={dashboardScreenshot.alt}
+                        className="w-full h-auto rounded-lg"
+                        src={dashboardScreenshot.src}
+                        width={dashboardScreenshot.width}
+                        height={dashboardScreenshot.height}
+                        data-ai-hint={dashboardScreenshot['data-ai-hint']}
+                        priority
+                    />
+                </div>
+              </CarouselItem>
+              <CarouselItem>
+                <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
+                     <Image
+                        alt={placeholderImages.transactions.alt}
+                        className="w-full h-auto rounded-lg"
+                        src={placeholderImages.transactions.src}
+                        width={placeholderImages.transactions.width}
+                        height={placeholderImages.transactions.height}
+                        data-ai-hint={placeholderImages.transactions['data-ai-hint']}
+                    />
+                </div>
+              </CarouselItem>
+              <CarouselItem>
+                <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
+                    <Image
+                        alt={placeholderImages.budgets.alt}
+                        className="w-full h-auto rounded-lg"
+                        src={placeholderImages.budgets.src}
+                        width={placeholderImages.budgets.width}
+                        height={placeholderImages.budgets.height}
+                        data-ai-hint={placeholderImages.budgets['data-ai-hint']}
+                    />
+                </div>
+              </CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </section>
 
          <section className="container mx-auto px-6 pb-24 md:pb-32">
@@ -111,6 +175,23 @@ export default function WelcomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature) => (
+              <div key={feature.title} className="p-8 rounded-xl border bg-card/80 backdrop-blur-sm">
+                <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-primary/10 mb-6">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="container mx-auto px-6 pb-24 md:pb-32">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Peace of mind, guaranteed.</h2>
+            <p className="mt-4 text-lg text-muted-foreground">We are committed to providing a secure and reliable platform for our users.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {supportFeatures.map((feature) => (
               <div key={feature.title} className="p-8 rounded-xl border bg-card/80 backdrop-blur-sm">
                 <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-primary/10 mb-6">
                   {feature.icon}
@@ -151,3 +232,5 @@ export default function WelcomePage() {
     </div>
   );
 }
+
+    

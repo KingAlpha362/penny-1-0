@@ -38,7 +38,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-card border-r flex flex-col p-4">
+    <aside className="w-64 flex-shrink-0 bg-card border-r flex flex-col p-4 glass">
       <div className="p-4 flex items-center gap-3">
         <PennywiseLogo className="w-8 h-8 text-primary" />
         <h1 className="text-xl font-bold font-headline">PennyWise</h1>
@@ -52,7 +52,7 @@ export function AppSidebar() {
                 <Link
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary hover:bg-primary/10',
+                    'flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-primary hover:bg-primary/10',
                     active && 'font-semibold text-primary bg-primary/10'
                   )}
                 >
@@ -68,7 +68,7 @@ export function AppSidebar() {
          <Link
             href="/settings"
             className={cn(
-                'flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary hover:bg-primary/10',
+                'flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-primary hover:bg-primary/10',
                 pathname === '/settings' && 'font-semibold text-primary bg-primary/10'
             )}
             >

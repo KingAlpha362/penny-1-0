@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 220 40% 98%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 220 85% 55%;
+    --primary: 142 71% 55%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4.8% 95.9%;
@@ -23,7 +23,7 @@
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 240 4.8% 95.9%;
+    --accent: 202 77% 70%;
     --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 84.2% 60.2%;
@@ -33,12 +33,12 @@
     
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 220 85% 55%;
+    --ring: 142 71% 55%;
 
     --radius: 0.75rem;
 
-    --chart-1: 220 85% 55%;
-    --chart-2: 142 76% 36%;
+    --chart-1: 142 71% 55%;
+    --chart-2: 202 77% 70%;
     --chart-3: 43 74% 66%;
     --chart-4: 27 87% 67%;
     --chart-5: 0 63% 31%;
@@ -53,4 +53,9 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Manrope', sans-serif;
   }
+}
+
+.glass {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
 }

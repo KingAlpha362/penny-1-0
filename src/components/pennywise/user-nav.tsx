@@ -1,11 +1,8 @@
-
 "use client";
 
-import Image from 'next/image';
 import {
   Avatar,
   AvatarFallback,
-  AvatarImage,
 } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,12 +14,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { ThemeToggle } from './theme-toggle';
 
 export function UserNav() {
-  const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
-
   return (
     <div className="flex items-center gap-2">
        <ThemeToggle />
@@ -30,16 +24,6 @@ export function UserNav() {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-10 w-10 rounded-full">
             <Avatar className="h-10 w-10">
-              {userAvatar && (
-                <Image
-                  src={userAvatar.imageUrl}
-                  alt="User avatar"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                  data-ai-hint={userAvatar.imageHint}
-                />
-              )}
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
           </Button>

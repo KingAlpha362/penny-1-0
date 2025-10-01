@@ -21,7 +21,7 @@ import { PennywiseLogo } from '@/components/icons/pennywise-logo';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/transactions', icon: ScrollText, label: 'Transactions' },
   { href: '/accounts', icon: Landmark, label: 'Accounts' },
   { href: '/investments', icon: Briefcase, label: 'Investments' },

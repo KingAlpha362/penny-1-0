@@ -1,36 +1,32 @@
 
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
-import { Toaster } from "@/components/ui/toaster";
-import { AppSidebar } from '@/components/pennywise/sidebar';
-
 
 export const metadata: Metadata = {
-  title: 'PennyWise',
-  description: 'A comprehensive personal finance management web application.',
+  title: 'PennyWise - Personal Finance App',
+  description: 'Your new best friend for managing money!',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Icons"
+          rel="stylesheet"
+        />
       </head>
-      <body>
-          <div className="flex min-h-screen relative">
-            <AppSidebar />
-            <div className="flex-1 flex flex-col">
-              {children}
-            </div>
-          </div>
-          <Toaster />
+      <body className="welcome-page-body">
+        {children}
       </body>
     </html>
   );

@@ -7,7 +7,6 @@ import { Header } from "@/components/pennywise/header";
 import { OverviewCards } from "@/components/pennywise/overview-cards";
 import { SpendingChart } from "@/components/pennywise/spending-chart";
 import { RecentTransactions } from "@/components/pennywise/recent-transactions";
-import FinancialTipClient from "@/components/pennywise/financial-tip-client";
 import { transactions as initialTransactions, Transaction } from "@/lib/data";
 import { AddTransactionDialog } from "@/components/pennywise/add-transaction-dialog";
 
@@ -38,12 +37,9 @@ const DashboardPage: FC = () => {
       <Header onAddTransaction={() => setAddTransactionOpen(true)} balance={balance} />
       <main className="flex-1 space-y-6 p-6">
         <OverviewCards income={income} expenses={expenses} balance={balance} />
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-3">
             <SpendingChart transactions={transactions} />
-          </div>
-          <div className="xl:col-span-2">
-            <FinancialTipClient transactions={transactions} income={income} expenses={expenses} />
           </div>
         </div>
         <RecentTransactions transactions={transactions} />

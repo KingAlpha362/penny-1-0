@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TrendingUp } from "lucide-react";
 import type { Budget } from "@/app/(app)/budgets/page";
-import type { Transaction } from "@/app/(app)/transactions/page";
+import type { Transaction } from "@/lib/types";
 
 interface BudgetForecastProps {
     budgets: Budget[];

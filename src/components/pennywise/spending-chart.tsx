@@ -17,7 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { Transaction } from "@/app/(app)/dashboard/page";
+import type { Transaction } from "@/lib/types";
 import { useMemo } from "react";
 import { format } from "date-fns";
 

@@ -41,16 +41,7 @@ import { cn } from "@/lib/utils";
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { format } from "date-fns";
-
-export type Transaction = {
-  id: string;
-  date: any; 
-  category: string;
-  description: string;
-  amount: number;
-  type: 'income' | 'expense';
-  userId: string;
-};
+import type { Transaction } from "@/lib/types";
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {

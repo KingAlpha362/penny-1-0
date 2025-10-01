@@ -10,7 +10,7 @@ import { CreateBudgetDialog } from "@/components/pennywise/create-budget-dialog"
 import { BudgetForecast } from "@/components/pennywise/budget-forecast";
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, query, serverTimestamp } from 'firebase/firestore';
-import type { Transaction } from "@/app/(app)/transactions/page";
+import type { Transaction } from "@/lib/types";
 
 export type Budget = {
   id: string;

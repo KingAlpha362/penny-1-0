@@ -12,16 +12,7 @@ import { RecentTransactions } from "@/components/pennywise/recent-transactions";
 import { DashboardSkeleton } from "@/components/pennywise/dashboard-skeleton";
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, serverTimestamp, query, orderBy, limit } from 'firebase/firestore';
-
-export type Transaction = {
-  id: string;
-  date: any; 
-  category: string;
-  description: string;
-  amount: number;
-  type: 'income' | 'expense';
-  userId: string;
-};
+import type { Transaction } from '@/lib/types';
 
 
 const DashboardPage: FC = () => {

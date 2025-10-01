@@ -1,7 +1,7 @@
 
+'use client';
 
-"use client";
-
+import AuthenticatedPage from '@/components/AuthenticatedPage';
 import type { FC } from "react";
 import React, { useState, useMemo, useEffect } from "react";
 import { Header } from "@/components/pennywise/header";
@@ -49,28 +49,28 @@ const DashboardPage: FC = () => {
   }
 
   return (
-    <div className="flex flex-col flex-1 bg-background">
-      <Header onAddTransaction={() => setAddTransactionOpen(true)} />
-      <main className="flex-1 space-y-6 p-6">
-        <OverviewCards income={income} expenses={expenses} balance={balance} />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <SpendingChart transactions={transactions} />
+    <AuthenticatedPage>
+      <div className="flex flex-col flex-1 bg-background">
+        <Header onAddTransaction={() => setAddTransactionOpen(true)} />
+        <main className="flex-1 space-y-6 p-6">
+          <OverviewCards income={income} expenses={expenses} balance={balance} />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <SpendingChart transactions={transactions} />
+            </div>
+            <div className="lg:col-span-1">
+              <RecentTransactions transactions={transactions} />
+            </div>
           </div>
-          <div className="lg:col-span-1">
-            <RecentTransactions transactions={transactions} />
-          </div>
-        </div>
-      </main>
-      <AddTransactionDialog 
-        isOpen={isAddTransactionOpen}
-        onOpenChange={setAddTransactionOpen}
-        onTransactionAdded={handleAddTransaction}
-      />
-    </div>
+        </main>
+        <AddTransactionDialog 
+          isOpen={isAddTransactionOpen}
+          onOpenChange={setAddTransactionOpen}
+          onTransactionAdded={handleAddTransaction}
+        />
+      </div>
+    </AuthenticatedPage>
   );
 };
 
 export default DashboardPage;
-
-    

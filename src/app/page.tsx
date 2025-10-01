@@ -96,10 +96,10 @@ export default function WelcomePage() {
           </div>
           <div className="flex items-center space-x-4">
              <Button variant="ghost" asChild>
-              <Link href="/dashboard">Login</Link>
+              <Link href="/login">Login</Link>
             </Button>
             <Button className="shadow-sm" asChild>
-               <Link href="/dashboard">Sign Up</Link>
+               <Link href="/signup">Sign Up</Link>
             </Button>
           </div>
         </nav>
@@ -117,7 +117,7 @@ export default function WelcomePage() {
             </p>
             <div className="mt-10 flex justify-center items-center gap-4">
                <Button size="lg" className="h-12 px-8 text-base font-semibold shadow-md" asChild>
-                  <Link href="/dashboard">Get Started for Free</Link>
+                  <Link href="/signup">Get Started for Free</Link>
               </Button>
             </div>
         </section>
@@ -232,5 +232,3 @@ export default function WelcomePage() {
     </div>
   );
 }
-
-    

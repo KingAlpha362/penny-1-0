@@ -27,6 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { BankLogo } from "@/components/pennywise/bank-logo";
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("en-US", {
@@ -62,7 +63,12 @@ export default function AccountsPage() {
                 <CardDescription>The sum of all your account balances.</CardDescription>
             </CardHeader>
             <CardContent>
-                <p className="text-4xl font-bold text-primary">{formatCurrency(totalBalance)}</p>
+                <p className={cn(
+                    "text-4xl font-bold",
+                    totalBalance >= 0 ? "text-success" : "text-destructive"
+                )}>
+                    {formatCurrency(totalBalance)}
+                </p>
             </CardContent>
         </Card>
 
@@ -84,15 +90,18 @@ export default function AccountsPage() {
               <TableBody>
                 {accounts.map((account) => (
                   <TableRow key={account.id}>
-                    <TableCell className="font-medium">
-                        {account.name}
-                        {account.lastFour && <span className="text-muted-foreground ml-2">...{account.lastFour}</span>}
+                    <TableCell className="font-medium flex items-center gap-3">
+                        <BankLogo provider={account.provider} />
+                        <div>
+                            {account.name}
+                            {account.lastFour && <span className="text-muted-foreground ml-2">...{account.lastFour}</span>}
+                        </div>
                     </TableCell>
                     <TableCell>{account.provider}</TableCell>
                     <TableCell>
                       <Badge variant="outline">{account.type}</Badge>
                     </TableCell>
-                    <TableCell className={cn("text-right font-semibold", account.balance > 0 ? "text-success" : "text-destructive")}>
+                    <TableCell className={cn("text-right font-semibold", account.balance >= 0 ? "text-success" : "text-destructive")}>
                         {formatCurrency(account.balance)}
                     </TableCell>
                     <TableCell className="text-right">

@@ -39,7 +39,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-card/30 backdrop-blur-xl border-r flex flex-col">
+    <aside className="w-64 flex-shrink-0 bg-background border-r flex flex-col">
       <div className="p-6 flex items-center gap-3">
         <PennywiseLogo className="w-8 h-8 text-primary" />
         <h1 className="text-xl font-bold font-headline">PennyWise</h1>

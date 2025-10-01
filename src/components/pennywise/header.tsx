@@ -8,22 +8,14 @@ import { UserNav } from '@/components/pennywise/user-nav';
 
 interface HeaderProps {
   onAddTransaction: () => void;
-  balance: number;
 }
 
-export const Header: FC<HeaderProps> = ({ onAddTransaction, balance }) => {
-  const formattedBalance = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(balance);
+export const Header: FC<HeaderProps> = ({ onAddTransaction }) => {
 
   return (
-    <header className="flex items-center justify-between p-6">
+    <header className="flex items-center justify-between p-6 bg-background border-b">
       <div>
-        <h2 className="text-2xl font-bold font-headline">Dashboard</h2>
-        <p className="text-muted-foreground">
-          Welcome back, John! Your current balance is {formattedBalance}
-        </p>
+        <h2 className="text-2xl font-bold">Welcome, Jane</h2>
       </div>
       <div className="flex items-center gap-4">
         <Button onClick={onAddTransaction}>

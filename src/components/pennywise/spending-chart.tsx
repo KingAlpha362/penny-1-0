@@ -25,30 +25,38 @@ interface SpendingChartProps {
 }
 
 const processChartData = (transactions: Transaction[]) => {
-  const monthlyData: { [key: string]: { income: number; expenses: number } } = {};
+  const monthlyData: { [key: string]: { balance: number } } = {};
 
-  transactions.forEach((transaction) => {
+  let runningBalance = 0;
+  // Assuming transactions are sorted by date
+  const sortedTransactions = [...transactions].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  sortedTransactions.forEach((transaction) => {
     const month = new Date(transaction.date).toLocaleString('default', { month: 'short' });
-    if (!monthlyData[month]) {
-      monthlyData[month] = { income: 0, expenses: 0 };
-    }
     if (transaction.type === "income") {
-      monthlyData[month].income += transaction.amount;
+      runningBalance += transaction.amount;
     } else {
-      monthlyData[month].expenses += transaction.amount;
+      runningBalance -= transaction.amount;
+    }
+    monthlyData[month] = { balance: runningBalance };
+  });
+
+  const monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
+  const chartData: { name: string, balance: number }[] = [];
+  let lastKnownBalance = 0;
+
+  monthOrder.forEach(month => {
+    if (monthlyData[month]) {
+      chartData.push({ name: month, balance: monthlyData[month].balance });
+      lastKnownBalance = monthlyData[month].balance;
+    } else {
+      // If no data for a month, you could either carry over the last balance or show a gap
+      // chartData.push({ name: month, balance: lastKnownBalance });
     }
   });
 
-  const sortedMonths = Object.keys(monthlyData).sort((a, b) => {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    return months.indexOf(a) - months.indexOf(b);
-  });
-
-  return sortedMonths.map(month => ({
-    name: month,
-    income: monthlyData[month].income,
-    expenses: monthlyData[month].expenses,
-  }));
+  return chartData;
 };
 
 export const SpendingChart: FC<SpendingChartProps> = ({ transactions }) => {
@@ -57,20 +65,16 @@ export const SpendingChart: FC<SpendingChartProps> = ({ transactions }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline">Income vs Expenses Chart</CardTitle>
+        <CardTitle className="font-headline">Balance History</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-80 w-full">
           <ResponsiveContainer>
             <AreaChart data={chartData}>
               <defs>
-                <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--success))" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="hsl(var(--success))" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--destructive))" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="hsl(var(--destructive))" stopOpacity={0} />
+                <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -86,7 +90,7 @@ export const SpendingChart: FC<SpendingChartProps> = ({ transactions }) => {
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(value) => `$${value}`}
+                tickFormatter={(value) => `$${Number(value).toLocaleString()}`}
               />
               <Tooltip
                 contentStyle={{
@@ -94,19 +98,13 @@ export const SpendingChart: FC<SpendingChartProps> = ({ transactions }) => {
                   borderColor: "hsl(var(--border))",
                   borderRadius: "var(--radius)",
                 }}
+                formatter={(value: number) => [`$${value.toLocaleString()}`, 'Balance']}
               />
               <Area
                 type="monotone"
-                dataKey="income"
-                stroke="hsl(var(--success))"
-                fill="url(#colorIncome)"
-                strokeWidth={2}
-              />
-              <Area
-                type="monotone"
-                dataKey="expenses"
-                stroke="hsl(var(--destructive))"
-                fill="url(#colorExpenses)"
+                dataKey="balance"
+                stroke="hsl(var(--primary))"
+                fill="url(#colorBalance)"
                 strokeWidth={2}
               />
             </AreaChart>

@@ -6,7 +6,6 @@ import React, { useState, useMemo } from "react";
 import { Header } from "@/components/pennywise/header";
 import { OverviewCards } from "@/components/pennywise/overview-cards";
 import { SpendingChart } from "@/components/pennywise/spending-chart";
-import { RecentTransactions } from "@/components/pennywise/recent-transactions";
 import { transactions as initialTransactions, Transaction } from "@/lib/data";
 import { AddTransactionDialog } from "@/components/pennywise/add-transaction-dialog";
 
@@ -33,16 +32,13 @@ const DashboardPage: FC = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1">
-      <Header onAddTransaction={() => setAddTransactionOpen(true)} balance={balance} />
+    <div className="flex flex-col flex-1 bg-background">
+      <Header onAddTransaction={() => setAddTransactionOpen(true)} />
       <main className="flex-1 space-y-6 p-6">
-        <OverviewCards income={income} expenses={expenses} balance={balance} />
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          <div className="xl:col-span-3">
-            <SpendingChart transactions={transactions} />
-          </div>
+        <OverviewCards balance={balance} />
+        <div className="grid grid-cols-1">
+          <SpendingChart transactions={transactions} />
         </div>
-        <RecentTransactions transactions={transactions} />
       </main>
       <AddTransactionDialog 
         isOpen={isAddTransactionOpen}

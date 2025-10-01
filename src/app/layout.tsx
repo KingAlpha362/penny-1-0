@@ -26,9 +26,8 @@ export default function RootLayout({
       <body className={cn("font-body antialiased", "bg-background")}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="theme-green system"
           enableSystem
-          disableTransitionOnChange
         >
           <div className="flex min-h-screen relative">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 via-transparent to-primary/10 dark:from-primary/20 dark:via-transparent dark:to-primary/20 -z-10" />

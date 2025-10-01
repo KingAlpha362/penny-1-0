@@ -1,19 +1,33 @@
 "use client"
 
 import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun, Palette, Check } from "lucide-react"
 import { useTheme } from "next-themes"
-
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu"
 
+const themes = [
+  { name: 'Green', class: 'theme-green' },
+  { name: 'Zinc', class: 'theme-zinc' },
+  { name: 'Rose', class: 'theme-rose' },
+  { name: 'Blue', class: 'theme-blue' },
+  { name: 'Orange', class: 'theme-orange' },
+];
+
 export function ThemeToggle() {
-  const { setTheme } = useTheme()
+  const { setTheme, theme } = useTheme();
+  
+  const [currentThemeClass, currentSystemTheme] = theme?.split(' ') ?? ['theme-green', 'light'];
 
   return (
     <DropdownMenu>
@@ -25,15 +39,34 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={() => setTheme(`${currentThemeClass} light`)}>
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => setTheme(`${currentThemeClass} dark`)}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => setTheme(`${currentThemeClass} system`)}>
           System
         </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <Palette className="mr-2 h-4 w-4" />
+            <span>Theme</span>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent>
+              {themes.map((themeItem) => (
+                <DropdownMenuItem
+                  key={themeItem.name}
+                  onClick={() => setTheme(`${themeItem.class} ${currentSystemTheme}`)}
+                >
+                  <Check className={cn("mr-2 h-4 w-4", currentThemeClass === themeItem.class ? "opacity-100" : "opacity-0")} />
+                  {themeItem.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
       </DropdownMenuContent>
     </DropdownMenu>
   )

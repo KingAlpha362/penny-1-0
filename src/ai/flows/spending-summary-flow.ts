@@ -6,7 +6,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit/zod';
+import { z } from 'zod';
 import type { Transaction } from '@/lib/types';
 
 // Define the input schema for the flow, expecting an array of transactions.
@@ -34,7 +34,7 @@ const spendingSummaryPrompt = ai.definePrompt(
         
         Here are the transactions:
         
-        {{JSON.stringify(input)}}
+        {{{JSON.stringify(input)}}}
         `,
     }
 );

@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useState, useMemo } from "react";
@@ -36,9 +35,22 @@ import {
   PlusCircle,
   Search,
 } from "lucide-react";
-import { transactions as initialTransactions, Transaction, transactionCategories } from "@/lib/data";
+import { transactionCategories } from "@/lib/data";
 import { AddTransactionDialog } from "@/components/pennywise/add-transaction-dialog";
 import { cn } from "@/lib/utils";
+import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
+import { collection, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { format } from "date-fns";
+
+export type Transaction = {
+  id: string;
+  date: any; 
+  category: string;
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+  userId: string;
+};
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -47,24 +59,51 @@ const formatCurrency = (value: number) => {
     }).format(value);
 };
 
+const formatDate = (timestamp: any) => {
+  if (timestamp && typeof timestamp.toDate === 'function') {
+    return format(timestamp.toDate(), 'MMM dd, yyyy');
+  }
+  // Fallback for strings or other types
+  if (typeof timestamp === 'string') {
+    return format(new Date(timestamp), 'MMM dd, yyyy');
+  }
+  return "Invalid date";
+}
+
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState(initialTransactions);
+  const { user } = useUser();
+  const firestore = useFirestore();
   const [isAddTransactionOpen, setAddTransactionOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("newest");
+  const [sortOrder, setSortOrder] = useState("desc");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
 
+  const transactionsQuery = useMemoFirebase(() => {
+    if (!firestore || !user?.uid) return null;
+    return query(
+      collection(firestore, `users/${user.uid}/transactions`),
+      orderBy('date', sortOrder as 'desc' | 'asc')
+    );
+  }, [firestore, user?.uid, sortOrder]);
+  
+  const { data: transactions, isLoading } = useCollection<Transaction>(transactionsQuery);
 
-  const handleAddTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
-    setTransactions(prev => [
-        { ...newTransaction, id: crypto.randomUUID() },
-        ...prev
-    ]);
+  const handleAddTransaction = (newTransaction: Omit<Transaction, 'id' | 'userId' | 'date'>) => {
+    if (!firestore || !user?.uid) return;
+    
+    const transactionRef = collection(firestore, `users/${user.uid}/transactions`);
+    addDocumentNonBlocking(transactionRef, {
+      ...newTransaction,
+      userId: user.uid,
+      date: serverTimestamp()
+    });
   };
   
   const filteredTransactions = useMemo(() => {
+    if (!transactions) return [];
+
     let filtered = [...transactions];
 
     if (searchTerm) {
@@ -79,15 +118,9 @@ export default function TransactionsPage() {
         filtered = filtered.filter(t => t.type === typeFilter);
     }
     
-    filtered.sort((a, b) => {
-        const dateA = new Date(a.date).getTime();
-        const dateB = new Date(b.date).getTime();
-        return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
-    });
-
     return filtered;
 
-  }, [transactions, searchTerm, categoryFilter, typeFilter, sortOrder]);
+  }, [transactions, searchTerm, categoryFilter, typeFilter]);
 
 
   return (
@@ -134,8 +167,8 @@ export default function TransactionsPage() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuRadioGroup value={sortOrder} onValueChange={setSortOrder}>
-                        <DropdownMenuRadioItem value="newest">Newest</DropdownMenuRadioItem>
-                        <DropdownMenuRadioItem value="oldest">Oldest</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="desc">Newest</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="asc">Oldest</DropdownMenuRadioItem>
                     </DropdownMenuRadioGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -183,33 +216,43 @@ export default function TransactionsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredTransactions.map((transaction) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell className="font-medium">
-                      {transaction.date}
-                    </TableCell>
-                    <TableCell>{transaction.description}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{transaction.category}</Badge>
-                    </TableCell>
-                     <TableCell>
-                      <Badge variant={transaction.type === 'income' ? 'secondary' : 'destructive'} className={cn(transaction.type === 'income' && 'bg-success/10 text-success border-transparent', transaction.type === 'expense' && 'bg-destructive/10 text-destructive border-transparent' )}>
-                        {transaction.type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell
-                      className={cn(
-                        "text-right font-semibold",
-                        transaction.type === "income"
-                          ? "text-success"
-                          : "text-destructive"
-                      )}
-                    >
-                      {transaction.type === "income" ? "+" : "-"}
-                      {formatCurrency(transaction.amount)}
-                    </TableCell>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center">Loading transactions...</TableCell>
                   </TableRow>
-                ))}
+                ) : filteredTransactions.length > 0 ? (
+                  filteredTransactions.map((transaction) => (
+                    <TableRow key={transaction.id}>
+                      <TableCell className="font-medium">
+                        {formatDate(transaction.date)}
+                      </TableCell>
+                      <TableCell>{transaction.description}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{transaction.category}</Badge>
+                      </TableCell>
+                       <TableCell>
+                        <Badge variant={transaction.type === 'income' ? 'secondary' : 'destructive'} className={cn(transaction.type === 'income' && 'bg-success/10 text-success border-transparent', transaction.type === 'expense' && 'bg-destructive/10 text-destructive border-transparent' )}>
+                          {transaction.type}
+                        </Badge>
+                      </TableCell>
+                      <TableCell
+                        className={cn(
+                          "text-right font-semibold",
+                          transaction.type === "income"
+                            ? "text-success"
+                            : "text-destructive"
+                        )}
+                      >
+                        {transaction.type === "income" ? "+" : "-"}
+                        {formatCurrency(transaction.amount)}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center">No transactions found.</TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </CardContent>

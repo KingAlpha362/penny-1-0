@@ -1,33 +1,50 @@
+
 "use client"
 
 import * as React from "react"
-import { Moon, Sun, Palette, Check } from "lucide-react"
+import { Moon, Sun, Palette } from "lucide-react"
 import { useTheme } from "next-themes"
-import { cn } from "@/lib/utils"
+
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu"
 
 const themes = [
-  { name: 'Green', class: 'theme-green' },
-  { name: 'Zinc', class: 'theme-zinc' },
-  { name: 'Rose', class: 'theme-rose' },
-  { name: 'Blue', class: 'theme-blue' },
-  { name: 'Orange', class: 'theme-orange' },
+    { name: 'Green', class: 'theme-green' },
+    { name: 'Zinc', class: 'theme-zinc' },
+    { name: 'Rose', class: 'theme-rose' },
+    { name: 'Blue', class: 'theme-blue' },
+    { name: 'Orange', class: 'theme-orange' },
 ];
 
 export function ThemeToggle() {
-  const { setTheme, theme } = useTheme();
-  
-  const [currentThemeClass, currentSystemTheme] = theme?.split(' ') ?? ['theme-green', 'light'];
+  const { setTheme, theme } = useTheme()
+
+  const toggleDarkMode = () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    const currentTheme = themes.find(t => t.class === theme?.replace(' dark', ''))?.class || 'theme-green';
+    if (isDark) {
+      document.documentElement.classList.remove('dark');
+      setTheme(currentTheme);
+    } else {
+      document.documentElement.classList.add('dark');
+      setTheme(`${currentTheme} dark`);
+    }
+  }
+
+  const handleThemeChange = (newTheme: string) => {
+    const isDark = document.documentElement.classList.contains('dark');
+    if(isDark) {
+        setTheme(`${newTheme} dark`);
+    } else {
+        setTheme(newTheme);
+    }
+  }
+
 
   return (
     <DropdownMenu>
@@ -39,34 +56,21 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme(`${currentThemeClass} light`)}>
-          Light
+        <DropdownMenuItem onClick={() => toggleDarkMode()}>
+          Toggle Light/Dark Mode
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme(`${currentThemeClass} dark`)}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme(`${currentThemeClass} system`)}>
-          System
-        </DropdownMenuItem>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
+        <DropdownMenuItem>
             <Palette className="mr-2 h-4 w-4" />
             <span>Theme</span>
-          </DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              {themes.map((themeItem) => (
-                <DropdownMenuItem
-                  key={themeItem.name}
-                  onClick={() => setTheme(`${themeItem.class} ${currentSystemTheme}`)}
-                >
-                  <Check className={cn("mr-2 h-4 w-4", currentThemeClass === themeItem.class ? "opacity-100" : "opacity-0")} />
-                  {themeItem.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
+        </DropdownMenuItem>
+        {themes.map((themeItem) => (
+            <DropdownMenuItem
+                key={themeItem.name}
+                onClick={() => handleThemeChange(themeItem.class)}
+            >
+                {themeItem.name}
+            </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )

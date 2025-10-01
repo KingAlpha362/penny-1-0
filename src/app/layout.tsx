@@ -4,7 +4,6 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster";
 import { AppSidebar } from '@/components/pennywise/sidebar';
-import { ClientProvider } from '@/components/pennywise/client-provider';
 
 
 export const metadata: Metadata = {
@@ -18,14 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <ClientProvider>
           <div className="flex min-h-screen relative">
             <AppSidebar />
             <div className="flex-1 flex flex-col">
@@ -33,7 +31,6 @@ export default function RootLayout({
             </div>
           </div>
           <Toaster />
-        </ClientProvider>
       </body>
     </html>
   );

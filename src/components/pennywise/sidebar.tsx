@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -12,6 +13,9 @@ import {
   TrendingUp,
   CircleDollarSign,
   Target,
+  Landmark,
+  FileText,
+  Briefcase,
 } from 'lucide-react';
 import { PennywiseLogo } from '@/components/icons/pennywise-logo';
 import { cn } from '@/lib/utils';
@@ -20,6 +24,9 @@ import { Button } from '@/components/ui/button';
 const navItems = [
   { href: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/transactions', icon: ScrollText, label: 'Transactions' },
+  { href: '/accounts', icon: Landmark, label: 'Accounts' },
+  { href: '/investments', icon: Briefcase, label: 'Investments' },
+  { href: '/invoicing', icon: FileText, label: 'Invoicing' },
   { href: '/budgets', icon: Wallet, label: 'Budgets' },
   { href: '/reports', icon: BarChart3, label: 'Reports' },
   { href: '/subscriptions', icon: CreditCard, label: 'Subscriptions' },

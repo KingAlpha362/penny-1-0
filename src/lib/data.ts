@@ -153,3 +153,55 @@ export const debtGoals: DebtGoal[] = [
     { id: '2', title: 'Reduce Personal Loan Balance', targetDate: 'Jun 2025', currentAmount: 2500, totalAmount: 5000, type: 'reduce' },
     { id: '3', title: 'First Debt Free Year', targetDate: 'Jan 2026', currentAmount: 3125, totalAmount: 12500, type: 'payoff' },
 ];
+
+export type Investment = {
+  id: string;
+  name: string;
+  symbol: string;
+  quantity: number;
+  price: number;
+  value: number;
+  change: number;
+  changePercent: number;
+  type: 'Stock' | 'Crypto' | 'Fund';
+}
+
+export const investments: Investment[] = [
+  { id: '1', name: 'Apple Inc.', symbol: 'AAPL', quantity: 10, price: 175.00, value: 1750.00, change: 5.25, changePercent: 0.3, type: 'Stock' },
+  { id: '2', name: 'Bitcoin', symbol: 'BTC', quantity: 0.05, price: 65000.00, value: 3250.00, change: -150.00, changePercent: -2.3, type: 'Crypto' },
+  { id: '3', name: 'Vanguard S&P 500 ETF', symbol: 'VOO', quantity: 5, price: 450.00, value: 2250.00, change: 1.50, changePercent: 0.03, type: 'Fund' },
+  { id: '4', name: 'Tesla, Inc.', symbol: 'TSLA', quantity: 15, price: 250.00, value: 3750.00, change: -10.00, changePercent: -0.4, type: 'Stock' },
+];
+
+export type Invoice = {
+  id: string;
+  invoiceNumber: string;
+  clientName: string;
+  amount: number;
+  status: 'Paid' | 'Pending' | 'Overdue';
+  dueDate: string;
+  issuedDate: string;
+}
+
+export const invoices: Invoice[] = [
+    { id: '1', invoiceNumber: 'INV-001', clientName: 'Creative Solutions', amount: 1200, status: 'Paid', dueDate: '2024-06-30', issuedDate: '2024-06-15' },
+    { id: '2', invoiceNumber: 'INV-002', clientName: 'Innovate Inc.', amount: 2500, status: 'Pending', dueDate: '2024-07-25', issuedDate: '2024-07-10' },
+    { id: '3', invoiceNumber: 'INV-003', clientName: 'Marketing Gurus', amount: 800, status: 'Overdue', dueDate: '2024-07-05', issuedDate: '2024-06-20' },
+    { id: '4', invoiceNumber: 'INV-004', clientName: 'Web Wizards', amount: 3500, status: 'Pending', dueDate: '2024-08-01', issuedDate: '2024-07-18' },
+];
+
+export type Account = {
+  id: string;
+  name: string;
+  type: 'Checking' | 'Savings' | 'Credit Card' | 'Wallet';
+  provider: string;
+  balance: number;
+  lastFour: string;
+}
+
+export const accounts: Account[] = [
+  { id: '1', name: 'Primary Checking', type: 'Checking', provider: 'Bank of America', balance: 5230.50, lastFour: '1234' },
+  { id: '2', name: 'High-Yield Savings', type: 'Savings', provider: 'Ally Bank', balance: 15600.00, lastFour: '5678' },
+  { id: '3', name: 'Travel Rewards Card', type: 'Credit Card', provider: 'Chase', balance: -1250.75, lastFour: '9012' },
+  { id: '4', name: 'Digital Wallet', type: 'Wallet', provider: 'PayPal', balance: 850.25, lastFour: '' },
+];

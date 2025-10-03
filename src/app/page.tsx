@@ -5,13 +5,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LayoutDashboard, Wallet, TrendingUp, Search, ShieldCheck, HelpCircle, Lock, History } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
 
 const features = [
   {
@@ -61,7 +54,7 @@ const supportFeatures = [
 
 
 export default function WelcomePage() {
-  const { dashboardScreenshot, transactions, budgets } = placeholderImages;
+  const { dashboardScreenshot } = placeholderImages;
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
@@ -123,49 +116,17 @@ export default function WelcomePage() {
         </section>
 
         <section className="container mx-auto px-6 pb-24 md:pb-32">
-          <Carousel>
-            <CarouselContent>
-              <CarouselItem>
-                <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
-                    <Image
-                        alt={dashboardScreenshot.alt}
-                        className="w-full h-auto rounded-lg"
-                        src={dashboardScreenshot.src}
-                        width={dashboardScreenshot.width}
-                        height={dashboardScreenshot.height}
-                        data-ai-hint={dashboardScreenshot['data-ai-hint']}
-                        priority
-                    />
-                </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
-                     <Image
-                        alt={transactions.alt}
-                        className="w-full h-auto rounded-lg"
-                        src={transactions.src}
-                        width={transactions.width}
-                        height={transactions.height}
-                        data-ai-hint={transactions['data-ai-hint']}
-                    />
-                </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
-                    <Image
-                        alt={budgets.alt}
-                        className="w-full h-auto rounded-lg"
-                        src={budgets.src}
-                        width={budgets.width}
-                        height={budgets.height}
-                        data-ai-hint={budgets['data-ai-hint']}
-                    />
-                </div>
-              </CarouselItem>
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+          <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
+              <Image
+                  alt={dashboardScreenshot.alt}
+                  className="w-full h-auto rounded-lg"
+                  src={dashboardScreenshot.src}
+                  width={dashboardScreenshot.width}
+                  height={dashboardScreenshot.height}
+                  data-ai-hint={dashboardScreenshot['data-ai-hint']}
+                  priority
+              />
+          </div>
         </section>
 
          <section className="container mx-auto px-6 pb-24 md:pb-32">

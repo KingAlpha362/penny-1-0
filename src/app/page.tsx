@@ -53,14 +53,6 @@ const supportFeatures = [
 
 
 export default function WelcomePage() {
-  const dashboardScreenshot = {
-      alt: "A screenshot of the PennyWise application dashboard, showing an overview of finances.",
-      src: "https://storage.googleapis.com/aida-images/02b20251-d494-4328-8313-2b4a3a60f959.png",
-      width: 2880,
-      height: 1800,
-      "data-ai-hint": "finance app dashboard"
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
@@ -124,12 +116,12 @@ export default function WelcomePage() {
         <section className="container mx-auto px-6 pb-24 md:pb-32">
           <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
               <Image
-                  alt={dashboardScreenshot.alt}
+                  alt="A screenshot of the PennyWise application dashboard, showing an overview of finances."
                   className="w-full h-auto rounded-lg"
-                  src={dashboardScreenshot.src}
-                  width={dashboardScreenshot.width}
-                  height={dashboardScreenshot.height}
-                  data-ai-hint={dashboardScreenshot['data-ai-hint']}
+                  src="https://storage.googleapis.com/aida-images/5a653c69-2f69-405d-85aa-18309a6c9d09.png"
+                  width={2880}
+                  height={1800}
+                  data-ai-hint="finance app dashboard"
                   priority
               />
           </div>

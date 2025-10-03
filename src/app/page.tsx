@@ -1,6 +1,5 @@
 
 import Image from 'next/image';
-import placeholderImages from '@/lib/placeholder-images.json';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LayoutDashboard, Wallet, TrendingUp, Search, ShieldCheck, HelpCircle, Lock, History } from 'lucide-react';
@@ -54,7 +53,14 @@ const supportFeatures = [
 
 
 export default function WelcomePage() {
-  const { dashboardScreenshot } = placeholderImages;
+  const dashboardScreenshot = {
+      alt: "A screenshot of the PennyWise application dashboard, showing an overview of finances.",
+      src: "https://storage.googleapis.com/aida-images/02b20251-d494-4328-8313-2b4a3a60f959.png",
+      width: 2880,
+      height: 1800,
+      "data-ai-hint": "finance app dashboard"
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">

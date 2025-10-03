@@ -61,7 +61,7 @@ const supportFeatures = [
 
 
 export default function WelcomePage() {
-  const { dashboardScreenshot } = placeholderImages;
+  const { dashboardScreenshot, transactions, budgets } = placeholderImages;
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
@@ -141,24 +141,24 @@ export default function WelcomePage() {
               <CarouselItem>
                 <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
                      <Image
-                        alt={placeholderImages.transactions.alt}
+                        alt={transactions.alt}
                         className="w-full h-auto rounded-lg"
-                        src={placeholderImages.transactions.src}
-                        width={placeholderImages.transactions.width}
-                        height={placeholderImages.transactions.height}
-                        data-ai-hint={placeholderImages.transactions['data-ai-hint']}
+                        src={transactions.src}
+                        width={transactions.width}
+                        height={transactions.height}
+                        data-ai-hint={transactions['data-ai-hint']}
                     />
                 </div>
               </CarouselItem>
               <CarouselItem>
                 <div className="relative rounded-xl border-8 border-foreground/5 shadow-2xl">
                     <Image
-                        alt={placeholderImages.budgets.alt}
+                        alt={budgets.alt}
                         className="w-full h-auto rounded-lg"
-                        src={placeholderImages.budgets.src}
-                        width={placeholderImages.budgets.width}
-                        height={placeholderImages.budgets.height}
-                        data-ai-hint={placeholderImages.budgets['data-ai-hint']}
+                        src={budgets.src}
+                        width={budgets.width}
+                        height={budgets.height}
+                        data-ai-hint={budgets['data-ai-hint']}
                     />
                 </div>
               </CarouselItem>

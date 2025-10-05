@@ -4,6 +4,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { accountSchema } from "@/lib/validations";
 import {
   Dialog,
   DialogContent,
@@ -37,32 +38,37 @@ interface AddAccountDialogProps {
   onAccountAdded: (account: Omit<Account, 'id' | 'userId'>) => void;
 }
 
-const formSchema = z.object({
-  name: z.string().min(1, { message: "Account name is required." }),
-  type: z.enum(["Checking", "Savings", "Credit Card", "Wallet"]),
-  provider: z.string().min(1, { message: "Provider is required." }),
-  balance: z.coerce.number(),
-  lastFour: z.string().length(4, { message: "Must be 4 digits." }).optional().or(z.literal('')),
-});
+type FormData = z.infer<typeof accountSchema>;
 
 export function AddAccountDialog({
   isOpen,
   onOpenChange,
   onAccountAdded,
 }: AddAccountDialogProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormData>({
+    resolver: zodResolver(accountSchema),
     defaultValues: {
       name: "",
-      type: "Checking",
+      type: "checking",
       provider: "",
       balance: 0,
-      lastFour: "",
+      accountNumber: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    onAccountAdded(values);
+  function onSubmit(values: z.infer<typeof accountSchema>) {
+    // Map form type values to Account type values
+    const typeMap: Record<string, "Checking" | "Savings" | "Credit Card" | "Wallet"> = {
+      checking: "Checking",
+      savings: "Savings",
+      credit: "Credit Card",
+      wallet: "Wallet",
+    };
+    const mappedValues: Omit<Account, 'id' | 'userId'> = {
+      ...values,
+      type: typeMap[values.type as keyof typeof typeMap] ?? values.type,
+    };
+    onAccountAdded(mappedValues);
     form.reset();
     onOpenChange(false);
   }
@@ -147,7 +153,7 @@ export function AddAccountDialog({
             
             <FormField
               control={form.control}
-              name="lastFour"
+              name="accountNumber"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Last Four Digits (Optional)</FormLabel>

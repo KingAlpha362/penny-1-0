@@ -4,6 +4,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { ErrorBoundary } from '@/components/error-boundary';
 
 export const metadata: Metadata = {
   title: 'PennyWise - Personal Finance App',
@@ -28,10 +29,12 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('min-h-screen bg-background font-sans antialiased')}>
-        <FirebaseClientProvider>
-          {children}
-        </FirebaseClientProvider>
-        <Toaster />
+        <ErrorBoundary>
+          <FirebaseClientProvider>
+            {children}
+          </FirebaseClientProvider>
+          <Toaster />
+        </ErrorBoundary>
       </body>
     </html>
   );

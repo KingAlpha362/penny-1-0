@@ -1,23 +1,33 @@
 
 'use client';
 
-import { useUser } from '@/firebase';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@/firebase';
+import { DashboardSkeleton } from './pennywise/dashboard-skeleton';
+import { ErrorBoundary } from './error-boundary';
 
-export default function AuthenticatedPage({ children }: { children: React.ReactNode }) {
-  const { user, isUserLoading } = useUser();
+export default function AuthenticatedPage({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { user, isUserLoading, userError } = useUser();
   const router = useRouter();
 
   useEffect(() => {
     if (!isUserLoading && !user) {
-      router.push('/login');
+      router.replace('/login');
     }
   }, [user, isUserLoading, router]);
 
-  if (isUserLoading || !user) {
-    return <div>Loading...</div>; 
+  if (userError) {
+    throw userError;
   }
 
-  return <>{children}</>;
+  if (isUserLoading) {
+    return <DashboardSkeleton />;
+  }
+
+  return <ErrorBoundary>{children}</ErrorBoundary>;
 }

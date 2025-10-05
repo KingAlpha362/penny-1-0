@@ -1,9 +1,31 @@
-export type Transaction = {
+export type TransactionType = 'income' | 'expense';
+export type TransactionCategory =
+  | 'salary'
+  | 'investment'
+  | 'business'
+  | 'other_income'
+  | 'housing'
+  | 'transportation'
+  | 'food'
+  | 'utilities'
+  | 'insurance'
+  | 'healthcare'
+  | 'entertainment'
+  | 'shopping'
+  | 'other_expense';
+
+export interface Transaction {
   id: string;
-  date: any; 
-  category: string;
-  description: string;
-  amount: number;
-  type: 'income' | 'expense';
   userId: string;
-};
+  type: TransactionType;
+  amount: number;
+  category: TransactionCategory;
+  date: string | Date;
+  description?: string;
+  recurring?: boolean;
+  recurringFrequency?: 'weekly' | 'monthly' | 'yearly';
+  tags?: string[];
+  attachments?: string[];
+  createdAt: string | Date;
+  updatedAt: string | Date;
+}

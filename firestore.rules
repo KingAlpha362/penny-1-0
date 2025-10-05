@@ -124,5 +124,30 @@ service cloud.firestore {
       allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
       allow delete: if isExistingOwner(userId);
     }
+
+    /**
+     * @description Controls access to account data for a user.
+     * @path /users/{userId}/accounts/{accountId}
+     * @allow (create) User can create their own accounts
+     * @allow (get) User can read their own accounts
+     * @allow (update) User can update their own accounts
+     * @allow (delete) User can delete their own accounts
+     * @deny Any operation by non-owner users
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId}/accounts/{accountId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
   }
 }

@@ -1,52 +1,67 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface BankLogoProps {
   provider: string;
   className?: string;
 }
 
+const BANK_LOGOS: Record<string, { name: string, color: string }> = {
+  'bankofamerica': { name: 'Bank of America', color: '#E31837' },
+  'chase': { name: 'Chase', color: '#117ACA' },
+  'wellsfargo': { name: 'Wells Fargo', color: '#D71E28' },
+  'citibank': { name: 'Citibank', color: '#004B93' },
+  'usbank': { name: 'U.S. Bank', color: '#0046AA' },
+  'capitalone': { name: 'Capital One', color: '#004977' },
+  'pnc': { name: 'PNC Bank', color: '#F58025' },
+  'tdbank': { name: 'TD Bank', color: '#4BB543' },
+  'allybank': { name: 'Ally Bank', color: '#6F42C1' },
+  'discover': { name: 'Discover', color: '#FF6000' },
+  'paypal': { name: 'PayPal', color: '#0070BA' },
+  'americanexpress': { name: 'American Express', color: '#006FCF' },
+  'venmo': { name: 'Venmo', color: '#3396CD' },
+  'cashapp': { name: 'Cash App', color: '#00D632' }
+};
+
 const renderLogo = (provider: string) => {
-    const providerId = provider.toLowerCase().replace(/\s/g, '');
-    switch(providerId) {
-        case 'bankofamerica':
-            return (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-[#E31837]">
-                    <path d="M4 12h16" />
-                    <path d="M7 7l5 10 5-10" />
-                </svg>
-            )
-        case 'chase':
-            return (
-                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-[#117ACA]">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v8h-2zm-3 4h8v2h-8z" />
-                </svg>
-            )
-        case 'allybank':
-            return (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-[#6F42C1]">
-                    <path d="M12 2l-10 6 10 6 10-6-10-6z" />
-                    <path d="M2 14l10 6 10-6" />
-                </svg>
-            )
-         case 'paypal':
-            return (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-[#0070BA]">
-                    <path d="M8 6h8c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2z" />
-                    <path d="M10 10v4" />
-                    <path d="M14 10v4" />
-                    <path d="M12 10v4" />
-                </svg>
-            )
-        default:
-            return (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-                    <path d="M2 2v20h20V2H2zm18 18H4V4h16v16z" />
-                    <path d="M9 9h6v6H9z" />
-                </svg>
-            )
-    }
+  const providerId = provider.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const logoInfo = BANK_LOGOS[providerId];
+  
+  // Check if we have a custom SVG logo
+  try {
+    return (
+      <Image
+        src={`/logos/banks/${providerId}.svg`}
+        alt={`${provider} logo`}
+        width={24}
+        height={24}
+        className="h-6 w-6"
+      />
+    );
+  } catch {
+    // Fallback to generic bank icon with provider's color
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={logoInfo?.color || "currentColor"}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+      >
+        <path d="M3 22h18" />
+        <path d="M3 10h18" />
+        <path d="M12 2L2 10l10-3 10 3-10-8z" />
+        <path d="M5 14v4" />
+        <path d="M19 14v4" />
+        <path d="M12 14v4" />
+      </svg>
+    );
+  }
 }
 
 export function BankLogo({ provider, className }: BankLogoProps) {

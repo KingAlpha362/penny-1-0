@@ -9,7 +9,7 @@ import { useMemo, useState, useEffect } from "react";
 import { subDays, format, parseISO } from 'date-fns';
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query } from 'firebase/firestore';
-import type { Transaction } from '@/lib/types';
+import type { Transaction } from '@/app/lib/types';
 import { getSpendingSummary } from '@/ai/flows/spending-summary-flow';
 import { Sparkles } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -89,13 +89,21 @@ export default function ReportsPage() {
     const filteredTransactions: SerializableTransaction[] = useMemo(() => {
       if (!allTransactions) return [];
       const filtered = allTransactions.filter(t => {
-        const transactionDate = t.date?.toDate ? t.date.toDate() : new Date(t.date as string);
+        const transactionDate = typeof t.date === "object" && t.date !== null && "toDate" in t.date && typeof (t.date as any).toDate === "function"
+          ? (t.date as { toDate: () => Date }).toDate()
+          : new Date(t.date as string | Date);
         return transactionDate && transactionDate >= startDate;
       });
 
       return filtered.map(t => ({
           ...t,
-          date: (t.date?.toDate ? t.date.toDate().toISOString() : new Date(t.date as string).toISOString()),
+          date:
+            typeof t.date === "object" &&
+            t.date !== null &&
+            "toDate" in t.date &&
+            typeof (t.date as any).toDate === "function"
+              ? (t.date as { toDate: () => Date }).toDate().toISOString()
+              : new Date(t.date as string | Date).toISOString(),
       }));
     }, [allTransactions, startDate]);
 
@@ -154,11 +162,17 @@ export default function ReportsPage() {
         const twelveMonthsAgo = subDays(new Date(), 365);
         
         allTransactions.forEach(t => {
-            const transactionDate = t.date?.toDate ? t.date.toDate() : new Date(t.date as string);
+            const transactionDate =
+                typeof t.date === "object" &&
+                t.date !== null &&
+                "toDate" in t.date &&
+                typeof (t.date as any).toDate === "function"
+                    ? (t.date as { toDate: () => Date }).toDate()
+                    : new Date(t.date as string | Date);
             if (transactionDate && transactionDate > twelveMonthsAgo) {
                 const month = format(transactionDate, 'yyyy-MMM');
                  if (!data[month]) data[month] = { income: 0, expense: 0 };
-                 data[month][t.type] += t.amount;
+                 data[month][t.type as "income" | "expense"] += t.amount;
             }
         });
 
@@ -294,7 +308,7 @@ export default function ReportsPage() {
                 <CardHeader>
                     <CardTitle>Net Worth</CardTitle>
                     <CardDescription>Last 12 months</CardDescription>
-                </Header>
+                </CardHeader>
                  <CardContent>
                     <div className="h-64">
                          <ResponsiveContainer width="100%" height="100%">

@@ -8,7 +8,10 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import type { Transaction } from '@/lib/types';
+// Update the import path below if your types file is located elsewhere
+// Update the import path below if your types file is located elsewhere
+// import type { Transaction } from '../../lib/types';
+import type { Transaction } from '@/lib/types'; // Adjust this path if your types file is in a different location
 
 // Define the input schema for the flow, expecting an array of transactions.
 const SpendingSummaryInputSchema = z.array(z.object({
@@ -27,11 +30,22 @@ const spendingSummaryPrompt = ai.definePrompt(
         input: { schema: SpendingSummaryInputSchema },
         output: { schema: z.string() },
         prompt: `You are a helpful financial assistant called PennyWise.
-        Analyze the following list of financial transactions and provide a concise, friendly, and insightful summary of the user's spending habits.
-        Focus on the expenses.
-        Mention the category with the highest spending and any notable trends.
-        Keep the summary to 2-3 sentences.
-        Do not start with "Here is a summary". Just provide the summary directly.
+        Analyze the following list of financial transactions and provide a comprehensive yet concise analysis of the user's financial behavior.
+        
+        Include:
+        1. Top spending category and its percentage of total expenses
+        2. Notable trends or patterns in spending
+        3. Month-over-month comparisons if available
+        4. Unusual or large transactions that stand out
+        5. Potential areas for saving money
+        6. Income vs expense ratio if income data is available
+        
+        Format the response in a friendly, conversational tone.
+        Provide specific numbers and percentages when relevant.
+        Include one actionable suggestion for improving financial health.
+        Keep the summary to 3-4 sentences.
+        Do not start with phrases like "Here is a summary" or "Based on the analysis".
+        Use emojis sparingly but effectively to highlight key points.
         
         Here are the transactions:
         
@@ -39,6 +53,8 @@ const spendingSummaryPrompt = ai.definePrompt(
         `,
     }
 );
+
+import { analyzeSpendingPatterns } from '../analysis/spending-patterns';
 
 const spendingSummaryFlow = ai.defineFlow(
     {
@@ -54,6 +70,10 @@ const spendingSummaryFlow = ai.defineFlow(
             return "You don't have any expenses in this period. Great job saving!";
         }
 
+        // Analyze spending patterns
+        const analysis = analyzeSpendingPatterns(expenses);
+
+        // Pass only the expenses array to the prompt, as required by the schema
         const { output } = await spendingSummaryPrompt(expenses);
         return output!;
     }
@@ -69,6 +89,15 @@ type SerializableTransaction = Omit<Transaction, 'date'> & { date: string };
  * @returns A promise that resolves to a string containing the spending summary.
  */
 export async function getSpendingSummary(transactions: SerializableTransaction[]): Promise<string> {
-    // The flow expects a plain array, so we can pass it directly.
-    return spendingSummaryFlow(transactions);
+    // Ensure each transaction has all required properties for the flow input schema.
+    const normalized = transactions.map(t => ({
+        id: t.id,
+        date: t.date,
+        category: t.category,
+        description: t.description,
+        amount: t.amount,
+        type: t.type,
+        userId: t.userId,
+    }));
+    return spendingSummaryFlow(normalized);
 }

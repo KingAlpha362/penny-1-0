@@ -112,10 +112,10 @@ export function AddAccountDialog({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Checking">Checking</SelectItem>
-                      <SelectItem value="Savings">Savings</SelectItem>
-                      <SelectItem value="Credit Card">Credit Card</SelectItem>
-                      <SelectItem value="Wallet">Wallet</SelectItem>
+                      <SelectItem value="checking">Checking</SelectItem>
+                      <SelectItem value="savings">Savings</SelectItem>
+                      <SelectItem value="credit">Credit Card</SelectItem>
+                      <SelectItem value="wallet">Wallet</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

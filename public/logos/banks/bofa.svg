@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 10h100v20H10z" fill="currentColor"/>
+  <text x="20" y="25" fill="white" font-family="system-ui" font-size="14" font-weight="bold">Bank of America</text>
+</svg>

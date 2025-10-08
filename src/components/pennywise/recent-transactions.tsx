@@ -45,7 +45,7 @@ const formatDate = (timestamp: Date | string) => {
     console.error('Invalid date format:', error);
     return 'Invalid date';
   }
-}
+};
 
 export const RecentTransactions: FC<RecentTransactionsProps> = ({ transactions: rawTransactions, isLoading }) => {
   // Validate transactions at runtime
@@ -56,7 +56,7 @@ export const RecentTransactions: FC<RecentTransactionsProps> = ({ transactions: 
       transactionSchema.parse(transactionData);
       return true;
     } catch (error) {
-      console.error(`Invalid transaction data:`, error);
+      console.error('Invalid transaction data:', error);
       return false;
     }
   });

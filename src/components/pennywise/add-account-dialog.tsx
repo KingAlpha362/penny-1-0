@@ -1,10 +1,10 @@
 
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { accountSchema } from "@/lib/validations";
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { accountSchema } from '@/lib/validations';
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -20,17 +20,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import type { Account } from "@/app/(app)/accounts/page";
+} from '@/components/ui/select';
+import type { Account } from '@/app/(app)/accounts/page';
 
 interface AddAccountDialogProps {
   isOpen: boolean;
@@ -48,21 +48,21 @@ export function AddAccountDialog({
   const form = useForm<FormData>({
     resolver: zodResolver(accountSchema),
     defaultValues: {
-      name: "",
-      type: "checking",
-      provider: "",
+      name: '',
+      type: 'checking',
+      provider: '',
       balance: 0,
-      accountNumber: "",
+      accountNumber: '',
     },
   });
 
   function onSubmit(values: z.infer<typeof accountSchema>) {
     // Map form type values to Account type values
-    const typeMap: Record<string, "Checking" | "Savings" | "Credit Card" | "Wallet"> = {
-      checking: "Checking",
-      savings: "Savings",
-      credit: "Credit Card",
-      wallet: "Wallet",
+    const typeMap: Record<string, 'Checking' | 'Savings' | 'Credit Card' | 'Wallet'> = {
+      checking: 'Checking',
+      savings: 'Savings',
+      credit: 'Credit Card',
+      wallet: 'Wallet',
     };
     const mappedValues: Omit<Account, 'id' | 'userId'> = {
       ...values,

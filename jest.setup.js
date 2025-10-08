@@ -28,3 +28,12 @@ jest.mock('next/navigation', () => ({
     return '';
   },
 }));
+
+// Mock lucide-react to avoid ESM import issues in Jest
+jest.mock('lucide-react', () => {
+  const React = require('react');
+  const Stub = (props) => React.createElement('svg', props, null);
+  return new Proxy({ default: Stub }, {
+    get: (target, prop) => target[prop] || Stub,
+  });
+});

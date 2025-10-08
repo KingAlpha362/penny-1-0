@@ -1,7 +1,7 @@
 
-"use client";
+'use client';
 
-import type { FC } from "react";
+import type { FC } from 'react';
 import {
   Area,
   AreaChart,
@@ -10,16 +10,16 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from "recharts";
+} from 'recharts';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import type { Transaction } from "@/lib/types";
-import { useMemo } from "react";
-import { format } from "date-fns";
+} from '@/components/ui/card';
+import type { Transaction } from '@/lib/types';
+import { useMemo } from 'react';
+import { format } from 'date-fns';
 
 interface SpendingChartProps {
   transactions: Transaction[];
@@ -31,19 +31,35 @@ const processChartData = (transactions: Transaction[]) => {
   let runningBalance = 0;
   
   const sortedTransactions = [...transactions].sort((a,b) => {
-    const dateA = a.date?.toDate() || 0;
-    const dateB = b.date?.toDate() || 0;
-    if (dateA > dateB) return 1;
-    if (dateA < dateB) return -1;
+    const getDate = (d: string | Date | any) => {
+      if (!d) {return 0;}
+      if (typeof d === 'string') {return new Date(d).getTime();}
+      if (d instanceof Date) {return d.getTime();}
+      if (typeof d.toDate === 'function') {return d.toDate().getTime();}
+      return 0;
+    };
+
+    const dateA = getDate(a.date);
+    const dateB = getDate(b.date);
+    if (dateA > dateB) {return 1;}
+    if (dateA < dateB) {return -1;}
     return 0;
   });
 
   sortedTransactions.forEach((transaction) => {
-    const transactionDate = transaction.date?.toDate();
-    if (!transactionDate) return;
-    
+    const getDateObj = (d: string | Date | any): Date | null => {
+      if (!d) {return null;}
+      if (typeof d === 'string') {return new Date(d);}
+      if (d instanceof Date) {return d;}
+      if (typeof d.toDate === 'function') {return d.toDate();}
+      return null;
+    };
+
+    const transactionDate = getDateObj(transaction.date);
+    if (!transactionDate) {return;}
+
     const month = format(transactionDate, 'MMM');
-    if (transaction.type === "income") {
+    if (transaction.type === 'income') {
       runningBalance += transaction.amount;
     } else {
       runningBalance -= transaction.amount;
@@ -51,7 +67,7 @@ const processChartData = (transactions: Transaction[]) => {
     monthlyData[month] = { balance: runningBalance };
   });
 
-  const monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthOrder = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   
   const chartData: { name: string, balance: number }[] = [];
   
@@ -99,9 +115,9 @@ export const SpendingChart: FC<SpendingChartProps> = ({ transactions }) => {
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "hsl(var(--card))",
-                  borderColor: "hsl(var(--border))",
-                  borderRadius: "var(--radius)",
+                  backgroundColor: 'hsl(var(--card))',
+                  borderColor: 'hsl(var(--border))',
+                  borderRadius: 'var(--radius)',
                 }}
                 formatter={(value: number) => [`$${value.toLocaleString()}`, 'Balance']}
               />

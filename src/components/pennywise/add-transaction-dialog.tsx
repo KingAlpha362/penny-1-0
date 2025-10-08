@@ -1,9 +1,9 @@
 
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -20,30 +20,31 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { transactionCategories } from "@/lib/data";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+} from '@/components/ui/select';
+import { transactionCategories } from '@/lib/data';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { CalendarIcon } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 interface AddTransactionDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onTransactionAdded: (transaction: Omit<FormData, 'id' | 'userId'>) => void;
+  // Allow the parent to accept the form data without lifecycle fields (createdAt/updatedAt)
+  onTransactionAdded: (transaction: Omit<FormData, 'id' | 'userId'> & Partial<Pick<FormData, 'date'>>) => void;
 }
 
 import { transactionSchema } from '@/lib/validations';
@@ -60,14 +61,14 @@ export function AddTransactionDialog({
   const form = useForm<FormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      type: "expense",
+      type: 'expense',
       amount: 0,
-      description: "",
-      category: "other_expense",
+      description: '',
+      category: 'other_expense',
       date: new Date().toISOString(),
       recurring: false,
       tags: [],
-      notes: "",
+      notes: '',
     },
   });
 
@@ -182,12 +183,12 @@ export function AddTransactionDialog({
                         <Button
                           variant="outline"
                           className={cn(
-                            "w-[240px] pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            'w-[240px] pl-3 text-left font-normal',
+                            !field.value && 'text-muted-foreground'
                           )}
                         >
                           {field.value ? (
-                            format(new Date(field.value), "PPP")
+                            format(new Date(field.value), 'PPP')
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -232,7 +233,7 @@ export function AddTransactionDialog({
               )}
             />
 
-            {form.watch("recurring") && (
+            {form.watch('recurring') && (
               <FormField
                 control={form.control}
                 name="recurringFrequency"

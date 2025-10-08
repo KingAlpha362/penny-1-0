@@ -1,6 +1,6 @@
 
 
-"use client"
+'use client';
 
 import {
   Card,
@@ -8,8 +8,8 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import {
   TrendingUp,
   TrendingDown,
@@ -19,7 +19,7 @@ import {
   ShoppingCart,
   Home,
   HelpCircle,
-} from "lucide-react"
+} from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -31,120 +31,120 @@ import {
   PieChart,
   Pie,
   Cell,
-} from "recharts"
-import { transactions } from "@/lib/data"
-import Link from "next/link"
-import { useMemo } from "react"
-import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
-import { Calendar } from "@/components/ui/calendar"
+} from 'recharts';
+import { transactions } from '@/lib/data';
+import Link from 'next/link';
+import { useMemo } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { Calendar } from '@/components/ui/calendar';
 
 const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(value)
-}
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(value);
+};
 
 const COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-]
+  'hsl(var(--chart-1))',
+  'hsl(var(--chart-2))',
+  'hsl(var(--chart-3))',
+  'hsl(var(--chart-4))',
+  'hsl(var(--chart-5))',
+];
 
 export default function CashFlowPage() {
   const { income, expenses, balance } = useMemo(() => {
     const income = transactions
-      .filter(t => t.type === "income")
-      .reduce((acc, t) => acc + t.amount, 0)
+      .filter(t => t.type === 'income')
+      .reduce((acc, t) => acc + t.amount, 0);
     const expenses = transactions
-      .filter(t => t.type === "expense")
-      .reduce((acc, t) => acc + t.amount, 0)
-    const balance = income - expenses
-    return { income, expenses, balance }
-  }, [])
+      .filter(t => t.type === 'expense')
+      .reduce((acc, t) => acc + t.amount, 0);
+    const balance = income - expenses;
+    return { income, expenses, balance };
+  }, []);
 
-  const safeToSpend = balance * 0.4 // Simplified calculation
+  const safeToSpend = balance * 0.4; // Simplified calculation
 
   const cashFlowData = useMemo(() => {
-    const data: { [key: string]: number } = {}
+    const data: { [key: string]: number } = {};
     transactions.forEach(t => {
-      const month = new Date(t.date).toLocaleString("default", {
-        month: "short",
-      })
-      if (!data[month]) data[month] = 0
-      data[month] += t.type === "income" ? t.amount : -t.amount
-    })
+      const month = new Date(t.date).toLocaleString('default', {
+        month: 'short',
+      });
+      if (!data[month]) {data[month] = 0;}
+      data[month] += t.type === 'income' ? t.amount : -t.amount;
+    });
 
-    let accumulatedFlow = 0
+    let accumulatedFlow = 0;
     return Object.entries(data)
       .sort(
         (a, b) =>
-          new Date(Date.parse(a[0] + " 1, 2022")).getTime() -
-          new Date(Date.parse(b[0] + " 1, 2022")).getTime()
+          new Date(Date.parse(a[0] + ' 1, 2022')).getTime() -
+          new Date(Date.parse(b[0] + ' 1, 2022')).getTime()
       )
       .map(([name, value]) => {
-        accumulatedFlow += value
-        return { name, netFlow: accumulatedFlow }
-      })
-  }, [])
+        accumulatedFlow += value;
+        return { name, netFlow: accumulatedFlow };
+      });
+  }, []);
 
   const spendingBreakdown = useMemo(() => {
-    const categorySpending: { [key: string]: number } = {}
+    const categorySpending: { [key: string]: number } = {};
     transactions
-      .filter(t => t.type === "expense")
+      .filter(t => t.type === 'expense')
       .forEach(t => {
         if (!categorySpending[t.category]) {
-          categorySpending[t.category] = 0
+          categorySpending[t.category] = 0;
         }
-        categorySpending[t.category] += t.amount
-      })
+        categorySpending[t.category] += t.amount;
+      });
     return Object.entries(categorySpending).map(([name, value]) => ({
       name,
       value,
-    }))
-  }, [])
+    }));
+  }, []);
 
   const upcomingBills = [
     {
       icon: Receipt,
-      name: "Electricity Bill",
-      dueDate: "July 25th",
+      name: 'Electricity Bill',
+      dueDate: 'July 25th',
       amount: -150.0,
-      iconColor: "text-blue-500",
-      bgColor: "bg-blue-500/10",
+      iconColor: 'text-blue-500',
+      bgColor: 'bg-blue-500/10',
       date: new Date(2024, 6, 25)
     },
     {
       icon: ShoppingCart,
-      name: "Groceries",
-      dueDate: "July 28th",
+      name: 'Groceries',
+      dueDate: 'July 28th',
       amount: -200.0,
-      iconColor: "text-purple-500",
-      bgColor: "bg-purple-500/10",
+      iconColor: 'text-purple-500',
+      bgColor: 'bg-purple-500/10',
       date: new Date(2024, 6, 28)
     },
     {
       icon: Home,
-      name: "Rent Payment",
-      dueDate: "August 1st",
+      name: 'Rent Payment',
+      dueDate: 'August 1st',
       amount: -800.0,
-      iconColor: "text-green-500",
-      bgColor: "bg-green-500/10",
+      iconColor: 'text-green-500',
+      bgColor: 'bg-green-500/10',
       date: new Date(2024, 7, 1)
     },
     {
       icon: TrendingUp,
-      name: "Payday",
-      dueDate: "August 1st",
+      name: 'Payday',
+      dueDate: 'August 1st',
       amount: 2500.0,
-      iconColor: "text-success",
-      bgColor: "bg-success/10",
+      iconColor: 'text-success',
+      bgColor: 'bg-success/10',
       date: new Date(2024, 7, 1)
     }
-  ]
+  ];
 
   return (
     <div className="flex flex-col flex-1">
@@ -204,7 +204,7 @@ export default function CashFlowPage() {
               <CalendarIcon className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <p className={cn("text-2xl font-bold", balance >=0 ? "text-success" : "text-destructive")}>
+              <p className={cn('text-2xl font-bold', balance >=0 ? 'text-success' : 'text-destructive')}>
                 {formatCurrency(balance)}
               </p>
             </CardContent>
@@ -223,7 +223,7 @@ export default function CashFlowPage() {
                         selected={upcomingBills.map(bill => bill.date)}
                         className="p-0"
                         classNames={{
-                            day_selected: "bg-primary/10 text-primary hover:bg-primary/20",
+                            day_selected: 'bg-primary/10 text-primary hover:bg-primary/20',
                         }}
                         components={{
                             DayContent: (props) => {
@@ -231,9 +231,9 @@ export default function CashFlowPage() {
                                 return (
                                     <div className="relative">
                                         {props.date.getDate()}
-                                        {dayBills.length > 0 && <div className={cn("absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full", dayBills.some(b => b.amount < 0) ? 'bg-destructive' : 'bg-success')}></div>}
+                                        {dayBills.length > 0 && <div className={cn('absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full', dayBills.some(b => b.amount < 0) ? 'bg-destructive' : 'bg-success')}></div>}
                                     </div>
-                                )
+                                );
                             }
                         }}
                     />
@@ -255,11 +255,11 @@ export default function CashFlowPage() {
                   <div className="flex items-center gap-3">
                     <div
                       className={cn(
-                        "p-2 rounded-lg",
+                        'p-2 rounded-lg',
                         bill.bgColor
                       )}
                     >
-                      <bill.icon className={cn("h-5 w-5", bill.iconColor)} />
+                      <bill.icon className={cn('h-5 w-5', bill.iconColor)} />
                     </div>
                     <div>
                       <p className="font-medium">{bill.name}</p>
@@ -295,7 +295,7 @@ export default function CashFlowPage() {
                         dataKey="netFlow"
                         stroke="hsl(var(--primary))"
                         strokeWidth={2}
-                        dot={{ r: 4, fill: "hsl(var(--primary))" }}
+                        dot={{ r: 4, fill: 'hsl(var(--primary))' }}
                         />
                     </LineChart>
                     </ResponsiveContainer>
@@ -346,5 +346,5 @@ export default function CashFlowPage() {
         
       </main>
     </div>
-  )
+  );
 }

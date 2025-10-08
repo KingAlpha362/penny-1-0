@@ -136,7 +136,7 @@ class MockBankingService {
   } = {}): Promise<Transaction[]> {
     await this.delay();
     const account = await this.getAccount(accountId);
-    if (!account) return [];
+    if (!account) {return [];}
 
     let transactions = [...account.transactions];
 
@@ -175,7 +175,7 @@ class MockBankingService {
     count: number;
   }[]> {
     const account = await this.getAccount(accountId);
-    if (!account) return [];
+    if (!account) {return [];}
 
     const now = new Date();
     const startDate = new Date();
@@ -220,7 +220,7 @@ class MockBankingService {
     nextDate: Date;
   }[]> {
     const account = await this.getAccount(accountId);
-    if (!account) return [];
+    if (!account) {return [];}
 
     // Group transactions by merchant
     const byMerchant = account.transactions.reduce((acc, t) => {
@@ -235,7 +235,7 @@ class MockBankingService {
 
     // Analyze each merchant's transactions for patterns
     Object.entries(byMerchant).forEach(([merchant, transactions]) => {
-      if (transactions.length < 2) return;
+      if (transactions.length < 2) {return;}
 
       const sortedDates = transactions
         .map(t => t.date.getTime())

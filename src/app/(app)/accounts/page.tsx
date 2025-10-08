@@ -8,9 +8,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PlusCircle, MoreHorizontal } from "lucide-react";
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, MoreHorizontal } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -18,16 +18,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { BankLogo } from "@/components/pennywise/bank-logo";
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
+import { BankLogo } from '@/components/pennywise/bank-logo';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, query } from 'firebase/firestore';
 import { useState, useMemo } from 'react';
@@ -44,9 +44,9 @@ export type Account = {
 };
 
 const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
   }).format(value);
 };
 
@@ -56,19 +56,19 @@ export default function AccountsPage() {
   const [isAddAccountOpen, setAddAccountOpen] = useState(false);
 
   const accountsQuery = useMemoFirebase(() => {
-    if (!firestore || !user?.uid) return null;
+    if (!firestore || !user?.uid) {return null;}
     return query(collection(firestore, `users/${user.uid}/accounts`));
   }, [firestore, user?.uid]);
 
   const { data: accounts, isLoading } = useCollection<Account>(accountsQuery);
 
   const totalBalance = useMemo(() => {
-    if (!accounts) return 0;
+    if (!accounts) {return 0;}
     return accounts.reduce((acc, account) => acc + account.balance, 0);
   }, [accounts]);
 
   const handleAddAccount = (newAccount: Omit<Account, 'id' | 'userId'>) => {
-    if (!firestore || !user?.uid) return;
+    if (!firestore || !user?.uid) {return;}
     const accountRef = collection(firestore, `users/${user.uid}/accounts`);
     addDocumentNonBlocking(accountRef, {
       ...newAccount,
@@ -102,8 +102,8 @@ export default function AccountsPage() {
               </CardHeader>
               <CardContent>
                   <p className={cn(
-                      "text-4xl font-bold",
-                      totalBalance >= 0 ? "text-success" : "text-destructive"
+                      'text-4xl font-bold',
+                      totalBalance >= 0 ? 'text-success' : 'text-destructive'
                   )}>
                       {formatCurrency(totalBalance)}
                   </p>
@@ -144,7 +144,7 @@ export default function AccountsPage() {
                       <TableCell>
                         <Badge variant="outline">{account.type}</Badge>
                       </TableCell>
-                      <TableCell className={cn("text-right font-semibold", account.balance >= 0 ? "text-success" : "text-destructive")}>
+                      <TableCell className={cn('text-right font-semibold', account.balance >= 0 ? 'text-success' : 'text-destructive')}>
                           {formatCurrency(account.balance)}
                       </TableCell>
                       <TableCell className="text-right">

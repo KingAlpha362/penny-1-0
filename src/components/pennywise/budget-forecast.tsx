@@ -1,11 +1,11 @@
 
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { TrendingUp } from "lucide-react";
-import type { Budget } from "@/app/(app)/budgets/page";
-import type { Transaction } from "@/lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { TrendingUp } from 'lucide-react';
+import type { Budget } from '@/app/(app)/budgets/page';
+import type { Transaction } from '@/lib/types';
 
 interface BudgetForecastProps {
     budgets: Budget[];
@@ -55,7 +55,7 @@ export function BudgetForecast({ budgets, transactions }: BudgetForecastProps) {
                         <span className="font-medium text-muted-foreground">{budget.category}</span>
                         <span className="font-medium text-primary">{formatCurrency(projected)}</span>
                     </div>
-                )
+                );
             })}
         </div>
         <p className="text-sm text-success font-medium mt-4">

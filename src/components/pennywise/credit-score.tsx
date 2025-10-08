@@ -15,7 +15,7 @@ export function CreditScore() {
 
   useEffect(() => {
     const fetchCreditScore = async () => {
-      if (!user?.uid) return;
+      if (!user?.uid) {return;}
       try {
         const data = await financialApi.getCreditScore(user.uid);
         setCreditData(data);
@@ -30,15 +30,15 @@ export function CreditScore() {
   }, [user?.uid]);
 
   const getScoreColor = (score: number) => {
-    if (score >= 740) return 'text-green-500';
-    if (score >= 670) return 'text-yellow-500';
+    if (score >= 740) {return 'text-green-500';}
+    if (score >= 670) {return 'text-yellow-500';}
     return 'text-red-500';
   };
 
   const getScoreRange = (score: number) => {
-    if (score >= 740) return 'Excellent';
-    if (score >= 670) return 'Good';
-    if (score >= 580) return 'Fair';
+    if (score >= 740) {return 'Excellent';}
+    if (score >= 670) {return 'Good';}
+    if (score >= 580) {return 'Fair';}
     return 'Poor';
   };
 

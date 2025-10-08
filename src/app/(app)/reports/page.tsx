@@ -1,18 +1,18 @@
 
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMemo, useState, useEffect } from "react";
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useMemo, useState, useEffect } from 'react';
 import { subDays, format, parseISO } from 'date-fns';
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query } from 'firebase/firestore';
 import type { Transaction } from '@/app/lib/types';
 import { getSpendingSummary } from '@/ai/flows/spending-summary-flow';
-import { Sparkles } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Sparkles } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -38,12 +38,12 @@ function AISummary({ transactions }: { transactions: SerializableTransaction[] }
             getSpendingSummary(transactions)
                 .then(setSummary)
                 .catch(err => {
-                    console.error("Error getting AI summary:", err);
+                    console.error('Error getting AI summary:', err);
                     setSummary("Sorry, I couldn't generate a summary right now.");
                 })
                 .finally(() => setIsLoading(false));
         } else {
-            setSummary("Not enough data to generate a summary. Add some transactions first!");
+            setSummary('Not enough data to generate a summary. Add some transactions first!');
         }
     }, [transactions]);
 
@@ -77,7 +77,7 @@ export default function ReportsPage() {
     const firestore = useFirestore();
 
     const transactionsQuery = useMemoFirebase(() => {
-      if (!firestore || !user?.uid) return null;
+      if (!firestore || !user?.uid) {return null;}
       return query(collection(firestore, `users/${user.uid}/transactions`));
     }, [firestore, user?.uid]);
 
@@ -87,9 +87,9 @@ export default function ReportsPage() {
     const startDate = subDays(new Date(), timeRangeInDays);
 
     const filteredTransactions: SerializableTransaction[] = useMemo(() => {
-      if (!allTransactions) return [];
+      if (!allTransactions) {return [];}
       const filtered = allTransactions.filter(t => {
-        const transactionDate = typeof t.date === "object" && t.date !== null && "toDate" in t.date && typeof (t.date as any).toDate === "function"
+        const transactionDate = typeof t.date === 'object' && t.date !== null && 'toDate' in t.date && typeof (t.date as any).toDate === 'function'
           ? (t.date as { toDate: () => Date }).toDate()
           : new Date(t.date as string | Date);
         return transactionDate && transactionDate >= startDate;
@@ -98,10 +98,10 @@ export default function ReportsPage() {
       return filtered.map(t => ({
           ...t,
           date:
-            typeof t.date === "object" &&
+            typeof t.date === 'object' &&
             t.date !== null &&
-            "toDate" in t.date &&
-            typeof (t.date as any).toDate === "function"
+            'toDate' in t.date &&
+            typeof (t.date as any).toDate === 'function'
               ? (t.date as { toDate: () => Date }).toDate().toISOString()
               : new Date(t.date as string | Date).toISOString(),
       }));
@@ -127,7 +127,7 @@ export default function ReportsPage() {
         const data: {[key: string]: number} = {};
         
         filteredTransactions.forEach(t => {
-            if (!t.date) return;
+            if (!t.date) {return;}
             const transactionDate = parseISO(t.date);
 
             if (t.type === 'income') {
@@ -138,14 +138,14 @@ export default function ReportsPage() {
                     key = format(transactionDate, 'MMM yyyy');
                 }
                 
-                if (!data[key]) data[key] = 0;
+                if (!data[key]) {data[key] = 0;}
                 data[key] += t.amount;
             }
         });
         
         const sortedKeys = Object.keys(data).sort((a,b) => {
-             const dateA = timeRangeInDays <= 90 ? new Date(a + ", " + new Date().getFullYear()) : new Date(a);
-             const dateB = timeRangeInDays <= 90 ? new Date(b + ", " + new Date().getFullYear()) : new Date(b);
+             const dateA = timeRangeInDays <= 90 ? new Date(a + ', ' + new Date().getFullYear()) : new Date(a);
+             const dateB = timeRangeInDays <= 90 ? new Date(b + ', ' + new Date().getFullYear()) : new Date(b);
              return dateA.getTime() - dateB.getTime();
         });
         
@@ -157,22 +157,22 @@ export default function ReportsPage() {
     }, [filteredTransactions, timeRangeInDays]);
 
     const netWorthData = useMemo(() => {
-        if (!allTransactions) return [];
+        if (!allTransactions) {return [];}
         const data: {[key: string]: {income: number, expense: number}} = {};
         const twelveMonthsAgo = subDays(new Date(), 365);
         
         allTransactions.forEach(t => {
             const transactionDate =
-                typeof t.date === "object" &&
+                typeof t.date === 'object' &&
                 t.date !== null &&
-                "toDate" in t.date &&
-                typeof (t.date as any).toDate === "function"
+                'toDate' in t.date &&
+                typeof (t.date as any).toDate === 'function'
                     ? (t.date as { toDate: () => Date }).toDate()
                     : new Date(t.date as string | Date);
             if (transactionDate && transactionDate > twelveMonthsAgo) {
                 const month = format(transactionDate, 'yyyy-MMM');
-                 if (!data[month]) data[month] = { income: 0, expense: 0 };
-                 data[month][t.type as "income" | "expense"] += t.amount;
+                 if (!data[month]) {data[month] = { income: 0, expense: 0 };}
+                 data[month][t.type as 'income' | 'expense'] += t.amount;
             }
         });
 

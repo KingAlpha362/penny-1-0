@@ -1,16 +1,16 @@
 
-"use client";
+'use client';
 
-import { useState, useMemo } from "react";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
-import { BudgetCard } from "@/components/pennywise/budget-card";
-import { AddBudgetCard } from "@/components/pennywise/add-budget-card";
-import { CreateBudgetDialog } from "@/components/pennywise/create-budget-dialog";
-import { BudgetForecast } from "@/components/pennywise/budget-forecast";
+import { useState, useMemo } from 'react';
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
+import { BudgetCard } from '@/components/pennywise/budget-card';
+import { AddBudgetCard } from '@/components/pennywise/add-budget-card';
+import { CreateBudgetDialog } from '@/components/pennywise/create-budget-dialog';
+import { BudgetForecast } from '@/components/pennywise/budget-forecast';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, query, serverTimestamp } from 'firebase/firestore';
-import type { Transaction } from "@/lib/types";
+import type { Transaction } from '@/lib/types';
 
 export type Budget = {
   id: string;
@@ -25,21 +25,21 @@ export default function BudgetsPage() {
   const [isCreateBudgetOpen, setCreateBudgetOpen] = useState(false);
 
   const budgetsQuery = useMemoFirebase(() => {
-    if (!firestore || !user?.uid) return null;
+    if (!firestore || !user?.uid) {return null;}
     return query(collection(firestore, `users/${user.uid}/budgets`));
   }, [firestore, user?.uid]);
 
   const { data: budgets, isLoading: isBudgetsLoading } = useCollection<Budget>(budgetsQuery);
 
   const transactionsQuery = useMemoFirebase(() => {
-    if (!firestore || !user?.uid) return null;
+    if (!firestore || !user?.uid) {return null;}
     return query(collection(firestore, `users/${user.uid}/transactions`));
   }, [firestore, user?.uid]);
 
   const { data: transactions, isLoading: isTransactionsLoading } = useCollection<Transaction>(transactionsQuery);
 
   const handleCreateBudget = (newBudget: Omit<Budget, 'id' | 'userId'>) => {
-    if (!firestore || !user?.uid) return;
+    if (!firestore || !user?.uid) {return;}
     const budgetRef = collection(firestore, `users/${user.uid}/budgets`);
     addDocumentNonBlocking(budgetRef, {
       ...newBudget,
@@ -48,7 +48,7 @@ export default function BudgetsPage() {
   };
 
   const getSpentAmount = (category: string) => {
-    if (!transactions) return 0;
+    if (!transactions) {return 0;}
     return transactions
       .filter(t => t.category === category && t.type === 'expense')
       .reduce((acc, t) => acc + t.amount, 0);

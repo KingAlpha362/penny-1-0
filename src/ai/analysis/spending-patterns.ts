@@ -1,5 +1,5 @@
 import { format, isWithinInterval, subMonths } from 'date-fns';
-import type { Transaction } from '../../lib/types';
+import type { Transaction } from '@/lib/types';
 
 type SpendingPattern = {
     category: string;
@@ -14,7 +14,17 @@ type SpendingTrend = {
     percentage: number;
 };
 
-export function analyzeSpendingPatterns(transactions: Transaction[]): {
+type TxLike = {
+    id?: string;
+    userId?: string;
+    type?: Transaction['type'];
+    amount: number;
+    category: string;
+    date: string | Date;
+    description?: string;
+};
+
+export function analyzeSpendingPatterns(transactions: TxLike[]): {
     patterns: SpendingPattern[];
     trends: SpendingTrend[];
     suggestions: string[];
@@ -24,11 +34,16 @@ export function analyzeSpendingPatterns(transactions: Transaction[]): {
     const twoMonthsAgo = subMonths(now, 2);
 
     // Group transactions by category
-    const byCategory = transactions.reduce((acc, t) => {
+    // Normalize transactions: filter out entries missing required fields
+    const normalized = transactions
+        .filter((t): t is TxLike => t && typeof t.amount === 'number' && !!t.category && !!t.date)
+        .map(t => ({ ...t, date: t.date }));
+
+    const byCategory = normalized.reduce((acc, t) => {
         if (!acc[t.category]) {
             acc[t.category] = [];
         }
-        acc[t.category].push(t);
+        acc[t.category].push(t as TxLike as Transaction);
         return acc;
     }, {} as Record<string, Transaction[]>);
 
@@ -64,6 +79,18 @@ export function analyzeSpendingPatterns(transactions: Transaction[]): {
 }
 
 function detectPattern(transactions: Transaction[]): SpendingPattern | null {
+    if (!transactions || transactions.length === 0) {return null;}
+
+    // If there's only one transaction, we can't detect a repeating pattern
+    if (transactions.length < 2) {
+        return {
+            category: transactions[0].category,
+            frequency: 'monthly',
+            averageAmount: transactions[0].amount,
+            confidence: 50,
+        };
+    }
+
     // Sort transactions by date
     const sortedTxs = transactions.slice().sort((a, b) => {
         const dateA = new Date(a.date);
@@ -80,8 +107,8 @@ function detectPattern(transactions: Transaction[]): SpendingPattern | null {
     }
 
     // Calculate average interval and amount
-    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    const avgAmount = sortedTxs.reduce((sum, tx) => sum + tx.amount, 0) / sortedTxs.length;
+    const avgInterval = intervals.length ? intervals.reduce((a, b) => a + b, 0) / intervals.length : Number.MAX_SAFE_INTEGER;
+    const avgAmount = sortedTxs.length ? sortedTxs.reduce((sum, tx) => sum + tx.amount, 0) / sortedTxs.length : 0;
 
     // Determine frequency based on average interval
     let frequency: 'daily' | 'weekly' | 'monthly';
@@ -118,7 +145,7 @@ function analyzeTrend(
         .filter(t => isWithinInterval(new Date(t.date), { start: twoMonthsAgo, end: lastMonth }))
         .reduce((sum, tx) => sum + tx.amount, 0);
 
-    if (currentMonthTotal === 0 || lastMonthTotal === 0) return null;
+    if (currentMonthTotal === 0 || lastMonthTotal === 0) {return null;}
 
     const percentageChange = ((currentMonthTotal - lastMonthTotal) / lastMonthTotal) * 100;
 

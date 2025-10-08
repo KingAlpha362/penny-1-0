@@ -28,7 +28,7 @@ export const OverviewCards: FC<OverviewCardsProps> = ({ balance, income, expense
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className={cn("text-3xl font-bold", balance >= 0 ? "text-success" : "text-destructive")}>{formatCurrency(balance)}</div>
+            <div className={cn('text-3xl font-bold', balance >= 0 ? 'text-success' : 'text-destructive')}>{formatCurrency(balance)}</div>
           </CardContent>
         </Card>
         <Card>

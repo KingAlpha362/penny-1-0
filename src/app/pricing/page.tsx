@@ -1,8 +1,8 @@
 
-import { PennywiseLogo } from "@/components/icons/pennywise-logo";
-import { Check, ChevronDown } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { PennywiseLogo } from '@/components/icons/pennywise-logo';
+import { Check, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const CheckIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">

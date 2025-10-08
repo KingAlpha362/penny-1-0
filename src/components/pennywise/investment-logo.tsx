@@ -1,5 +1,5 @@
 
-"use client";
+'use client';
 
 import { cn } from '@/lib/utils';
 import { Apple, Bitcoin, Landmark } from 'lucide-react';
@@ -27,7 +27,7 @@ interface InvestmentLogoProps {
 export function InvestmentLogo({ symbol, className }: InvestmentLogoProps) {
   const Icon = iconMap[symbol as keyof typeof iconMap] || iconMap['default'];
   return (
-    <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg bg-muted", className)}>
+    <div className={cn('flex h-10 w-10 items-center justify-center rounded-lg bg-muted', className)}>
       {Icon}
     </div>
   );

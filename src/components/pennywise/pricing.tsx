@@ -1,54 +1,54 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Check } from 'lucide-react';
 
 const tiers = [
   {
-    name: "Free",
-    price: "$0",
-    description: "Perfect for getting started with personal finance tracking",
+    name: 'Free',
+    price: '$0',
+    description: 'Perfect for getting started with personal finance tracking',
     features: [
-      "Connect up to 2 bank accounts",
-      "Basic expense tracking",
-      "Monthly spending reports",
-      "Simple budgeting tools",
-      "Limited transaction history",
+      'Connect up to 2 bank accounts',
+      'Basic expense tracking',
+      'Monthly spending reports',
+      'Simple budgeting tools',
+      'Limited transaction history',
     ],
-    cta: "Get Started",
+    cta: 'Get Started',
     mostPopular: false,
   },
   {
-    name: "Pro",
-    price: "$9.99/month",
-    description: "Advanced features for serious financial planning",
+    name: 'Pro',
+    price: '$9.99/month',
+    description: 'Advanced features for serious financial planning',
     features: [
-      "Unlimited bank accounts",
-      "Real-time investment tracking",
-      "AI-powered insights",
-      "Credit score monitoring",
-      "Advanced analytics",
-      "Custom categories",
-      "Unlimited history",
-      "Priority support",
+      'Unlimited bank accounts',
+      'Real-time investment tracking',
+      'AI-powered insights',
+      'Credit score monitoring',
+      'Advanced analytics',
+      'Custom categories',
+      'Unlimited history',
+      'Priority support',
     ],
-    cta: "Start Free Trial",
+    cta: 'Start Free Trial',
     mostPopular: true,
   },
   {
-    name: "Family",
-    price: "$14.99/month",
-    description: "Manage finances for the whole family",
+    name: 'Family',
+    price: '$14.99/month',
+    description: 'Manage finances for the whole family',
     features: [
-      "Everything in Pro",
-      "Up to 5 family members",
-      "Shared accounts",
-      "Family budgeting",
-      "Bill splitting",
-      "Teen accounts",
-      "Spending allowances",
-      "Family financial goals",
+      'Everything in Pro',
+      'Up to 5 family members',
+      'Shared accounts',
+      'Family budgeting',
+      'Bill splitting',
+      'Teen accounts',
+      'Spending allowances',
+      'Family financial goals',
     ],
-    cta: "Start Free Trial",
+    cta: 'Start Free Trial',
     mostPopular: false,
   },
 ];
@@ -74,7 +74,7 @@ function PricingCard({ tier }: PricingCardProps) {
         <h3 className="text-2xl font-bold">{tier.name}</h3>
         <div className="mt-2">
           <span className="text-4xl font-bold">{tier.price}</span>
-          {tier.price !== "$0" && (
+          {tier.price !== '$0' && (
             <span className="text-muted-foreground">/month</span>
           )}
         </div>
@@ -90,7 +90,7 @@ function PricingCard({ tier }: PricingCardProps) {
         ))}
       </div>
 
-      <Button className="w-full" variant={tier.mostPopular ? "default" : "outline"}>
+      <Button className="w-full" variant={tier.mostPopular ? 'default' : 'outline'}>
         {tier.cta}
       </Button>
     </Card>

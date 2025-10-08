@@ -35,14 +35,14 @@ export function InvestmentAnalysis({ investments }: InvestmentAnalysisProps) {
   const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
 
   const getSentimentColor = (score?: number) => {
-    if (!score) return 'text-muted-foreground';
-    if (score >= 70) return 'text-green-500';
-    if (score >= 40) return 'text-yellow-500';
+    if (!score) {return 'text-muted-foreground';}
+    if (score >= 70) {return 'text-green-500';}
+    if (score >= 40) {return 'text-yellow-500';}
     return 'text-red-500';
   };
 
   const getPerformanceIndicator = (value?: number) => {
-    if (typeof value !== 'number') return <span className="text-muted-foreground">N/A</span>;
+    if (typeof value !== 'number') {return <span className="text-muted-foreground">N/A</span>;}
     const color = value >= 0 ? 'text-green-500' : 'text-red-500';
     const arrow = value >= 0 ? '↑' : '↓';
     return (

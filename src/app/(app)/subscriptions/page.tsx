@@ -1,6 +1,6 @@
 
 
-"use client";
+'use client';
 
 import {
   Table,
@@ -9,14 +9,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { activeSubscriptions, inactiveSubscriptions } from "@/lib/data";
-import { PlusCircle, Info, Edit } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { activeSubscriptions, inactiveSubscriptions } from '@/lib/data';
+import { PlusCircle, Info, Edit } from 'lucide-react';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat('en-US', {

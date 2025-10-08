@@ -1,17 +1,17 @@
 
 
-"use client";
+'use client';
 
-import { investments } from "@/lib/data";
+import { investments } from '@/lib/data';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PlusCircle, MoreHorizontal, ArrowUp, ArrowDown } from "lucide-react";
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, MoreHorizontal, ArrowUp, ArrowDown } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -19,15 +19,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 import {
   LineChart,
   Line,
@@ -36,13 +36,13 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import { InvestmentLogo } from "@/components/pennywise/investment-logo";
+} from 'recharts';
+import { InvestmentLogo } from '@/components/pennywise/investment-logo';
 
 const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
   }).format(value);
 };
 
@@ -93,7 +93,7 @@ export default function InvestmentsPage() {
                     <CardTitle>Today's Change</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className={cn("text-3xl font-bold", totalChange >= 0 ? "text-success" : "text-destructive")}>
+                    <p className={cn('text-3xl font-bold', totalChange >= 0 ? 'text-success' : 'text-destructive')}>
                         {totalChange >= 0 ? '+' : ''}{formatCurrency(totalChange)}
                     </p>
                 </CardContent>
@@ -103,7 +103,7 @@ export default function InvestmentsPage() {
                     <CardTitle>Today's Change %</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className={cn("text-3xl font-bold", totalChangePercent >= 0 ? "text-success" : "text-destructive")}>
+                    <p className={cn('text-3xl font-bold', totalChangePercent >= 0 ? 'text-success' : 'text-destructive')}>
                         {totalChangePercent >= 0 ? '+' : ''}{totalChangePercent.toFixed(2)}%
                     </p>
                 </CardContent>
@@ -122,7 +122,7 @@ export default function InvestmentsPage() {
                         <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
                         <YAxis fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => formatCurrency(Number(value))} />
                         <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                        <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 4, fill: "hsl(var(--primary))" }} />
+                        <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 4, fill: 'hsl(var(--primary))' }} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
@@ -161,7 +161,7 @@ export default function InvestmentsPage() {
                     <TableCell className="text-right">{formatCurrency(investment.price)}</TableCell>
                     <TableCell className="text-right">{investment.quantity}</TableCell>
                     <TableCell className="text-right font-semibold">{formatCurrency(investment.value)}</TableCell>
-                    <TableCell className={cn("text-right font-semibold flex justify-end items-center gap-2", investment.change >= 0 ? "text-success" : "text-destructive")}>
+                    <TableCell className={cn('text-right font-semibold flex justify-end items-center gap-2', investment.change >= 0 ? 'text-success' : 'text-destructive')}>
                         {investment.change >= 0 ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
                         {formatCurrency(investment.change)} ({investment.changePercent.toFixed(2)}%)
                     </TableCell>

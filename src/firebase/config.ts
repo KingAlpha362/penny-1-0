@@ -8,6 +8,6 @@ export const firebaseConfig = {
   appId: env.NEXT_PUBLIC_FIREBASE_APP_ID,
   apiKey: env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  measurementId: "",
+  measurementId: '',
   messagingSenderId: env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
 };

@@ -79,7 +79,7 @@ export const budgetSchema = z.object({
     .optional()
     .refine(
       (date) => {
-        if (!date) return true;
+        if (!date) {return true;}
         return new Date(date) > new Date();
       },
       'End date must be in the future'
@@ -136,5 +136,5 @@ export const registrationSchema = z.object({
     .min(1, 'Please confirm your password'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
-  path: ["confirmPassword"],
+  path: ['confirmPassword'],
 });

@@ -1,5 +1,5 @@
 
-"use client";
+'use client';
 
 import {
   Dialog,
@@ -7,9 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { CreateBudgetForm } from "./create-budget-form";
-import type { Budget } from "@/app/(app)/budgets/page";
+} from '@/components/ui/dialog';
+import { CreateBudgetForm } from './create-budget-form';
+import type { Budget } from '@/app/(app)/budgets/page';
 
 interface CreateBudgetDialogProps {
   isOpen: boolean;

@@ -16,9 +16,9 @@ import type { Transaction } from '@/lib/types'; // Adjust this path if your type
 // Define the input schema for the flow, expecting an array of transactions.
 const SpendingSummaryInputSchema = z.array(z.object({
     id: z.string(),
-    date: z.string().describe("The date of the transaction as an ISO string."),
+    date: z.string().describe('The date of the transaction as an ISO string.'),
     category: z.string(),
-    description: z.string(),
+    description: z.string().optional(),
     amount: z.number(),
     type: z.enum(['income', 'expense']),
     userId: z.string(),
@@ -94,7 +94,7 @@ export async function getSpendingSummary(transactions: SerializableTransaction[]
         id: t.id,
         date: t.date,
         category: t.category,
-        description: t.description,
+        description: t.description ?? '',
         amount: t.amount,
         type: t.type,
         userId: t.userId,

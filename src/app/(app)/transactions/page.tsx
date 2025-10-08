@@ -1,7 +1,7 @@
 
-"use client";
+'use client';
 
-import { useState, useMemo } from "react";
+import { useState, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -9,16 +9,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,20 +28,22 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
   ChevronDown,
   PlusCircle,
   Search,
-} from "lucide-react";
-import { transactionCategories } from "@/lib/data";
-import { AddTransactionDialog } from "@/components/pennywise/add-transaction-dialog";
-import { cn } from "@/lib/utils";
+} from 'lucide-react';
+import { transactionCategories } from '@/lib/data';
+import { AddTransactionDialog } from '@/components/pennywise/add-transaction-dialog';
+import { cn } from '@/lib/utils';
+import { transactionSchema } from '@/lib/validations';
+import type { z } from 'zod';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, query, orderBy, serverTimestamp } from 'firebase/firestore';
-import { format } from "date-fns";
-import type { Transaction } from "@/lib/types";
+import { format } from 'date-fns';
+import type { Transaction } from '@/lib/types';
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -58,21 +60,21 @@ const formatDate = (timestamp: any) => {
   if (typeof timestamp === 'string') {
     return format(new Date(timestamp), 'MMM dd, yyyy');
   }
-  return "Invalid date";
-}
+  return 'Invalid date';
+};
 
 export default function TransactionsPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const [isAddTransactionOpen, setAddTransactionOpen] = useState(false);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("desc");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState('all');
 
   const transactionsQuery = useMemoFirebase(() => {
-    if (!firestore || !user?.uid) return null;
+    if (!firestore || !user?.uid) {return null;}
     return query(
       collection(firestore, `users/${user.uid}/transactions`),
       orderBy('date', sortOrder as 'desc' | 'asc')
@@ -81,8 +83,10 @@ export default function TransactionsPage() {
   
   const { data: transactions, isLoading } = useCollection<Transaction>(transactionsQuery);
 
-  const handleAddTransaction = (newTransaction: Omit<Transaction, 'id' | 'userId' | 'date'>) => {
-    if (!firestore || !user?.uid) return;
+  type TransactionForm = z.infer<typeof transactionSchema>;
+
+  const handleAddTransaction = (newTransaction: Omit<TransactionForm, 'id' | 'userId'> & Partial<Pick<TransactionForm, 'date'>>) => {
+    if (!firestore || !user?.uid) {return;}
     
     const transactionRef = collection(firestore, `users/${user.uid}/transactions`);
     addDocumentNonBlocking(transactionRef, {
@@ -93,13 +97,13 @@ export default function TransactionsPage() {
   };
   
   const filteredTransactions = useMemo(() => {
-    if (!transactions) return [];
+    if (!transactions) {return [];}
 
     let filtered = [...transactions];
 
-    if (searchTerm) {
-        filtered = filtered.filter(t => t.description.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
+  if (searchTerm) {
+    filtered = filtered.filter(t => (t.description ?? '').toLowerCase().includes(searchTerm.toLowerCase()));
+  }
 
     if (categoryFilter !== 'all') {
         filtered = filtered.filter(t => t.category === categoryFilter);
@@ -228,13 +232,13 @@ export default function TransactionsPage() {
                       </TableCell>
                       <TableCell
                         className={cn(
-                          "text-right font-semibold",
-                          transaction.type === "income"
-                            ? "text-success"
-                            : "text-destructive"
+                          'text-right font-semibold',
+                          transaction.type === 'income'
+                            ? 'text-success'
+                            : 'text-destructive'
                         )}
                       >
-                        {transaction.type === "income" ? "+" : "-"}
+                        {transaction.type === 'income' ? '+' : '-'}
                         {formatCurrency(transaction.amount)}
                       </TableCell>
                     </TableRow>

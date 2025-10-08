@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface BankLogoProps {
   provider: string;
@@ -47,7 +47,7 @@ const renderLogo = (provider: string) => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
-        stroke={logoInfo?.color || "currentColor"}
+        stroke={logoInfo?.color || 'currentColor'}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -62,11 +62,11 @@ const renderLogo = (provider: string) => {
       </svg>
     );
   }
-}
+};
 
 export function BankLogo({ provider, className }: BankLogoProps) {
   return (
-    <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg bg-muted", className)}>
+    <div className={cn('flex h-10 w-10 items-center justify-center rounded-lg bg-muted', className)}>
       {renderLogo(provider)}
     </div>
   );

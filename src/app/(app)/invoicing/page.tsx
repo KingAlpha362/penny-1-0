@@ -1,17 +1,17 @@
 
 
-"use client";
+'use client';
 
-import { invoices } from "@/lib/data";
+import { invoices } from '@/lib/data';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PlusCircle, MoreHorizontal, Download } from "lucide-react";
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, MoreHorizontal, Download } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -19,20 +19,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
   }).format(value);
 };
 
@@ -72,7 +72,7 @@ export default function InvoicingPage() {
               <p className="text-3xl font-bold text-success">
                 {formatCurrency(
                   invoices
-                    .filter((i) => i.status === "Paid")
+                    .filter((i) => i.status === 'Paid')
                     .reduce((sum, i) => sum + i.amount, 0)
                 )}
               </p>
@@ -121,9 +121,9 @@ export default function InvoicingPage() {
                     <TableCell>
                       <Badge
                         className={cn({
-                          "bg-success/20 text-success border-transparent": invoice.status === "Paid",
-                          "bg-yellow-500/20 text-yellow-600 border-transparent": invoice.status === "Pending",
-                          "bg-destructive/20 text-destructive border-transparent": invoice.status === "Overdue",
+                          'bg-success/20 text-success border-transparent': invoice.status === 'Paid',
+                          'bg-yellow-500/20 text-yellow-600 border-transparent': invoice.status === 'Pending',
+                          'bg-destructive/20 text-destructive border-transparent': invoice.status === 'Overdue',
                         })}
                       >
                         {invoice.status}

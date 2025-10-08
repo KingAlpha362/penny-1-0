@@ -2,17 +2,17 @@
 'use client';
 
 import AuthenticatedPage from '@/components/AuthenticatedPage';
-import type { FC } from "react";
-import React, { useState, useMemo, useEffect } from "react";
-import { financialApi } from "@/services/financial-api";
-import { Header } from "@/components/pennywise/header";
-import { OverviewCards } from "@/components/pennywise/overview-cards";
-import { SpendingChart } from "@/components/pennywise/spending-chart";
-import { AddTransactionDialog } from "@/components/pennywise/add-transaction-dialog";
-import { RecentTransactions } from "@/components/pennywise/recent-transactions";
-import { DashboardCharts } from "@/components/pennywise/dashboard-charts";
-import { DashboardSkeleton } from "@/components/pennywise/dashboard-skeleton";
-import { InvestmentAnalysis } from "@/components/pennywise/investment-analysis";
+import type { FC } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { financialApi } from '@/services/financial-api';
+import { Header } from '@/components/pennywise/header';
+import { OverviewCards } from '@/components/pennywise/overview-cards';
+import { SpendingChart } from '@/components/pennywise/spending-chart';
+import { AddTransactionDialog } from '@/components/pennywise/add-transaction-dialog';
+import { RecentTransactions } from '@/components/pennywise/recent-transactions';
+import { DashboardCharts } from '@/components/pennywise/dashboard-charts';
+import { DashboardSkeleton } from '@/components/pennywise/dashboard-skeleton';
+import { InvestmentAnalysis } from '@/components/pennywise/investment-analysis';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, serverTimestamp, query, orderBy, limit } from 'firebase/firestore';
 import type { Transaction } from '@/app/lib/types';
@@ -26,7 +26,7 @@ const DashboardPage: FC = () => {
   const [isAddTransactionOpen, setAddTransactionOpen] = useState(false);
 
   const transactionsQuery = useMemoFirebase(() => {
-    if (!firestore || !user?.uid) return null;
+    if (!firestore || !user?.uid) {return null;}
     return query(
       collection(firestore, `users/${user.uid}/transactions`), 
       orderBy('date', 'desc'), 
@@ -38,7 +38,7 @@ const DashboardPage: FC = () => {
   
   // Validate transactions at runtime
   const transactions = useMemo(() => {
-    if (!rawTransactions) return [];
+    if (!rawTransactions) {return [];}
     return rawTransactions.filter(transaction => {
       try {
         // Omit id and userId before validation since they're added after schema
@@ -46,26 +46,26 @@ const DashboardPage: FC = () => {
         transactionSchema.parse(transactionData);
         return true;
       } catch (error) {
-        console.error(`Invalid transaction data:`, error);
+        console.error('Invalid transaction data:', error);
         return false;
       }
     });
   }, [rawTransactions]);
 
   const { income, expenses, balance } = useMemo(() => {
-    if (!transactions) return { income: 0, expenses: 0, balance: 0 };
+    if (!transactions) {return { income: 0, expenses: 0, balance: 0 };}
     const income = transactions
-      .filter((t) => t.type === "income")
+      .filter((t) => t.type === 'income')
       .reduce((acc, t) => acc + t.amount, 0);
     const expenses = transactions
-      .filter((t) => t.type === "expense")
+      .filter((t) => t.type === 'expense')
       .reduce((acc, t) => acc + t.amount, 0);
     const balance = income - expenses;
     return { income, expenses, balance };
   }, [transactions]);
   
   const handleAddTransaction = (newTransaction: z.infer<typeof transactionSchema>) => {
-    if (!firestore || !user?.uid) return;
+    if (!firestore || !user?.uid) {return;}
     
     const transactionRef = collection(firestore, `users/${user.uid}/transactions`);
     addDocumentNonBlocking(transactionRef, {

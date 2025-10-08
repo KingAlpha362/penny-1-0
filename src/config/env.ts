@@ -1,12 +1,12 @@
 // This is your client-side environment configuration
 export const env = {
   // Firebase Configuration
-  FIREBASE_API_KEY: "AIzaSyAYOMqvZBiyGugIYn4Y-g1RS4ZM1k0C9g8",
-  FIREBASE_AUTH_DOMAIN: "studio-4654281853-a56f4.firebaseapp.com",
-  FIREBASE_PROJECT_ID: "studio-4654281853-a56f4",
-  FIREBASE_STORAGE_BUCKET: "studio-4654281853-a56f4.firebasestorage.app",
-  FIREBASE_MESSAGING_SENDER_ID: "1062419582019",
-  FIREBASE_APP_ID: "1:1062419582019:web:19a099f3b328293f4b18f6",
+  FIREBASE_API_KEY: 'AIzaSyAYOMqvZBiyGugIYn4Y-g1RS4ZM1k0C9g8',
+  FIREBASE_AUTH_DOMAIN: 'studio-4654281853-a56f4.firebaseapp.com',
+  FIREBASE_PROJECT_ID: 'studio-4654281853-a56f4',
+  FIREBASE_STORAGE_BUCKET: 'studio-4654281853-a56f4.firebasestorage.app',
+  FIREBASE_MESSAGING_SENDER_ID: '1062419582019',
+  FIREBASE_APP_ID: '1:1062419582019:web:19a099f3b328293f4b18f6',
   
   // Financial APIs
   PLAID_CLIENT_ID: process.env.NEXT_PUBLIC_PLAID_CLIENT_ID!,

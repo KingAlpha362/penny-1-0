@@ -35,7 +35,17 @@ export class ErrorBoundary extends Component<Props, State> {
 
   private handleRetry = () => {
     this.setState({ hasError: false, error: undefined, errorInfo: undefined });
-    window.location.reload();
+    // In test environments we avoid triggering a full reload which can interfere with Jest.
+    try {
+      if (typeof process !== 'undefined' && process.env && process.env.JEST_WORKER_ID) {
+        return;
+      }
+      if (typeof window !== 'undefined' && window.location && typeof window.location.reload === 'function') {
+        window.location.reload();
+      }
+    } catch (e) {
+      // swallow errors in restricted environments
+    }
   };
 
   private getErrorDetails() {
@@ -43,14 +53,15 @@ export class ErrorBoundary extends Component<Props, State> {
     const errorMessage = error?.message || 'An unexpected error occurred.';
 
     if (error?.name === 'FirebaseError') {
-      if (errorMessage.includes('permission-denied')) {
+      const msg = errorMessage.toLowerCase();
+      if (/permission[- ]?denied/i.test(msg) || msg.includes('permission denied')) {
         return {
           title: 'Permission Denied',
           icon: ShieldAlert,
           message: 'You don\'t have permission to access this resource.'
         };
       }
-      if (errorMessage.includes('auth')) {
+      if (msg.includes('auth')) {
         return {
           title: 'Authentication Error',
           icon: Key,

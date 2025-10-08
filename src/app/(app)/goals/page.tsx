@@ -1,40 +1,40 @@
 
 
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { PlusCircle } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { PlusCircle } from 'lucide-react';
 
 const goals = [
   {
     id: 1,
-    title: "Save for Vacation",
+    title: 'Save for Vacation',
     current: 1200,
     target: 3000,
-    icon: "✈️",
+    icon: '✈️',
   },
   {
     id: 2,
-    title: "Emergency Fund",
+    title: 'Emergency Fund',
     current: 5000,
     target: 10000,
-    icon: "🚑",
+    icon: '🚑',
   },
   {
     id: 3,
-    title: "New Laptop",
+    title: 'New Laptop',
     current: 800,
     target: 1500,
-    icon: "💻",
+    icon: '💻',
   },
   {
     id: 4,
-    title: "Down Payment for House",
+    title: 'Down Payment for House',
     current: 25000,
     target: 50000,
-    icon: "🏠",
+    icon: '🏠',
   },
 ];
 

@@ -1,14 +1,14 @@
 
 
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { debts as initialDebts, debtGoals } from "@/lib/data";
-import { cn } from "@/lib/utils";
-import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
+import { useMemo, useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { debts as initialDebts, debtGoals } from '@/lib/data';
+import { cn } from '@/lib/utils';
+import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -24,11 +24,11 @@ const debtReductionData = [
   { name: 'Year 3', debt: 4000 },
 ];
 
-type RepaymentStrategy = "snowball" | "avalanche" | "custom";
+type RepaymentStrategy = 'snowball' | 'avalanche' | 'custom';
 
 export default function DebtTrackerPage() {
 
-    const [repaymentStrategy, setRepaymentStrategy] = useState<RepaymentStrategy>("snowball");
+    const [repaymentStrategy, setRepaymentStrategy] = useState<RepaymentStrategy>('snowball');
 
     const sortedDebts = useMemo(() => {
         const debtsCopy = [...initialDebts];

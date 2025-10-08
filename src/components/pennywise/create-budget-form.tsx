@@ -1,10 +1,10 @@
 
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { budgetSchema } from "@/lib/validations";
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { budgetSchema } from '@/lib/validations';
 import {
   Form,
   FormControl,
@@ -12,20 +12,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { transactionCategories } from "@/lib/data";
-import { FormDescription } from "@/components/ui/form";
-import type { Budget } from "@/app/(app)/budgets/page";
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { transactionCategories } from '@/lib/data';
+import { FormDescription } from '@/components/ui/form';
+import type { Budget } from '@/app/(app)/budgets/page';
 
 type FormData = z.infer<typeof budgetSchema>;
 
@@ -37,7 +37,7 @@ export function CreateBudgetForm({ onSubmit }: CreateBudgetFormProps) {
   const form = useForm<FormData>({
     resolver: zodResolver(budgetSchema),
     defaultValues: {
-      category: "",
+      category: '',
     },
   });
 
@@ -45,7 +45,7 @@ export function CreateBudgetForm({ onSubmit }: CreateBudgetFormProps) {
     const { amount, ...rest } = values;
     onSubmit({ ...rest, limit: amount });
     form.reset();
-  }
+  };
 
   return (
     <Form {...form}>
@@ -171,7 +171,7 @@ export function CreateBudgetForm({ onSubmit }: CreateBudgetFormProps) {
           )}
         />
 
-        {form.watch("alerts.enabled") && (
+        {form.watch('alerts.enabled') && (
           <FormField
             control={form.control}
             name="alerts.threshold"

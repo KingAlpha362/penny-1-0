@@ -34,7 +34,7 @@ class Logger {
     
     switch (entry.level) {
       case 'info':
-        console.log(logMessage, entry.context || '');
+        console.info(logMessage, entry.context || '');
         break;
       case 'warn':
         console.warn(logMessage, entry.context || '');
@@ -68,3 +68,7 @@ class Logger {
 }
 
 export const logger = Logger.getInstance();
+
+export const info = logger.info.bind(logger);
+export const warn = logger.warn.bind(logger);
+export const error = logger.error.bind(logger);

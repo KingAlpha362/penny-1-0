@@ -42,7 +42,8 @@ interface MarketData {
 
 class FinancialApiService {
   private static instance: FinancialApiService;
-  private plaidClient: any; // Replace with Plaid client type
+  // TODO: Replace with actual Plaid client type from SDK
+  private plaidClient: unknown;
 
   private constructor() {
     // Initialize Plaid client

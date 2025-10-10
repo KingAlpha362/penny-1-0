@@ -29,10 +29,11 @@ interface InvestmentAnalysisProps {
 }
 
 export function InvestmentAnalysis({ investments }: InvestmentAnalysisProps) {
+  const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
+
   if (!investments || investments.length === 0) {
     return <div className="text-muted-foreground">No investment data available</div>;
   }
-  const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
 
   const getSentimentColor = (score?: number) => {
     if (!score) {return 'text-muted-foreground';}

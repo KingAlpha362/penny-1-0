@@ -70,12 +70,12 @@ const spendingSummaryFlow = ai.defineFlow(
             return "You don't have any expenses in this period. Great job saving!";
         }
 
-        // Analyze spending patterns
-        const analysis = analyzeSpendingPatterns(expenses);
+    // Analyze spending patterns (kept for future use)
+    analyzeSpendingPatterns(expenses);
 
-        // Pass only the expenses array to the prompt, as required by the schema
-        const { output } = await spendingSummaryPrompt(expenses);
-        return output!;
+    // Pass only the expenses array to the prompt, as required by the schema
+    const { output } = await spendingSummaryPrompt(expenses);
+    return output ?? '';
     }
 );
 

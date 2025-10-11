@@ -35,7 +35,6 @@ import {
 import { transactions } from '@/lib/data';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 

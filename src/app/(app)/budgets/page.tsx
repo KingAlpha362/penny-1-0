@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { BudgetCard } from '@/components/pennywise/budget-card';
@@ -9,7 +9,7 @@ import { AddBudgetCard } from '@/components/pennywise/add-budget-card';
 import { CreateBudgetDialog } from '@/components/pennywise/create-budget-dialog';
 import { BudgetForecast } from '@/components/pennywise/budget-forecast';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
-import { collection, query, serverTimestamp } from 'firebase/firestore';
+import { collection, query } from 'firebase/firestore';
 import type { Transaction } from '@/lib/types';
 
 export type Budget = {

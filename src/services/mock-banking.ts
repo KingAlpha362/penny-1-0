@@ -141,11 +141,13 @@ class MockBankingService {
     let transactions = [...account.transactions];
 
     if (options.startDate) {
-      transactions = transactions.filter(t => t.date >= options.startDate!);
+      const sd = options.startDate;
+      transactions = transactions.filter(t => t.date >= sd);
     }
 
     if (options.endDate) {
-      transactions = transactions.filter(t => t.date <= options.endDate!);
+      const ed = options.endDate;
+      transactions = transactions.filter(t => t.date <= ed);
     }
 
     if (options.limit) {

@@ -2,7 +2,10 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { LayoutDashboard, Wallet, TrendingUp, Search, ShieldCheck, HelpCircle, Lock, History } from 'lucide-react';
+import { LayoutDashboard, Search, TrendingUp, Wallet, ShieldCheck, HelpCircle, Lock, History } from 'lucide-react';
+import { AnimatedHero } from '@/components/landing/animated-hero';
+import { AnimatedFeatures } from '@/components/landing/animated-features';
+import { AnimatedStats } from '@/components/landing/animated-stats';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const features = [
@@ -97,144 +100,50 @@ export default function WelcomePage() {
       </header>
       
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="container mx-auto px-6 py-24 md:py-32 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-blue-500/10 opacity-50"></div>
-          <div className="relative">
-            <div className="flex items-center justify-center gap-2 mb-8">
-              <Image 
-                src="/logos/pennywise-full.svg" 
-                alt="PennyWise"
-                width={48}
-                height={48}
-                className="h-12 w-auto"
-              />
-            </div>
-            <h1 className="text-4xl md:text-7xl font-extrabold tracking-tighter text-foreground leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-              Your Money, Smarter with AI
-            </h1>
-            <p className="mt-6 text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-              Experience the future of personal finance. PennyWise combines powerful AI with beautiful analytics to help you master your money.
-            </p>
-            
-            {/* Trust Badges */}
-            <div className="mt-12 flex flex-wrap justify-center items-center gap-8">
-              <div className="flex items-center gap-2">
-                <div className="bg-green-500/10 text-green-500 px-3 py-1 rounded-full text-sm font-medium">
-                  4.9 ★★★★★
-                </div>
-                <span className="text-sm text-muted-foreground">App Store</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="bg-blue-500/10 text-blue-500 px-3 py-1 rounded-full text-sm font-medium">
-                  4.8 ★★★★★
-                </div>
-                <span className="text-sm text-muted-foreground">Google Play</span>
-              </div>
-              <Image 
-                src="/badges/trustpilot.svg"
-                alt="Trustpilot Rating"
-                width={120}
-                height={30}
-                className="h-8 w-auto"
-              />
-              <Image 
-                src="/badges/forbes.svg"
-                alt="Featured in Forbes"
-                width={100}
-                height={30}
-                className="h-6 w-auto grayscale opacity-70"
-              />
-              <Image 
-                src="/badges/techcrunch.svg"
-                alt="Featured in TechCrunch"
-                width={120}
-                height={30}
-                className="h-6 w-auto grayscale opacity-70"
-              />
-            </div>
-
-            {/* Featured Banks */}
-            <div className="mt-12">
-              <p className="text-sm text-muted-foreground mb-4">Securely connects with 10,000+ financial institutions</p>
-              <div className="flex flex-wrap justify-center items-center gap-8">
-                <Image src="/logos/banks/chase.svg" alt="Chase" width={90} height={30} className="h-6 w-auto grayscale opacity-50 hover:opacity-100 transition-opacity" />
-                <Image src="/logos/banks/bofa.svg" alt="Bank of America" width={120} height={30} className="h-6 w-auto grayscale opacity-50 hover:opacity-100 transition-opacity" />
-                <Image src="/logos/banks/wells-fargo.svg" alt="Wells Fargo" width={100} height={30} className="h-6 w-auto grayscale opacity-50 hover:opacity-100 transition-opacity" />
-                <Image src="/logos/banks/citi.svg" alt="Citibank" width={80} height={30} className="h-6 w-auto grayscale opacity-50 hover:opacity-100 transition-opacity" />
-                <Image src="/logos/banks/hsbc.svg" alt="HSBC" width={80} height={30} className="h-6 w-auto grayscale opacity-50 hover:opacity-100 transition-opacity" />
-              </div>
-            </div>
-            <div className="mt-10 flex flex-col items-center gap-8">
-              <Button
-                size="lg"
-                className="h-12 px-8 text-base font-semibold shadow-md bg-gradient-to-r from-primary to-blue-500 hover:from-blue-500 hover:to-primary animate-gradient-x transition-all duration-500"
-                asChild
-                style={{ backgroundSize: '200% 200%' }}
-              >
-                <Link href="/signup" className="text-white drop-shadow-lg">Get Started for Free</Link>
-              </Button>
-              
-              {/* Stats Section */}
-              <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
-                <div className="flex flex-col items-center p-6 rounded-xl bg-card/50 backdrop-blur-sm">
-                  <span className="text-3xl font-bold text-primary">50K+</span>
-                  <span className="text-sm text-muted-foreground">Active Users</span>
-                </div>
-                <div className="flex flex-col items-center p-6 rounded-xl bg-card/50 backdrop-blur-sm">
-                  <span className="text-3xl font-bold text-primary">$2M+</span>
-                  <span className="text-sm text-muted-foreground">Monthly Transactions</span>
-                </div>
-                <div className="flex flex-col items-center p-6 rounded-xl bg-card/50 backdrop-blur-sm">
-                  <span className="text-3xl font-bold text-primary">4.9/5</span>
-                  <span className="text-sm text-muted-foreground">User Rating</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
+        <AnimatedHero />
+        
+        {/* Dashboard Preview */}
         <section className="container mx-auto px-6 pb-24 md:pb-32">
-          <div className="relative rounded-2xl border-8 border-foreground/10 shadow-2xl overflow-hidden group transition-all duration-300">
-            <div className="relative w-full h-[600px] bg-card/50">
+          <div className="dashboard-preview relative rounded-2xl border border-foreground/10 shadow-2xl overflow-hidden group transition-all duration-300 bg-gradient-to-br from-background via-background/95 to-background/90">
+            <div className="relative w-full h-[600px]">
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl p-6">
-                  <div className="bg-background/80 backdrop-blur-sm p-6 rounded-xl border border-foreground/10">
+                  <div className="dashboard-card bg-card/95 backdrop-blur-sm p-6 rounded-xl border border-foreground/10 hover:border-primary/20 transition-colors duration-300">
                     <h3 className="text-lg font-semibold mb-2">Total Balance</h3>
                     <p className="text-3xl font-bold text-primary">$4,089.00</p>
                   </div>
-                  <div className="bg-background/80 backdrop-blur-sm p-6 rounded-xl border border-foreground/10">
+                  <div className="dashboard-card bg-card/95 backdrop-blur-sm p-6 rounded-xl border border-foreground/10 hover:border-primary/20 transition-colors duration-300">
                     <h3 className="text-lg font-semibold mb-2">Income</h3>
                     <p className="text-3xl font-bold text-green-500">$5,500.00</p>
                   </div>
-                  <div className="bg-background/80 backdrop-blur-sm p-6 rounded-xl border border-foreground/10">
+                  <div className="dashboard-card bg-card/95 backdrop-blur-sm p-6 rounded-xl border border-foreground/10 hover:border-primary/20 transition-colors duration-300">
                     <h3 className="text-lg font-semibold mb-2">Expenses</h3>
                     <p className="text-3xl font-bold text-red-500">$1,411.00</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-6xl p-6">
-                  <div className="bg-background/80 backdrop-blur-sm p-6 rounded-xl border border-foreground/10">
+                  <div className="dashboard-card bg-card/95 backdrop-blur-sm p-6 rounded-xl border border-foreground/10 hover:border-primary/20 transition-colors duration-300">
                     <h3 className="text-lg font-semibold mb-4">Balance History</h3>
                     <div className="h-40 bg-gradient-to-r from-primary/20 to-primary/5 rounded-lg"></div>
                   </div>
-                  <div className="bg-background/80 backdrop-blur-sm p-6 rounded-xl border border-foreground/10">
+                  <div className="dashboard-card bg-card/95 backdrop-blur-sm p-6 rounded-xl border border-foreground/10 hover:border-primary/20 transition-colors duration-300">
                     <h3 className="text-lg font-semibold mb-4">Recent Transactions</h3>
                     <div className="space-y-4">
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-center p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200">
                         <div>
                           <p className="font-medium">Local Market</p>
                           <p className="text-sm text-muted-foreground">Groceries</p>
                         </div>
                         <p className="text-red-500">-$80.00</p>
                       </div>
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-center p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200">
                         <div>
                           <p className="font-medium">Tech Solutions Inc.</p>
                           <p className="text-sm text-muted-foreground">Salary</p>
                         </div>
                         <p className="text-green-500">+$2,500.00</p>
                       </div>
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-center p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200">
                         <div>
                           <p className="font-medium">Amazon</p>
                           <p className="text-sm text-muted-foreground">Online Shopping</p>
@@ -246,8 +155,8 @@ export default function WelcomePage() {
                 </div>
               </div>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/30 to-transparent pointer-events-none rounded-xl" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-start bg-background/70 backdrop-blur-md rounded-b-xl">
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent pointer-events-none rounded-xl" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col items-start bg-background/80 backdrop-blur-md rounded-b-xl border-t border-foreground/10">
               <h3 className="text-lg md:text-2xl font-bold text-foreground mb-1 flex items-center gap-2">
                 <span className="material-icons text-primary align-middle">dashboard</span>
                 Live Dashboard Preview
@@ -259,26 +168,9 @@ export default function WelcomePage() {
           </div>
         </section>
 
-         <section className="container mx-auto px-6 pb-24 md:pb-32">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Everything you need, nothing you don't.</h2>
-            <p className="mt-4 text-lg text-muted-foreground">PennyWise is packed with powerful features to help you take control.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="p-8 rounded-xl border bg-card/80 backdrop-blur-sm shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-xl group cursor-pointer"
-              >
-                <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-primary/10 mb-6 group-hover:bg-primary/20 transition-colors duration-300">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors duration-300">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <AnimatedStats />
+        
+        <AnimatedFeatures />
 
         {/* AI Features Section */}
         <section className="container mx-auto px-6 pb-24 md:pb-32">

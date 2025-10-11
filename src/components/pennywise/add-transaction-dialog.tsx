@@ -48,7 +48,6 @@ interface AddTransactionDialogProps {
 }
 
 import { transactionSchema } from '@/lib/validations';
-import { Tag } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 
 type FormData = z.infer<typeof transactionSchema>;

@@ -1,4 +1,4 @@
-import { format, isWithinInterval, subMonths } from 'date-fns';
+import { isWithinInterval, subMonths } from 'date-fns';
 import type { Transaction } from '@/lib/types';
 
 type SpendingPattern = {

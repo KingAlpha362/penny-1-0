@@ -7,10 +7,12 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { financialApi } from '@/services/financial-api';
 import { Header } from '@/components/pennywise/header';
 import { OverviewCards } from '@/components/pennywise/overview-cards';
-import { SpendingChart } from '@/components/pennywise/spending-chart';
+import dynamic from 'next/dynamic';
+const SpendingChart = dynamic(() => import('@/components/pennywise/spending-chart').then(mod => mod.SpendingChart), { ssr: false, loading: () => <div className="h-64" /> });
 import { AddTransactionDialog } from '@/components/pennywise/add-transaction-dialog';
 import { RecentTransactions } from '@/components/pennywise/recent-transactions';
-import { DashboardCharts } from '@/components/pennywise/dashboard-charts';
+const DashboardCharts = dynamic(() => import('@/components/pennywise/dashboard-charts').then(mod => mod.DashboardCharts), { ssr: false, loading: () => <div className="h-48" /> });
+const AiMvp = dynamic(() => import('@/components/ai/ai-mvp'), { ssr: false, loading: () => <div className="h-24" /> });
 import { DashboardSkeleton } from '@/components/pennywise/dashboard-skeleton';
 import { InvestmentAnalysis } from '@/components/pennywise/investment-analysis';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
@@ -42,7 +44,7 @@ const DashboardPage: FC = () => {
     return rawTransactions.filter(transaction => {
       try {
         // Omit id and userId before validation since they're added after schema
-        const { id, userId, ...transactionData } = transaction;
+  const { id: _id, userId: _userId, ...transactionData } = transaction;
         transactionSchema.parse(transactionData);
         return true;
       } catch (error) {
@@ -151,6 +153,7 @@ const DashboardPage: FC = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <DashboardCharts />
+            <AiMvp />
           </div>
 
           <div>

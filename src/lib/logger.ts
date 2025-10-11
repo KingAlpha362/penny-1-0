@@ -34,7 +34,7 @@ class Logger {
     
     switch (entry.level) {
       case 'info':
-        console.warn(logMessage, entry.context || '');
+        console.info(logMessage, entry.context || '');
         break;
       case 'warn':
         console.warn(logMessage, entry.context || '');

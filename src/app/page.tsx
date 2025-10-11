@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LayoutDashboard, Search, TrendingUp, Wallet, ShieldCheck, HelpCircle, Lock, History } from 'lucide-react';
 import { AnimatedHero } from '@/components/landing/animated-hero';
+import HeroSection from '@/components/blocks/hero-section-1';
 import { AnimatedFeatures } from '@/components/landing/animated-features';
 import { AnimatedStats } from '@/components/landing/animated-stats';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -100,7 +101,9 @@ export default function WelcomePage() {
       </header>
       
       <main className="flex-grow">
-        <AnimatedHero />
+  <AnimatedHero />
+  {/* Integrated HeroSection bundle (PennyWise component bundle) */}
+  <HeroSection />
         
         {/* Dashboard Preview */}
         <section className="container mx-auto px-6 pb-24 md:pb-32">

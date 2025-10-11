@@ -5,6 +5,7 @@ import { heroAnimation } from '@/lib/gsap-animations';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import { PennywiseLogo } from '@/components/icons/pennywise-logo';
 
 export function AnimatedHero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,13 +28,8 @@ export function AnimatedHero() {
       
       <div className="relative">
         <div className="hero-logo flex items-center justify-center gap-2 mb-8">
-          <Image 
-            src="/logos/pennywise-full.svg" 
-            alt="PennyWise"
-            width={48}
-            height={48}
-            className="h-12 w-auto"
-          />
+          {/* Use the app's SVG React component for a consistent logo */}
+          <PennywiseLogo className="h-12 w-auto text-primary" aria-label="PennyWise" />
         </div>
         
         <h1 className="hero-title text-4xl md:text-7xl font-extrabold tracking-tighter text-foreground leading-tight mb-6">

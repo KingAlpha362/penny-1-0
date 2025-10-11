@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { ReactNode } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -21,8 +21,8 @@ type AnimatedGroupProps = {
   className?: string;
   // Allow a flexible variant shape to match user-provided variant objects
   variants?: {
-    container?: any;
-    item?: any;
+    container?: Variants;
+    item?: Variants;
   };
   preset?: PresetType;
 };

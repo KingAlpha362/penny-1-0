@@ -56,7 +56,10 @@ const supportFeatures = [
 ];
 
 
+import { logger } from '@/lib/logger';
+
 export default function WelcomePage() {
+  logger.info('WelcomePage: rendering');
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">

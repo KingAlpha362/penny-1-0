@@ -179,6 +179,10 @@ export function TextEffect({
   const itemVariants = variants?.item || selectedVariants.item;
   const ariaLabel = per === 'line' ? undefined : children;
 
+  console.log('TextEffect: trigger', trigger);
+  console.log('TextEffect: containerVariants', containerVariants);
+  console.log('TextEffect: itemVariants', itemVariants);
+
   const stagger = defaultStaggerTimes[per];
 
   const delayedContainerVariants: Variants = {

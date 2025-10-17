@@ -12,7 +12,10 @@ export function AnimatedHero() {
 
   useEffect(() => {
     if (containerRef.current) {
+      console.log('AnimatedHero: containerRef.current is defined, initializing animation');
       heroAnimation('.hero-container');
+    } else {
+      console.log('AnimatedHero: containerRef.current is null');
     }
   }, []);
 

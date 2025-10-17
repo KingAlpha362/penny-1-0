@@ -150,6 +150,9 @@ function AnimatedGroup({
   const containerVariants = variants?.container || selectedVariants.container;
   const itemVariants = variants?.item || selectedVariants.item;
 
+  console.log('AnimatedGroup: containerVariants', containerVariants);
+  console.log('AnimatedGroup: itemVariants', itemVariants);
+
   return (
     <motion.div
       initial="hidden"

@@ -1,9 +1,11 @@
-import React from 'react'
-import Link from 'next/link'
-import { ArrowRight, ChevronRight, Menu, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { AnimatedGroup } from '@/components/ui/animated-group'
-import { cn } from '@/lib/utils'
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import { ArrowRight, Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { AnimatedGroup } from '@/components/ui/animated-group';
+import { cn } from '@/lib/utils';
 
 const transitionVariants = {
     item: {
@@ -16,16 +18,15 @@ const transitionVariants = {
             opacity: 1,
             filter: 'blur(0px)',
             y: 0,
-            transition: {
-                type: 'spring',
-                bounce: 0.3,
-                duration: 1.5,
-            },
+            type: 'spring',
+            bounce: 0.3,
+            duration: 1.5,
         },
     },
-}
+};
 
 export function HeroSection() {
+    console.log("HeroSection called");
     return (
         <>
             <HeroHeader />
@@ -69,12 +70,12 @@ export function HeroSection() {
                                         container: {
                                             visible: {
                                                 transition: {
-                                                    staggerChildren: 0.05,
-                                                    delayChildren: 0.75,
-                                                },
+                                                  staggerChildren: 0.05,
+                                                  delayChildren: 0.75,
+                                                }
                                             },
                                         },
-                                        ...transitionVariants,
+                                        item: transitionVariants.item
                                     }}
                                     className="mt-12 flex flex-col items-center justify-center gap-2 md:flex-row">
                                     <div
@@ -106,7 +107,7 @@ export function HeroSection() {
                 </section>
             </main>
         </>
-    )
+    );
 }
 
 const menuItems = [
@@ -114,19 +115,20 @@ const menuItems = [
     { name: 'Solution', href: '#link' },
     { name: 'Pricing', href: '#link' },
     { name: 'About', href: '#link' },
-]
+];
 
 const HeroHeader = () => {
-    const [menuState, setMenuState] = React.useState(false)
-    const [isScrolled, setIsScrolled] = React.useState(false)
+    console.log("HeroHeader called");
+    const [menuState, setMenuState] = React.useState(false);
+    const [isScrolled, setIsScrolled] = React.useState(false);
 
     React.useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50)
-        }
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+            setIsScrolled(window.scrollY > 50);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
     return (
         <header>
             <nav
@@ -144,9 +146,9 @@ const HeroHeader = () => {
 
                             <button
                                 onClick={() => setMenuState(!menuState)}
-                                aria-label={menuState == true ? 'Close Menu' : 'Open Menu'}
+                                aria-label={menuState === true ? 'Close Menu' : 'Open Menu'}
                                 className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden">
-                                <Menu className="in-data-[state=active]:rotate-180 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
+                                <Menu className="in-data-[state=active]:rotate-180 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0 m-auto size-6 duration-200"/>
                                 <X className="group-data-[state=active]:rotate-0 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
                             </button>
                         </div>
@@ -211,8 +213,8 @@ const HeroHeader = () => {
                 </div>
             </nav>
         </header>
-    )
-}
+    );
+};
 
 
 export default HeroSection;

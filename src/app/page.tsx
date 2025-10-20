@@ -9,28 +9,28 @@ import { AnimatedFeatures } from '@/components/landing/animated-features';
 import { AnimatedStats } from '@/components/landing/animated-stats';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const features = [
-  {
-    icon: <LayoutDashboard className="h-8 w-8 text-primary" />,
-    title: 'All-in-One Dashboard',
-    description: 'Get a complete overview of your financial health at a glance. Track your balance, income, and expenses effortlessly.',
-  },
-  {
-    icon: <Search className="h-8 w-8 text-primary" />,
-    title: 'Smart Transactions',
-    description: 'Log, categorize, and search your transactions with ease. Understand where your money is going.',
-  },
-  {
-    icon: <TrendingUp className="h-8 w-8 text-primary" />,
-    title: 'Investment Tracking',
-    description: 'Monitor your portfolio performance. Keep track of your stocks, crypto, and funds in one place.',
-  },
-  {
-    icon: <Wallet className="h-8 w-8 text-primary" />,
-    title: 'Effortless Budgeting',
-    description: 'Create and manage budgets that work for you. Set limits and get forecasts on your spending habits.',
-  },
-];
+// const features = [
+//   {
+//     icon: <LayoutDashboard className="h-8 w-8 text-primary" />,
+//     title: 'All-in-One Dashboard',
+//     description: 'Get a complete overview of your financial health at a glance. Track your balance, income, and expenses effortlessly.',
+//   },
+//   {
+//     icon: <Search className="h-8 w-8 text-primary" />,
+//     title: 'Smart Transactions',
+//     description: 'Log, categorize, and search your transactions with ease. Understand where your money is going.',
+//   },
+//   {
+//     icon: <TrendingUp className="h-8 w-8 text-primary" />,
+//     title: 'Investment Tracking',
+//     description: 'Monitor your portfolio performance. Keep track of your stocks, crypto, and funds in one place.',
+//   },
+//   {
+//     icon: <Wallet className="h-8 w-8 text-primary" />,
+//     title: 'Effortless Budgeting',
+//     description: 'Create and manage budgets that work for you. Set limits and get forecasts on your spending habits.',
+//   },
+// ];
 
 const supportFeatures = [
   {
@@ -178,8 +178,37 @@ export default function WelcomePage() {
         
         <AnimatedFeatures />
 
+        <div id="features">
+          <AnimatedFeatures />
+        </div>
+
+        {/* Testimonials Section */}
+        <section className="container mx-auto px-6 pb-24 md:pb-32 mt-12">
+          <div className="text-center mb-16">
+    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">What our users say</h2>
+    <p className="mt-4 text-lg text-muted-foreground">Real stories from people who mastered their money with PennyWise.</p>
+  </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="p-8 rounded-xl border bg-card/80 shadow-md flex flex-col items-center text-center">
+      <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" className="w-16 h-16 rounded-full mb-4 border-2 border-primary" />
+      <p className="text-lg font-medium mb-2">“PennyWise helped me finally stick to a budget and save for my dream vacation!”</p>
+      <span className="text-muted-foreground text-sm">— Jane D.</span>
+    </div>
+    <div className="p-8 rounded-xl border bg-card/80 shadow-md flex flex-col items-center text-center">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" className="w-16 h-16 rounded-full mb-4 border-2 border-primary" />
+      <p className="text-lg font-medium mb-2">“The dashboard is so clean and easy to use. I can see all my accounts in one place.”</p>
+      <span className="text-muted-foreground text-sm">— Alex R.</span>
+    </div>
+    <div className="p-8 rounded-xl border bg-card/80 shadow-md flex flex-col items-center text-center">
+      <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" className="w-16 h-16 rounded-full mb-4 border-2 border-primary" />
+      <p className="text-lg font-medium mb-2">“I love the investment tracking and the peace of mind PennyWise gives me.”</p>
+      <span className="text-muted-foreground text-sm">— Priya S.</span>
+    </div>
+  </div>
+</section>
+
         {/* AI Features Section */}
-        <section className="container mx-auto px-6 pb-24 md:pb-32">
+        <section className="container mx-auto px-6 pb-24 md:pb-32 mt-12">
           <div className="text-center mb-16">
             <span className="text-primary text-sm font-semibold tracking-wider uppercase">Powered by AI</span>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-2">Your Personal Financial Copilot</h2>
@@ -189,35 +218,20 @@ export default function WelcomePage() {
             <div className="space-y-8">
               <div className="flex gap-4">
                 <div className="flex-shrink-0 h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                  <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
+                  <LayoutDashboard className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Smart Spending Analysis</h3>
-                  <p className="text-muted-foreground">Get AI-powered insights into your spending patterns and recommendations for saving opportunities.</p>
+                  <h3 className="text-xl font-semibold mb-2">AI-Powered Insights</h3>
+                  <p className="text-muted-foreground">AI analyzes your spending, finds savings, and predicts your financial future.</p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="flex-shrink-0 h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                  <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
+                  <Search className="h-6 w-6 text-primary" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2">Automated Bill Detection</h3>
-                  <p className="text-muted-foreground">Our AI automatically identifies recurring bills and subscriptions, helping you avoid unnecessary expenses.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                  <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">Smart Investment Suggestions</h3>
-                  <p className="text-muted-foreground">Receive personalized investment recommendations based on your goals and risk tolerance.</p>
+                  <p className="text-muted-foreground">Automatically track and manage your recurring bills to avoid late fees and wasted subscriptions.</p>
                 </div>
               </div>
             </div>
@@ -251,7 +265,7 @@ export default function WelcomePage() {
         </section>
 
         {/* Multi-Currency Section */}
-        <section className="container mx-auto px-6 pb-24 md:pb-32 relative">
+        <section className="container mx-auto px-6 pb-24 md:pb-32 relative mt-12">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-blue-500/5 rounded-3xl"></div>
           <div className="relative">
             <div className="text-center mb-16">
@@ -307,7 +321,7 @@ export default function WelcomePage() {
         </section>
 
         {/* Reports & Analytics Section */}
-        <section className="container mx-auto px-6 pb-24 md:pb-32">
+        <section className="container mx-auto px-6 pb-24 md:pb-32 mt-12">
           <div className="text-center mb-16">
             <span className="text-primary text-sm font-semibold tracking-wider uppercase">Deep Insights</span>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-2">Beautiful Reports & Analytics</h2>
@@ -330,7 +344,7 @@ export default function WelcomePage() {
         </section>
 
         {/* How it Works Section */}
-        <section className="container mx-auto px-6 pb-24 md:pb-32">
+        <section className="container mx-auto px-6 pb-24 md:pb-32 mt-12">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How PennyWise Works</h2>
             <p className="mt-4 text-lg text-muted-foreground">Get started in three simple steps</p>
@@ -361,7 +375,7 @@ export default function WelcomePage() {
         </section>
 
         {/* Security Section */}
-        <section className="container mx-auto px-6 pb-24 md:pb-32">
+        <section className="container mx-auto px-6 pb-24 md:pb-32 mt-12">
           <div className="text-center mb-16">
             <span className="text-primary text-sm font-semibold tracking-wider uppercase">Bank-Grade Security</span>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-2">Your Security is Our Priority</h2>
@@ -399,7 +413,7 @@ export default function WelcomePage() {
         </section>
 
         {/* Pricing Section */}
-        <section className="container mx-auto px-6 pb-24 md:pb-32">
+        <section className="container mx-auto px-6 pb-24 md:pb-32 mt-12">
           <div className="text-center mb-16">
             <span className="text-primary text-sm font-semibold tracking-wider uppercase">Simple Pricing</span>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mt-2">Choose Your Plan</h2>
@@ -515,7 +529,7 @@ export default function WelcomePage() {
         </section>
 
         {/* Testimonials Section */}
-        <section className="container mx-auto px-6 pb-24 md:pb-32">
+        <section className="container mx-auto px-6 pb-24 md:pb-32 mt-12">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">What our users say</h2>
             <p className="mt-4 text-lg text-muted-foreground">Real stories from people who mastered their money with PennyWise.</p>
@@ -538,7 +552,7 @@ export default function WelcomePage() {
             </div>
           </div>
         </section>
-        <section className="container mx-auto px-6 pb-24 md:pb-32">
+        <section className="container mx-auto px-6 pb-24 md:pb-32 mt-12">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Peace of mind, guaranteed.</h2>
             <p className="mt-4 text-lg text-muted-foreground">We are committed to providing a secure and reliable platform for our users.</p>

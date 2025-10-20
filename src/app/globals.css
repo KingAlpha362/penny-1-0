@@ -47,7 +47,7 @@
 
 @layer base {
   * {
-    border-color: hsl(var(--border));
+    border-color: transparent;
     border-width: 1px;
     border-style: solid;
   }
@@ -57,6 +57,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: 'Manrope', sans-serif;
+    padding: 2rem;
   }
 }
 

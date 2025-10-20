@@ -15,12 +15,13 @@
     "incremental": true,
     "plugins": [
       {
-        "name": "next"
+        "name": "next", // Enables Next.js-specific TypeScript features
       }
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["axios", "chart.js"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

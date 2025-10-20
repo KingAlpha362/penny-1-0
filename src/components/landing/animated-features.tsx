@@ -7,13 +7,18 @@ import { LayoutDashboard, Wallet, TrendingUp, Search, BrainCircuit, Coins, PieCh
 const features = [
   {
     icon: <LayoutDashboard className="h-8 w-8 text-primary" />,
-    title: 'Smart Dashboard',
-    description: 'Get a complete overview of your finances with AI-powered insights and real-time tracking.',
+    title: 'AI-Powered Insights',
+    description: 'AI analyzes your spending, finds savings, and predicts your financial future.',
   },
   {
-    icon: <BrainCircuit className="h-8 w-8 text-primary" />,
-    title: 'AI-Powered Insights',
-    description: 'Let our AI analyze your spending patterns and suggest ways to save and invest smarter.',
+    icon: <Search className="h-8 w-8 text-primary" />,
+    title: 'Automated Bill Detection',
+    description: 'Automatically track and manage your recurring bills to avoid late fees and wasted subscriptions.',
+  },
+  {
+    icon: <Wallet className="h-8 w-8 text-primary" />,
+    title: 'Multi-Currency Support',
+    description: 'Manage your money in any currency with automatic conversion and real-time exchange rates.',
   },
   {
     icon: <TrendingUp className="h-8 w-8 text-primary" />,
@@ -21,24 +26,9 @@ const features = [
     description: 'Monitor your portfolio performance across stocks, crypto, and funds in one place.',
   },
   {
-    icon: <Wallet className="h-8 w-8 text-primary" />,
-    title: 'Smart Budgeting',
-    description: 'Create intelligent budgets that adapt to your spending patterns and financial goals.',
-  },
-  {
     icon: <PieChart className="h-8 w-8 text-primary" />,
     title: 'Visual Analytics',
     description: 'Beautiful charts and reports that make understanding your finances intuitive.',
-  },
-  {
-    icon: <Coins className="h-8 w-8 text-primary" />,
-    title: 'Multi-Currency',
-    description: 'Handle transactions in multiple currencies with real-time exchange rates.',
-  },
-  {
-    icon: <Search className="h-8 w-8 text-primary" />,
-    title: 'Smart Search',
-    description: 'Find any transaction instantly with our powerful search and filtering system.',
   },
   {
     icon: <Shield className="h-8 w-8 text-primary" />,

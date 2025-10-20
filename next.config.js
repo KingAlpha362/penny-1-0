@@ -2,7 +2,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   compress: true,
   poweredByHeader: false,
   images: {
@@ -56,11 +55,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  experimental: {
-    allowedDevOrigins: [
-      'https://6000-firebase-studio-1759202894670.cluster-iesosxm5fzdewqvhlwn5qivgry.cloudworkstations.dev',
-    ],
   },
 };
 

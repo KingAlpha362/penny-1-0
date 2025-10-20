@@ -26,7 +26,7 @@ export function AnimatedHero() {
     >
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-blue-500/5 to-purple-500/10 animate-gradient-x"></div>
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+        <div className="absolute inset-0 bg-primary/10 opacity-10"></div>
       </div>
       
       <div className="relative">
@@ -37,13 +37,12 @@ export function AnimatedHero() {
         
         <h1 className="hero-title text-4xl md:text-7xl font-extrabold tracking-tighter text-foreground leading-tight mb-6">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-500">
-            Finance That Grows with Your Ambition
+            Effortless Money Management for a Brighter Future
           </span>
         </h1>
         
         <p className="hero-description mt-6 text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-          Unlock powerful tools to manage, track, and scale your finances seamlessly.
-          Designed to support your goals at every stage of growth.
+          Take control of your finances with our intuitive tools. Track spending, create budgets, and achieve your financial goals with ease.
         </p>
         
         <div className="hero-cta mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -58,9 +57,9 @@ export function AnimatedHero() {
             variant="outline"
             className="h-12 px-8 text-base font-semibold w-full sm:w-auto group"
           >
-            <Link href="#" className="flex items-center gap-2">
-              Watch Demo
-              <svg 
+            <Link href="#features" className="flex items-center gap-2">
+              Learn More
+              <svg
                 className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" 
                 fill="none" 
                 viewBox="0 0 24 24" 
